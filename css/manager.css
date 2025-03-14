@@ -18,8 +18,8 @@ body {
 
 /* Header styles */
 header {
-    background-color: #f4e4bc; 
-    color: #85090e; 
+    background-color: white; 
+    color: #2b7e7e; 
     padding: 10px 0; 
 }
 
@@ -40,7 +40,7 @@ header img {
 .icons a {
     display: flex;
     align-items: center;
-    background-color: #b36b5c;
+    background-color: #2b7e7e;
     border: none;
     padding: 10px 20px;
     margin-left: 20px;
@@ -48,21 +48,21 @@ header img {
     transition: background-color 0.3s;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 20px;
-    color: #f4e4bc;
+    color: white;
     text-decoration: none;
 }
 
 .icons a:hover {
-    background-color: #85090e;
+    background-color: #2b7e7e;
 }
 
 .icons i {
     margin-inline: 11px;
-    background-color: #b36b5c;
+    background-color: #2b7e7e;
     padding: 6px;
     font-size: 20px;
     border-radius: 4px;
-    color: #f4e4bc;
+    color: white;
 }
 
 
@@ -89,7 +89,7 @@ header img {
  h2 {
     font-size: 32px; 
     margin-top: 30px; 
-    color:#85090e;
+    color:#2b7e7e;
     margin-left:100px;
 }
 
@@ -119,14 +119,14 @@ nav {
 
 .nav-links a {
     text-decoration: none;
-    color: #85090e;
+    color: #2b7e7e;
     font-size: 16px;
     transition: color 0.3s;
 }
 
 .nav-links a:hover {
-    color: red;
-    border-bottom: 2px solid red;
+    color: #2b7e7e;
+    border-bottom: 2px solid #2b7e7e;
 }
 
 ul {
@@ -155,7 +155,7 @@ ul.home-page-ul li {
 
 ul.home-page-ul li a {
     display: block;
-    background-color:#85090e; 
+    background-color:#2b7e7e; 
     color: white;
     text-decoration: none;
     padding: 50px 20px;
@@ -171,15 +171,15 @@ ul.home-page-ul li a i {
 }
 
 ul.home-page-ul li a:hover {
-    background-color: #85090e;
+    background-color: #2b7e7e;
 }
 
 div.user-options button:hover {
-    background-color: #85090e;
+    background-color: #2b7e7e;
 }
 
 .menu-management {
-    background-color: #85090e;
+    background-color: #2b7e7e;
     color: white;
     padding: 40px 20px;
     max-width: 1200px;
@@ -210,7 +210,7 @@ th {
 
 /* Employee Management styles */
 .employee-management {
-    background-color: #85090e;
+    background-color: #2b7e7e;
     color: white;
     padding: 40px 20px;
     max-width: 1200px;
@@ -230,7 +230,7 @@ th {
 }
 
 .employee-management table th {
-    background-color: #b36b5c;
+    background-color: #2b7e7e;
     color: white;
     font-weight: bold;
     padding: 20px;
@@ -240,7 +240,7 @@ th {
 
 .employee-management table td {
     padding: 10px;
-    border-bottom: 1px solid #b36b5c;
+    border-bottom: 1px solid #2b7e7e;
 }
 
 .search-bar {
@@ -254,27 +254,27 @@ th {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f4e4bc;
+    background-color: white;
 }
 
 /* Style the icons */
 .edit-icon, .remove-icon {
     margin: 0 10px;
     cursor: pointer;
-    color: #85090e;
+    color: #2b7e7e;
     font-size: 20px;
     transition: color 0.3s;
 }
 
 .edit-icon:hover, .remove-icon:hover {
-    color: #b36b5c;
+    color: #2b7e7e;
 }
 .add-employee {
     margin-top: 20px; 
 }
 
 #add-employee-btn {
-    background-color: #b36b5c; 
+    background-color: #2b7e7e; 
     color: white;
     border: none;
     padding: 10px 20px;
@@ -287,11 +287,11 @@ th {
 }
 
 #add-employee-btn:hover {
-    background-color: #85090e; 
+    background-color: #2b7e7e; 
 }
 
 #user {
-    background-color: #b36b5c;
+    background-color: #2b7e7e;
     border: none;
     padding: 10px 20px;
     margin-left: 20px;
@@ -299,20 +299,20 @@ th {
     transition: background-color 0.3s;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 20px;
-    color: #f4e4bc;
+    color: white;
 }
 
 #user i {
     margin-inline: 11px;
-    background-color: #b36b5c;
+    background-color: #2b7e7e;
     padding: 6px;
     font-size: 20px;
     border-radius:  m4px;
-    color: #f4e4bc;
+    color: white;
 }
 
 #user:hover {
-    background-color: #b36b5c; 
+    background-color: #2b7e7e; 
 }
 
 

@@ -19,6 +19,19 @@
             padding: 10px;
         }
         
+        .page-title{
+          font-size:30px;
+        }
+        .nav-floor{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          width: 100%;
+          align-items: center;
+          padding: 8px;
+          
+        }
+       
         .grid-view {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -53,9 +66,10 @@
 
 <body>
 
-<header>
-    <nav>
+<header class="nav-floor">
+    
         <a href="employeeHomePage.html"><img src="../assets/logo.png" alt="Farm to Table Logo"></a>
+        <div class="page-title">Floor Overview</div>
         <ul class="nav-links">
             <li><a href="employeeHomePage.html">Home</a></li>
             <li><a href="managerHome.html">Functions</a></li>
@@ -63,13 +77,13 @@
             <li><a href="viewMenu2.html">Menu</a></li>
             <li><a href="serverinterface.html">Tables</a></li>
         </ul>
-    </nav>
+    
 </header>
 
   <main>
     <div>
       <br><br><br>
-      <div id="columns">
+      <!-- <div id="columns">
         <br>
         <div class="container text-center">
           <div class="row align-items-start">
@@ -87,9 +101,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <ul class="list-group list-group-flush" id="table-list">
+      <!-- <ul class="list-group list-group-flush" id="table-list">
         <li id="Table 1" class="list-group-item">Table 1
         </li>
         <li id="Table 2" class="list-group-item">Table 2
@@ -111,11 +125,11 @@
         <li id="Table 10" class="list-group-item">Table 10
         </li>
 
-      </ul>
+      </ul> -->
     </div>
 
-    <button id="modalPlaceOrderButton" type="button" data-bs-toggle="modal" data-bs-target="#placeOrderModal"  style="display: none">
-    </button>
+    <!-- <button id="modalPlaceOrderButton" type="button" data-bs-toggle="modal" data-bs-target="#placeOrderModal"  style="display: none">
+    </button> -->
   </main>
 
 <div class="modal fade" id="placeOrderModal" tabindex="-1" aria-labelledby="placeOrderModalLabel" aria-hidden="true">

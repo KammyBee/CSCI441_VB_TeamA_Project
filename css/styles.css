@@ -13,8 +13,8 @@ body {
 nav {
     display: flex;
     justify-content: space-around;
-    background-color: #f4e4bc;
-    color: #85090e;
+    background-color: white;
+    color: #2b7e7e;
     padding: 12px;
     position: fixed;
     top: 0%;
@@ -46,12 +46,12 @@ nav {
     text-decoration: none;
     margin-inline: 20px;
     font-size: 16px;
-    color: #85090e;
+    color: #2b7e7e;
 }
 
 .navbar ul li a:hover {
-    color: red;
-    border-bottom: 2px solid red;
+    color: #2b7e7e;
+    border-bottom: 2px solid #2b7e7e;
 }
 
 .icons {
@@ -61,7 +61,7 @@ nav {
 }
 
 .icons button {
-    background-color: #b36b5c;
+    background-color: #2b7e7e;
     border: none;
     padding: 10px 20px;
     margin-left: 20px;
@@ -69,20 +69,20 @@ nav {
     transition: background-color 0.3s;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 16px;
-    color: #f4e4bc;
+    color: white;
 }
 
 .icons button:hover {
-    background-color: #85090e;
+    background-color: #2b7e7e;
 }
 
 .icons i{
     margin-inline: 11px;
-    background-color: #b36b5c;
+    background-color: #2b7e7e;
     padding: 6px;
     font-size: 20px;
     border-radius: 4px;
-    color: #f4e4bc;
+    color: white;
 } 
 
 .logo {
@@ -104,7 +104,7 @@ nav {
     display: flex;
     justify-content: space-around;
     padding: 44px;
-    background-color: #85090e;
+    background-color: #2b7e7e;
     color: #fff;
     margin-top: 0;
     background-image: url('../assets/preparation.gif');
@@ -121,7 +121,7 @@ nav {
 }
 
 .mainText h1 span{
-    color: #b36b5c;
+    color: #2b7e7e;
 }
 
 .mainText h3{
@@ -130,7 +130,7 @@ nav {
 }
 
 .mainText h3 span{
-    color: #b36b5c;
+    color: #2b7e7e;
 }
 
 .mainText p{
@@ -141,16 +141,16 @@ nav {
     font-size: 20px;
     width: 140px;
     height: 38px;
-    background-color: #b36b5c;
-    color: #85090e;
-    border: 2px solid #b36b5c;
+    background-color: #2b7e7e;
+    color: #2b7e7e;
+    border: 2px solid #2b7e7e;
     margin-top: 22px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .mainText button:hover{
-    background-color: #f4e4bc;
+    background-color: white;
 }
 
 .cards {
@@ -191,13 +191,13 @@ nav {
     border: none;
     font-size: 18px;
     font-weight: bold;
-    color: #b36b5c;
+    color: #2b7e7e;
 }
 
 .head {
     text-align: center;
     padding: 55px;
-    color: #85090e;
+    color: #2b7e7e;
 }
 .reviews {
     width: 800px;
@@ -239,7 +239,7 @@ nav {
     padding: 3%;
     font-size: 18px;
     font-weight: bold;
-    background-color: #85090e;
+    background-color: #2b7e7e;
 }
 
 .my-form p {
@@ -268,25 +268,25 @@ nav {
     font-size: 20px;
     width: 140px;
     height: 38px;
-    background-color: #b36b5c;
-    color: #f4e4bc;
-    border: 2px solid #b36b5c;
+    background-color: #2b7e7e;
+    color: white;
+    border: 2px solid #2b7e7e;
     margin-top: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .my-form button:hover {
-background-color: #f4e4bc;
-color: #85090e; 
+background-color: white;
+color: #2b7e7e; 
 }
 
 .footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    background-color: #f4e4bc;
-    color: #85090e;
+    background-color: white;
+    color: #2b7e7e;
     padding: 66px;
     margin-top: 44px;
     font-size: 18px;

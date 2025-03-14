@@ -14,8 +14,8 @@ class View {
         const div = document.createElement('div');
         div.className = 'placeHolder';
 
-        li.appendChild(button);
-        li.appendChild(div);
+        // li.appendChild(button);
+        // li.appendChild(div);
         this.createButton(order.orderStatus, button);
         this.dropdowns(div, order);
     }

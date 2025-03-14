@@ -14,7 +14,7 @@ export class TableOrderController {
         orders.forEach(order => {
             this.view.addTable(order);
         });
-        this.view.arrangeTables();
+        // this.view.arrangeTables();
     }
 
     async editOrderStatus(order, status) {
