@@ -95,3 +95,6 @@ By pressing the dropdown menu for a certain table the status of the order can be
 And a new order for a table can also be placed by pressing 'Place Order' in the dropdown menu.
 
 After placing an order you will be taken to the Orders page where you can see all the orders placed, sorted by the date they were created.
+
+
+Testing
