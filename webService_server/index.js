@@ -1,3 +1,15 @@
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import Table from '../views/tableComponents/Table.jsx';
+
+// const reactRoot = document.getElementById("react-root");
+
+// if (reactRoot) {
+//     const root = ReactDOM.createRoot(reactRoot);
+//     root.render(<MyReactSection />);
+// }
+
+const tableReact = ReactDOM.render(<Table />, document.getElementById('table'));
 const express = require("express");
 const cors = require("cors");
 const app = express();

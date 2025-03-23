@@ -4,6 +4,7 @@
 <!-- // debugged by: Bjarni Jonsson -->
 
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -18,7 +19,7 @@
             margin: 5px;
             padding: 10px;
         }
-        
+
         .page-title{
           font-size:30px;
         }
@@ -29,9 +30,9 @@
           width: 100%;
           align-items: center;
           padding: 8px;
-          
+
         }
-       
+
         .grid-view {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -39,13 +40,13 @@
             margin: 20px 0;
             color: black;
         }
-        
+
         .grid-view div {
             padding: 10px;
             border: 1px solid black;
             cursor: pointer;
         }
-        
+
         #order {
             background-color: white;
             position: fixed;
@@ -55,7 +56,7 @@
             border: 1px solid black;
             padding: 10px;
         }
-        
+
         #order ul {
             list-style: none;
             padding: 0;
@@ -67,7 +68,7 @@
 <body>
 
 <header class="nav-floor">
-    
+
         <a href="employeeHomePage.html"><img src="../assets/logo.png" alt="Farm to Table Logo"></a>
         <div class="page-title">Floor Overview</div>
         <ul class="nav-links">
@@ -77,13 +78,14 @@
             <li><a href="viewMenu2.html">Menu</a></li>
             <li><a href="serverinterface.html">Tables</a></li>
         </ul>
-    
+
 </header>
 
   <main>
-    <div>
-      <br><br><br>
-      <!-- <div id="columns">
+    <div id="react-root"></div>
+
+      <!-- <br><br><br>
+      <div id="columns">
         <br>
         <div class="container text-center">
           <div class="row align-items-start">
@@ -101,9 +103,9 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
-      <!-- <ul class="list-group list-group-flush" id="table-list">
+      <ul class="list-group list-group-flush" id="table-list">
         <li id="Table 1" class="list-group-item">Table 1
         </li>
         <li id="Table 2" class="list-group-item">Table 2
@@ -126,10 +128,10 @@
         </li>
 
       </ul> -->
-    </div>
 
-    <!-- <button id="modalPlaceOrderButton" type="button" data-bs-toggle="modal" data-bs-target="#placeOrderModal"  style="display: none">
-    </button> -->
+
+    <button id="modalPlaceOrderButton" type="button" data-bs-toggle="modal" data-bs-target="#placeOrderModal"  style="display: none">
+    </button>
   </main>
 
 <div class="modal fade" id="placeOrderModal" tabindex="-1" aria-labelledby="placeOrderModalLabel" aria-hidden="true">
@@ -164,6 +166,25 @@
 </div>
 
   <script type="module" src="../js/tableStatus.js" ></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // import Table from "./tableComponents/Table.jsx";
+    function MyReactSection() {
+        return (
+            <div>
+                <h2>Welcome to My React Section</h2>
+                <button onClick={() => alert("React works!")}>Click Me</button>
+            </div>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("react-root"));
+    root.render(<MyReactSection />);
+</script>
+
 </body>
 
 </html>
