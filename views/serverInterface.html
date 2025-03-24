@@ -83,7 +83,6 @@
 
   <main>
     <div id="react-root"></div>
-
       <!-- <br><br><br>
       <div id="columns">
         <br>
@@ -172,17 +171,121 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     // import Table from "./tableComponents/Table.jsx";
+    //import tableModal from '../controls/modal.html'
     function MyReactSection() {
-        return (
-            <div>
-                <h2>Welcome to My React Section</h2>
-                <button onClick={() => alert("React works!")}>Click Me</button>
-            </div>
-        );
-    }
+      const [selectedTable, setSelectedTable] = React.useState(null);
 
-    const root = ReactDOM.createRoot(document.getElementById("react-root"));
-    root.render(<MyReactSection />);
+      return (
+          <div>
+              <h1>
+                Bar Section
+              </h1>
+              <BarSection barTable={['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9']} onTableClick={setSelectedTable}/>
+              {selectedTable && <Modal table={selectedTable} onClose={() => setSelectedTable(null)} />}
+          </div>
+      );
+  }
+
+  function Test({msg}) {
+    return <h1>{msg}</h1>;
+  }
+
+  function Meimei(){
+    return <div>HOLA JIEJIE!!!!!!!!</div>;
+  }
+
+  function BarSection({ barTable, onTableClick }) {
+  const total = barTable.length;
+  const radius =700; // Controls the horizontal stretch of the arc
+  const centerX = 800; // Horizontal center of the arc
+  const centerY = 3; // Vertical center of the arc (adjust this for the height of the arc)
+  const verticalStretch = .25; // Adjust this to control the vertical flattening (smaller = flatter)
+
+  return (
+    <div style={{  position: "relative", width: "100%", height: "100%" }}>
+      {barTable.map((bTable, index) => {
+        // Evenly distribute tables along a horizontal arc
+
+        const angle = Math.PI - (Math.PI * index) / (total - 1); // Adjust for downward-facing arc
+
+        // Calculate X and Y positions using trigonometry
+        const x = centerX + radius * Math.cos(angle); // Horizontal positioning
+        const y = centerY + (radius * Math.sin(angle)) * verticalStretch; // Adjust vertical stretch
+
+        return (
+          <div
+            key={index}
+            style={{
+              position: "absolute",
+              left: `${x}px`,
+              top: `${y}px`,
+              transform: "translate(-50%, -50%)", // Align the tables
+            }}
+          >
+            <Table bTable={bTable} idx={index} onTableClick={onTableClick} />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function Table({ bTable, idx, onTableClick }) {
+  const handleClickBarTable = () => {
+    onTableClick(bTable);
+  };
+
+  return (
+    <div
+      style={{
+        height: "65px",
+        width: "65px",
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#333",
+        color: "white",
+        border: "2px solid black",
+        cursor: "pointer",
+      }}
+      onClick={handleClickBarTable}
+    >
+      {bTable}
+    </div>
+  );
+}
+
+
+
+
+
+  function Modal({ table, onClose }) {
+    return (
+      <div style={{
+          position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.5)", display: "flex", alignItems: "center", justifyContent: "center",
+          zIndex: 1000
+      }}>
+        <div style={{
+          backgroundColor: "#2b7e7e", padding: "20px", borderRadius: "10px", textAlign: "center",
+          width: "80%", height: "80%", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)"
+        }}>
+          <h2 ><strong>Table Details</strong></h2>
+          <p>{table}</p>
+          <button onClick={onClose} style={{
+            backgroundColor: "red", color: "white", padding: "10px 20px", border: "none", cursor: "pointer",
+            marginTop: "10px", borderRadius: "5px"
+          }}>
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById("react-root"));
+  root.render(<MyReactSection />);
 </script>
 
 </body>
