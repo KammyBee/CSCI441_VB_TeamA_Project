@@ -170,17 +170,25 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    // import Table from "./tableComponents/Table.jsx";
-    //import tableModal from '../controls/modal.html'
     function MyReactSection() {
       const [selectedTable, setSelectedTable] = React.useState(null);
 
       return (
           <div>
-              <h1>
-                Bar Section
-              </h1>
+              <h1>Bar Section</h1>
               <BarSection barTable={['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9']} onTableClick={setSelectedTable}/>
+              <br/><br/><br/><br/><br/><br/><br/><br/>
+              <div style={{ display: "flex", justifyContent: "center", gap: "100px", padding: "20px" }}>
+                <div style={{ textAlign: "center", flex: 1 }}>
+                  <Section1 section1Table={['T1', 'T2', 'T3']} onTableClick={setSelectedTable} />
+                </div>
+                <div style={{ textAlign: "center", flex: 1 }}>
+                  <Section2 section2Table={['T7', 'T8']} onTableClick={setSelectedTable} />
+                </div>
+                <div style={{ textAlign: "center", flex: 1 }}>
+                  <Section3 section3Table={['T6', 'T5', 'T4']} onTableClick={setSelectedTable} />
+                </div>
+              </div>
               {selectedTable && <Modal table={selectedTable} onClose={() => setSelectedTable(null)} />}
           </div>
       );
@@ -202,6 +210,7 @@
   const verticalStretch = .25; // Adjust this to control the vertical flattening (smaller = flatter)
 
   return (
+    <div style={{display:"flex", flexDirection:"row", minWidth:"1500px"}}>
     <div style={{  position: "relative", width: "100%", height: "100%" }}>
       {barTable.map((bTable, index) => {
         // Evenly distribute tables along a horizontal arc
@@ -219,18 +228,20 @@
               position: "absolute",
               left: `${x}px`,
               top: `${y}px`,
-              transform: "translate(-50%, -50%)", // Align the tables
+              transform: "translate(-50%, -50%)",
+              //width:"1550px" // Align the tables
             }}
           >
-            <Table bTable={bTable} idx={index} onTableClick={onTableClick} />
+            <BarTable bTable={bTable} idx={index} onTableClick={onTableClick} />
           </div>
         );
       })}
     </div>
+    </div>
   );
 }
 
-function Table({ bTable, idx, onTableClick }) {
+function BarTable({ bTable, idx, onTableClick }) {
   const handleClickBarTable = () => {
     onTableClick(bTable);
   };
@@ -256,8 +267,105 @@ function Table({ bTable, idx, onTableClick }) {
   );
 }
 
+function Section1({ section1Table, onTableClick }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "30px" }}>
+      <h1>Section 1</h1>
+      <div style={{ display: "flex", flexDirection: "column", gap: "50px" }}>
+        {section1Table.map((s1Table, index) => (
+          <Section1Table key={index} s1Table={s1Table} idx={index} onTableClick={onTableClick} />
+        ))}
+      </div>
+    </div>
+  );
+}
+function Section1Table({ s1Table, idx, onTableClick }) {
+  return (
+    <div
+      style={{
+        height: "70px",
+        width: "100px",
+        backgroundColor: "#444",
+        color: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "2px solid black",
+        cursor: "pointer",
+      }}
+      onClick={() => onTableClick(s1Table)}
+    >
+      {s1Table}
+    </div>
+  );
+}
 
+function Section2({ section2Table, onTableClick }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "30px", paddingTop: "10px"}}>
+      <h1>Section 2</h1>
+      <div style={{ display: "flex", gap: "150px" }}>
+        {section2Table.map((s2Table, index) => (
+          <Section2Table key={index} s2Table={s2Table} idx={index} onTableClick={onTableClick} />
+        ))}
+      </div>
+    </div>
+  );
+}
+function Section2Table({ s2Table, idx, onTableClick }) {
+  return (
+    <div
+      style={{
+        height: "320px",
+        width: "150px",
+        backgroundColor: "#444",
+        color: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "2px solid black",
+        cursor: "pointer",
+      }}
+      onClick={() => onTableClick(s2Table)}
+    >
+      {s2Table}
+    </div>
+  );
+}
 
+function Section3({ section3Table, onTableClick }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "30px" }}>
+      <h1>Section 3</h1>
+      <div style={{ display: "flex", flexDirection: "column", gap: "50px" }}>
+        {section3Table.map((s3Table, index) => (
+          <Section3Table key={index} s3Table={s3Table} idx={index} onTableClick={onTableClick} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Section3Table({ s3Table, idx, onTableClick }) {
+  return (
+    <div
+      style={{
+        height: "70px",
+        width: "100px",
+        backgroundColor: "#444",
+        color: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "2px solid black",
+        cursor: "pointer",
+      }}
+      onClick={() => onTableClick(s3Table)}
+    >
+      {s3Table}
+    </div>
+  );
+}
 
 
   function Modal({ table, onClose }) {
