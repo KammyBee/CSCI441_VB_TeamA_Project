@@ -507,3 +507,66 @@ export async function deleteTimeLog(id) {
     }
     return await response.json();
 }
+
+//////////////////////////////
+// Restaurant Table calls
+//////////////////////////////
+
+// Fetch a specific restaurant table by ID
+export async function fetchRestaurantTable(id) {
+    const response = await fetch(`${BASE_URL}/restaurant_table/${id}`);
+    if (!response.ok) {
+        throw new Error(`Error fetching restaurant table: ${response.statusText}`);
+    }
+    return await response.json();
+}
+
+// Fetch all restaurant tables
+export async function fetchRestaurantTables() {
+    const response = await fetch(`${BASE_URL}/restaurant_table`);
+    if (!response.ok) {
+        throw new Error(`Error fetching restaurant tables: ${response.statusText}`);
+    }
+    return await response.json();
+}
+
+// Create a new restaurant table
+export async function createRestaurantTable(data) {
+    const response = await fetch(`${BASE_URL}/restaurant_table`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+        throw new Error(`Error creating restaurant table: ${response.statusText}`);
+    }
+    return await response.json();
+}
+
+// Update an existing restaurant table by ID
+export async function updateRestaurantTable(id, data) {
+    const response = await fetch(`${BASE_URL}/restaurant_table/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+        throw new Error(`Error updating restaurant table: ${response.statusText}`);
+    }
+    return await response.json();
+}
+
+// Delete a restaurant table by ID
+export async function deleteRestaurantTable(id) {
+    const response = await fetch(`${BASE_URL}/restaurant_table/${id}`, {
+        method: 'DELETE',
+    });
+    if (!response.ok) {
+        throw new Error(`Error deleting restaurant table: ${response.statusText}`);
+    }
+    return await response.json();
+}
