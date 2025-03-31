@@ -305,8 +305,29 @@ nav {
 }
 
 
+/*Employee Shift Schedule classes */
 
+.schedule-date {
+    background-color: grey;
+    font-size: 12px;
+    list-style-type: none;
 
+}
+
+.schedule-body {
+    background-color: rgb(56, 53, 53);
+    font-size: 12px;
+    list-style-type: none;
+}
+
+.date-selector {
+    background-color: white;
+    font-size: 12px;
+    color: black;
+    justify-content: left;
+    box-sizing: content-box;
+    width: 150px;
+}
 
 
 
