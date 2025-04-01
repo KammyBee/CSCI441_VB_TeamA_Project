@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/employee.css">
     <title>Employee Shift Schedule</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script> <!-- Include moment.js -->
 </head>
 
 <body>
@@ -24,14 +25,9 @@
     
 <br>
     <div class="date-selector">
-        <button>Prev</button>
-        GetWeek<script>
-        const week = this.$moment();
-       
-        
-        </script>
-        {{week}}
-        <button>Next</button>
+        <button onclick="handlePrevWeek()">Prev</button>
+        <span id="weekRangeDisplay"></span>
+        <button onclick="handleNextWeek()">Next</button>
     </div>
 
     <table class="schedule-body">
@@ -175,3 +171,34 @@
 
 
 </body>
+
+<script>
+    let currentDate = moment();
+
+    const updateWeekRangeDisplay = () => {
+        const weekRangeDisplay = document.getElementById('weekRangeDisplay');
+        if (weekRangeDisplay) {
+            const startOfWeek = currentDate.clone().startOf('week').format('MMM D, YYYY');
+            const endOfWeek = currentDate.clone().endOf('week').format('MMM D, YYYY');
+            weekRangeDisplay.textContent = `${startOfWeek} - ${endOfWeek}`;
+            console.log('Week range updated:', `${startOfWeek} - ${endOfWeek}`);
+        } else {
+            console.error('Element with id "weekRangeDisplay" not found.');
+        }
+    };
+
+    const handlePrevWeek = () => {
+        currentDate = currentDate.clone().subtract(1, 'week');
+        updateWeekRangeDisplay();
+    };
+
+    const handleNextWeek = () => {
+        currentDate = currentDate.clone().add(1, 'week');
+        updateWeekRangeDisplay();
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM fully loaded. Initializing week range display...');
+        updateWeekRangeDisplay();
+    });
+</script>
