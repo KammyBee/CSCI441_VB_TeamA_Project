@@ -183,8 +183,7 @@
   <script type="text/babel">
     function MyReactSection() {
       const [selectedTable, setSelectedTable] = React.useState(null);
-
-      return (
+     return (
           <div>
               <h1>Bar Section</h1>
               <BarSection barTable={['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9']} onTableClick={setSelectedTable}/>
@@ -206,22 +205,35 @@
   }
 
   function BarSection({ barTable, onTableClick }) {
+    const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+
+ React.useEffect(() => {
+const handleResize = () => {
+ setWindowWidth(window.innerWidth);
+};
+
+window.addEventListener('resize', handleResize);
+
+return () => {
+ window.removeEventListener('resize', handleResize);
+};
+}, []);
   const total = barTable.length;
   const radius =700; // Controls the horizontal stretch of the arc
-  const centerX = 925; // Horizontal center of the arc
+  const centerX = windowWidth/2; // Horizontal center of the arc
   const centerY = 3; // Vertical center of the arc (adjust this for the height of the arc)
   const verticalStretch = .25; // Adjust this to control the vertical flattening (smaller = flatter)
 
   return (
     <div style={{display:"flex", flexDirection:"row", minWidth:"1500px"}}>
-    <div style={{  position: "relative", width: "100%", height: "100%" }}>
+    <div style={{  position: "relative", width: "100%", height: "100%"}}>
       {barTable.map((bTable, index) => {
         // Evenly distribute tables along a horizontal arc
 
         const angle = Math.PI - (Math.PI * index) / (total - 1); // Adjust for downward-facing arc
 
         // Calculate X and Y positions using trigonometry
-        const x = centerX + radius * Math.cos(angle); // Horizontal positioning
+        const x = centerX + radius * Math.cos(angle) * windowWidth / 1500; // Horizontal positioning
         const y = centerY + (radius * Math.sin(angle)) * verticalStretch; // Adjust vertical stretch
 
         return (
@@ -393,7 +405,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
       fetchTableData();
     }, [table]);
 
-    
+
     async function editOrderStatus(tableID, newStatus) {
       try {
         const payload = {
@@ -419,9 +431,9 @@ function Section3Table({ s3Table, idx, onTableClick }) {
         const updatedData = await response.json();
         console.log("paylod table data:", payload);
         // CHECK THIS
-        setTableData(payload); 
+        setTableData(payload);
 
-       
+
       } catch (error) {
         console.error("Error in editOrderStatus:", error);
         alert("Failed to update table status. Please try again.");
@@ -430,14 +442,14 @@ function Section3Table({ s3Table, idx, onTableClick }) {
 
     async function updateOrder(orderID, updatedOrderData) {
       try {
-        
+
         const payload = {
-          orderStatus: updatedOrderData.orderStatus || "Pending", 
-          menuItems: updatedOrderData.menuItems || [], 
-          restaurantTable: parseInt(updatedOrderData.restaurantTable, 10) || null, 
+          orderStatus: updatedOrderData.orderStatus || "Pending",
+          menuItems: updatedOrderData.menuItems || [],
+          restaurantTable: parseInt(updatedOrderData.restaurantTable, 10) || null,
         };
 
-        console.log("Updating order with payload:", payload); 
+        console.log("Updating order with payload:", payload);
 
         const response = await fetch(`https://csci441-teamb.onrender.com/orders/${orderID}`, {
           method: "PUT",
@@ -447,12 +459,12 @@ function Section3Table({ s3Table, idx, onTableClick }) {
 
         if (!response.ok) {
           const errorResponse = await response.text();
-          console.error("API Error Response:", errorResponse); 
+          console.error("API Error Response:", errorResponse);
           throw new Error(`Error updating order: ${response.statusText}`);
         }
 
         const updatedOrder = await response.json();
-        console.log("Updated order:", updatedOrder); 
+        console.log("Updated order:", updatedOrder);
         alert("Order updated successfully!");
       } catch (error) {
         console.error("Error in updateOrder:", error);
@@ -464,10 +476,10 @@ function Section3Table({ s3Table, idx, onTableClick }) {
       const updatedOrderData = {
         orderStatus: "In Progress",
         menuItems: [
-          { itemID: 1, itemQuantity: 2 }, 
-          { itemID: 2, itemQuantity: 1 }, 
+          { itemID: 1, itemQuantity: 2 },
+          { itemID: 2, itemQuantity: 1 },
         ],
-        restaurantTable: tableData?.tableID, 
+        restaurantTable: tableData?.tableID,
       };
 
       if (tableData?.orderID) {
