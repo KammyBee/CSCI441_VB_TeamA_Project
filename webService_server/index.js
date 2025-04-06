@@ -1,3 +1,14 @@
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import Table from '../views/tableComponents/Table.jsx';
+
+// const reactRoot = document.getElementById("react-root");
+
+// if (reactRoot) {
+//     const root = ReactDOM.createRoot(reactRoot);
+//     root.render(<MyReactSection />);
+// }
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -18,6 +29,7 @@ const time_logRouter = require("./routes/time_log");
 const transaction_itemRouter = require("./routes/transaction_item");
 const transactionRouter = require("./routes/transaction");
 const customRouter = require("./routes/custom");
+const shiftScheduleRouter = require("./routes/shiftSchedule");
 
 app.use(cors());
 
@@ -46,6 +58,7 @@ app.use("/time_log", time_logRouter);
 app.use("/transaction_item", transaction_itemRouter);
 app.use("/transaction", transactionRouter);
 app.use("/custom", customRouter);
+app.use("/shiftSchedule", shiftScheduleRouter);
 
 
 

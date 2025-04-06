@@ -1,4 +1,4 @@
-# Farm to Table
+# Tasty Bytes
 
 ## Recommended IDE Setup
 

@@ -4,8 +4,9 @@
 import { TableOrderController } from "../controllers/tableStatusController.js";
 import { Orders } from '../models/orders.js';
 
+
 class View {
-    
+
     addTable(order) {
         const li = document.getElementById(`Table ${order.restaurantTable}`);
 
@@ -41,7 +42,7 @@ class View {
           }
       });
   }
-  
+
 
     createButton(state, buttonToCreate){
         let color = '';
@@ -121,7 +122,7 @@ class View {
         ul.appendChild(li4);
         ul.appendChild(li5);
         dropdown.appendChild(ul);
-  
+
       }
 };
 
@@ -253,3 +254,5 @@ async function placeOrder() {
         console.error('Error placing order:', error);
     }
 }
+
+

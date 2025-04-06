@@ -1,10 +1,16 @@
 {
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "moment": "^2.30.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "mysql2": "^3.6.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.26.4",
+    "@babel/core": "^7.26.10",
+    "@babel/preset-react": "^7.26.3"
   }
 }
