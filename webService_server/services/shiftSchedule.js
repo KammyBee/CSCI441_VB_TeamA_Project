@@ -2,35 +2,35 @@ const db = require('./db');
 
 async function addshiftSchedule(shiftScheduleData) {
   const result = await db.query(
-    `INSERT INTO shift_schedule (week_Id, employeeID, weekNumber, date, startTime, endTime) VALUES (?, ?, ?, ?, ?, ?)`,
-    [shiftScheduleData.week_Id, shiftScheduleData.employeeID, shiftScheduleData.weekNumber, shiftScheduleData.date, shiftScheduleData.startTime, shiftScheduleData.endTime]
+    `INSERT INTO shift_schedule (employeeID, date, startTime, endTime) VALUES (?, ?, ?, ?)`,
+    [shiftScheduleData.employeeID, shiftScheduleData.date, shiftScheduleData.startTime, shiftScheduleData.endTime]
   );
 
   return result;
 }
 
-async function deleteshiftSchedule(shiftScheduleID) {
+async function deleteshiftSchedule(shiftID) {
   const result = await db.query(
-    `DELETE FROM shiftSchedule WHERE shiftScheduleID = ?`,
-    [shiftScheduleID]
+    `DELETE FROM shift_schedule WHERE shiftID = ?`,
+    [shiftID]
   );
 
   return result;
 }
 
-async function getshiftSchedule(shiftScheduleID) {
+async function getshiftSchedule(shiftID) {
   const data = await db.query(
-    `SELECT week_Id, employeeID, weekNumber, startTime, endTime,DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as date, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM shift_schedule WHERE shiftScheduleID = ?`,
-    [shiftScheduleID]
+    `SELECT shiftID, employeeID, weekNumber, startTime, endTime,DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as date, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM shift_schedule WHERE shiftID = ?`,
+    [shiftID]
   );
 
   return data[0];
 }
 
-async function updateshiftSchedule(shiftScheduleID, shiftScheduleData) {
+async function updateshiftSchedule(shiftID, shiftScheduleData) {
   const result = await db.query(
-    `UPDATE shift_schedule SET week_Id = ?, employeeID = ?, weekNumber = ?, startTime = ?, endTime = ?, date = ? WHERE shiftScheduleID = ? `,
-    [shiftScheduleData.week_Id, shiftScheduleData.employeeID, shiftScheduleData.weekNumber, shiftScheduleData.startTime, shiftScheduleData.endTime, shiftScheduleData.date, shiftScheduleID]
+    `UPDATE shift_schedule SET employeeID = ?,startTime = ?, endTime = ?, date = ? WHERE shiftID = ? `,
+    [shiftScheduleData.employeeID, shiftScheduleData.startTime, shiftScheduleData.endTime, shiftScheduleData.date, shiftID]
   );
 
   return result;
@@ -38,7 +38,7 @@ async function updateshiftSchedule(shiftScheduleID, shiftScheduleData) {
 
 async function getAllshiftSchedules() {
   const data = await db.query(
-    `SELECT week_Id, employeeID, weekNumber, startTime, endTime, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as date, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM shift_schedule`
+    `SELECT shiftID, employeeID, startTime, endTime, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as date, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM shift_schedule`
   );
 
   return data;

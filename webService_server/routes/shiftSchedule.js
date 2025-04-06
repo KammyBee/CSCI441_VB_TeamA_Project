@@ -3,6 +3,7 @@ const router = express.Router();
 const shiftSchedule = require('../services/shiftSchedule');
 
 /* POST new shiftSchedule. */
+
 router.post('/', async function(req, res, next) {
   try {
     const shiftScheduleData = req.body;
@@ -13,35 +14,40 @@ router.post('/', async function(req, res, next) {
   }
 });
 
-/* DELETE shiftSchedule by shiftScheduleID. */
-router.delete('/:shiftScheduleID', async function(req, res, next) {
+/* DELETE shiftSchedule by shiftID. */
+router.delete('/:shiftID', async function(req, res, next) {
   try {
-    const { shiftScheduleID } = req.params;
-    res.json(await shiftSchedule.deleteshiftSchedule(shiftScheduleID));
+    const { shiftID } = req.params;
+    res.json(await shiftSchedule.deleteshiftSchedule(shiftID));
   } catch (err) {
     res.status(500).json({ error: `Error while deleting shiftSchedule: ${err.message}` });
     next(err);
   }
 });
 
-/* GET shiftSchedule by shiftScheduleID. */
+/* GET shiftSchedule by shiftID. */
 
-router.get('/:shiftScheduleID', async function(req, res, next) {
+router.get('/:shiftID', async function(req, res, next) {
   try {
-    const { shiftScheduleID } = req.params;
-    res.json(await shiftSchedule.getshiftSchedule(shiftScheduleID));
+    const { shiftID } = req.params;
+    const schedule = await shiftSchedule.getshiftSchedule(shiftID);
+    if (!schedule) {
+      return res.status(404).json({ error: 'ShiftSchedule not found' });
+    }
+    res.json(schedule);
   } catch (err) {
     res.status(500).json({ error: `Error while getting shiftSchedule: ${err.message}` });
     next(err);
   }
 });
 
-/* PUT update shiftSchedule by shiftScheduleID. */
-router.put('/:shiftScheduleID', async function(req, res, next) {
+/* PUT update shiftSchedule by shiftID. */
+router.put('/:shiftID', async function(req, res, next) {
   try {
-    const { shiftScheduleID } = req.params;
+    const { shiftID } = req.params;
     const shiftScheduleData = req.body;
-    res.json(await shiftSchedule.updateshiftSchedule(shiftScheduleID, shiftScheduleData));
+    res.json(await shiftSchedule.updateshiftSchedule(shiftID, shiftScheduleData));
+    console.log("reached");
   } catch (err) {
     res.status(500).json({ error: `Error while updating shiftSchedule: ${err.message}` });
     next(err);
@@ -49,6 +55,7 @@ router.put('/:shiftScheduleID', async function(req, res, next) {
 });
 
 /* GET all shiftSchedules. */
+
 router.get('/', async function(req, res, next) {
   try {
     res.json(await shiftSchedule.getAllshiftSchedules());

@@ -1,8 +1,7 @@
 class ShiftSchedule {
-    constructor(week_Id, employeeID, weekNumber, date, isDeleted, startTime, endTime) {
-        this.week_Id = week_Id;
+    constructor(employeeID, shiftID, date, isDeleted, startTime, endTime) {
+        this.shiftID = shiftID;
         this.employeeID = employeeID;
-        this.weekNumber = weekNumber;
         this.date = date;
         this.isDeleted = isDeleted;
         this.startTime = startTime;
