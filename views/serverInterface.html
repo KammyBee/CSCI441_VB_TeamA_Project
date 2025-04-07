@@ -390,7 +390,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
     React.useEffect(() => {
       async function fetchTableData() {
         try {
-          const response = await fetch(`https://csci441-teamb.onrender.com/restaurant_table/${table}`);
+          const response = await fetch(`http://localhost:3100/restaurant_table/${table}`);
           if (!response.ok) {
             throw new Error(`Error fetching table data: ${response.statusText}`);
           }
@@ -405,7 +405,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
       }
 
       fetchTableData();
-    }, [table]);
+    }, [table, tableData]);
 
 
     async function editOrderStatus(tableID, newStatus, newEmployee) {
@@ -419,7 +419,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
 
         console.log("Updating table status with payload:", payload.tableID);
 
-        const response = await fetch(`https://csci441-teamb.onrender.com/restaurant_table/${tableID}`, {
+        const response = await fetch(`http://localhost:3100/restaurant_table/${tableID}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -509,11 +509,23 @@ function Section3Table({ s3Table, idx, onTableClick }) {
 
 
     let empArray = ['Jiejie', 'Meimei']; //needs to be moved on page load
-    const handleSelect = (event) => {
-    setSelectedEmp(event.target.value);
+    const handleSelect = async function (event) {
+
     console.log("Selected employee:", event.target.value);
     //update the database PUT
+    console.log('tabledata:', tableData);
+
+    const response = await editOrderStatus(tableData.tableID, tableData.tableStatus, event.target.value);
+
+        if (!response.ok) {
+          const errorResponse = await response.text();
+          console.error("API Error Response:", errorResponse);
+          throw new Error(`Error updating table status: ${response.statusText}`);
+        }
+    setSelectedEmp(event.target.value);
+
     };
+
     return (
       <div style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: "100%",

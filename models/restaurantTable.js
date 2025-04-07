@@ -37,7 +37,7 @@ class RestaurantTable {
             throw new Error(`Error fetching table: ${response.statusText}`);
         }
         const data = await response.json();
-        return new RestaurantTable(data.tableID, data.tableStatus, data.orderID);
+        return new RestaurantTable(data.tableID, data.tableStatus, data.orderID, data.employeeName);
     }
 
     // Fetch all tables
@@ -79,6 +79,7 @@ class RestaurantTable {
                 tableID: this.tableID,
                 tableStatus: this.tableStatus,
                 orderID: this.orderID,
+                employeeName: this.employeeName
             }),
         });
         if (!response.ok) {
