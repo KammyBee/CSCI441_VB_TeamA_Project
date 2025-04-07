@@ -385,6 +385,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
 
   function Modal({ table, onClose }) {
     const [tableData, setTableData] = React.useState(null);
+    const [selectedEmp, setSelectedEmp] = React.useState("");
 
     React.useEffect(() => {
       async function fetchTableData() {
@@ -395,6 +396,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
           }
           const data = await response.json();
           console.log('fetched data', data)
+          setSelectedEmp(data.employeeName);
           setTableData(data);
         } catch (error) {
           console.error(error);
@@ -406,12 +408,13 @@ function Section3Table({ s3Table, idx, onTableClick }) {
     }, [table]);
 
 
-    async function editOrderStatus(tableID, newStatus) {
+    async function editOrderStatus(tableID, newStatus, newEmployee) {
       try {
         const payload = {
           tableID: tableID || null,
           tableStatus: newStatus || null,
           orderID: tableData?.orderID || null,
+          employeeName: newEmployee || null,
         };
 
         console.log("Updating table status with payload:", payload.tableID);
@@ -489,18 +492,28 @@ function Section3Table({ s3Table, idx, onTableClick }) {
       }
     }
 
-    function handleClick(action, tableID) {
+    function handleClick(action, tableID, newEmployee) {
+      setSelectedEmp("Meimei");
       try {
         if (action === "Occupied") {
-          editOrderStatus(tableID, "Occupied");
+          editOrderStatus(tableID, "occupied", selectedEmp);
+
         } else if (action === "Available") {
-          editOrderStatus(tableID, "Available");
+          editOrderStatus(tableID, "available", selectedEmp);
         }
       } catch (error) {
         console.error("Error in handleClick:", error);
       }
     }
 
+
+
+    let empArray = ['Jiejie', 'Meimei']; //needs to be moved on page load
+    const handleSelect = (event) => {
+    setSelectedEmp(event.target.value);
+    console.log("Selected employee:", event.target.value);
+    //update the database PUT
+    };
     return (
       <div style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
@@ -517,10 +530,21 @@ function Section3Table({ s3Table, idx, onTableClick }) {
               <p>{tableData.error}</p>
             ) : (
               <div>
+                <div style={{
+                  backgroundColor: "#333333", width: "30%", margin: "auto"
+                }}>
+                  <p>Employee assigned to section: {tableData.tableSection} <br></br> employeeName: {selectedEmp} </p>
+                  <select onChange={handleSelect} value={selectedEmp}>
+                    {empArray.map((emp, index) => (
+                      <option key={index}>{emp}</option>
+                    ))}
+                  </select>
+
+                </div>
                 <p><strong>Table ID:</strong> {tableData.tableID}</p>
                 <p><strong>Status:</strong> {tableData.tableStatus}</p>
                 <p><strong>Order ID:</strong> {tableData.orderID}</p>
-                <button
+                {tableData.tableStatus == "available" &&<button
                   onClick={() => handleClick("Occupied", tableData.tableID)}
                   style={{
                     backgroundColor: "blue", color: "white", padding: "10px 20px", border: "none", cursor: "pointer",
@@ -528,8 +552,8 @@ function Section3Table({ s3Table, idx, onTableClick }) {
                   }}
                 >
                   Mark as Occupied
-                </button>
-                <button
+                </button>}
+                {tableData.tableStatus == "occupied" &&<button
                   onClick={() => handleClick("Available", tableData.tableID)}
                   style={{
                     backgroundColor: "green", color: "white", padding: "10px 20px", border: "none", cursor: "pointer",
@@ -537,7 +561,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
                   }}
                 >
                   Mark as Available
-                </button>
+                </button>}
                 <button
                   onClick={handleOrderUpdate}
                   style={{

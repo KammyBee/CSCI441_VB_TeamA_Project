@@ -27,10 +27,10 @@ async function getTable(tableID) {
   return data[0];
 }
 
-async function updateTable(tableID, tableStatus, orderID) {
+async function updateTable(tableID, tableStatus, orderID, employeeName) {
   const result = await db.query(
     `UPDATE restaurant_table SET tableStatus = ?, orderID = ? WHERE tableID = ?`,
-    [tableStatus, orderID, tableID]
+    [tableStatus, orderID, tableID, employeeName]
   );
 
   return result;

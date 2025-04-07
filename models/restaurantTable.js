@@ -3,16 +3,19 @@
 const BASE_URL = "https://csci441-teamb.onrender.com";
 
 class RestaurantTable {
-    constructor(tableID, tableStatus, orderID) {
+    constructor(tableID, tableStatus, orderID, employeeName) {
         this.tableID = tableID;
         this.tableStatus = tableStatus;
         this.orderID = orderID;
+        this.employeeName = employeeName;
+
     }
 
     update(data) {
         this.tableID = data.tableID || this.tableID;
         this.tableStatus = data.tableStatus || this.tableStatus;
         this.orderID = data.orderID || this.orderID;
+        this.employeeName = data.employeeName || this.employeeName;
     }
 
     getTableStatus() {
