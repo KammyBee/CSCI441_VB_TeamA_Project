@@ -181,9 +181,32 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
+
     function MyReactSection() {
       const [selectedTable, setSelectedTable] = React.useState(null);
+      const [allTables, setAllTables] = React.useState([]);
 
+      async function fetchAllTables() {
+        try {
+
+          const response = await fetch(`http://localhost:3100/restaurant_table/`);
+          if (!response.ok) {
+            throw new Error(`Error fetching table data: ${response.statusText}`);
+          }
+          const data = await response.json();
+          setAllTables(data);
+          console.log('data:', data);
+
+        } catch (error) {
+          console.error(error);
+          setTableData({ error: "Unable to fetch table data." });
+        }
+      }
+      React.useEffect(() => {
+        console.log('this is called');
+      fetchAllTables();
+    }, []);
+console.log('all tables in top layer', allTables);
 const sectionLabelStyle = (x) => ({
   position: "absolute",
   top: "20px",
@@ -201,7 +224,7 @@ const layoutContainerStyle = {
   height: "800px",
   backgroundColor: "#247b7b"
 };
-
+console.log('alltables in parent', allTables);
 return (
   <div style={layoutContainerStyle}>
     <h1 style={{ color: "white", textAlign: "center" }}>Bar Section</h1>
@@ -270,7 +293,7 @@ style={{
         <Section1 section1Table={['T1', 'T2', 'T3']} onTableClick={setSelectedTable} />
       </div>
       <div style={{ textAlign: "center", flex: 1 }}>
-        <Section2 section2Table={['T7', 'T8']} onTableClick={setSelectedTable} />
+        <Section2 section2Table={['T7', 'T8']} onTableClick={setSelectedTable} allTables={allTables}/>
       </div>
       <div style={{ textAlign: "center", flex: 1 }}>
         <Section3 section3Table={['T6', 'T5', 'T4']} onTableClick={setSelectedTable} />
@@ -278,7 +301,7 @@ style={{
     </div>
 
     {/* Modal for table info */}
-    {selectedTable && <Modal table={selectedTable} onClose={() => setSelectedTable(null)} />}
+    {selectedTable && <Modal table={selectedTable} onClose={() => setSelectedTable(null)} fetchAllTables={fetchAllTables} allTables={allTables}/>}
   </div>
 );
   }
@@ -396,19 +419,29 @@ function Section1Table({ s1Table, idx, onTableClick }) {
   );
 }
 
-function Section2({ section2Table, onTableClick }) {
+function Section2({ section2Table, onTableClick, allTables }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "30px", paddingTop: "10px"}}>
       <h1>Section 2</h1>
       <div style={{ display: "flex", gap: "150px" }}>
         {section2Table.map((s2Table, index) => (
-          <Section2Table key={index} s2Table={s2Table} idx={index} onTableClick={onTableClick} />
+          <Section2Table key={index} s2Table={s2Table} idx={index} onTableClick={onTableClick} allTables={allTables}/>
         ))}
       </div>
     </div>
   );
 }
-function Section2Table({ s2Table, idx, onTableClick }) {
+function Section2Table({ s2Table, idx, onTableClick, allTables }) {
+  console.log('allTables', allTables);
+  if(!allTables.length) {
+    return <div></div>
+  }
+  const tableInfo = allTables.filter(table => {
+    return table.tableID === s2Table;
+  })[0];
+  console.log('infotable', tableInfo);
+  const tableSta = tableInfo.tableStatus;
+  const orderId = tableInfo.orderID;
   return (
     <div
       style={{
@@ -416,7 +449,7 @@ function Section2Table({ s2Table, idx, onTableClick }) {
         width: "150px",
         backgroundColor: "#333333",
         color: "white",
-        display: "flex",
+        // display: "flex",
         alignItems: "center",
         justifyContent: "center",
         border: "2px solid black",
@@ -424,7 +457,9 @@ function Section2Table({ s2Table, idx, onTableClick }) {
       }}
       onClick={() => onTableClick(s2Table)}
     >
-      {s2Table}
+      {s2Table}<br/>
+      <div>status: {tableSta}</div>
+      <div>order: {orderId}</div>
     </div>
   );
 }
@@ -450,7 +485,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
         width: "100px",
         backgroundColor: "#333333",
         color: "white",
-        display: "flex",
+        // display: "flex",
         alignItems: "center",
         justifyContent: "center",
         border: "2px solid black",
@@ -459,15 +494,20 @@ function Section3Table({ s3Table, idx, onTableClick }) {
       onClick={() => onTableClick(s3Table)}
     >
       {s3Table}
+      <p>status</p>
     </div>
   );
 }
 
 
-  function Modal({ table, onClose }) {
+  function Modal({ table, onClose, fetchAllTables, allTables }) {
     const [tableData, setTableData] = React.useState(null);
     const [selectedEmp, setSelectedEmp] = React.useState("");
     const [doesOrderExist, setDoesOrderExist] =  React.useState(false);
+    const [fullOrder, setFullOrder] = React.useState('');
+    React.useEffect(() => {
+
+    })
     React.useEffect(() => {
       async function fetchTableData() {
         try {
@@ -479,17 +519,32 @@ function Section3Table({ s3Table, idx, onTableClick }) {
           console.log('fetched data', data)
           setSelectedEmp(data.employeeName);
           setDoesOrderExist(data.orderID == null ? false : true);
-
+          setFullOrder(await fetchFullOrder(data.orderID));
           setTableData(data);
         } catch (error) {
           console.error(error);
           setTableData({ error: "Unable to fetch table data." });
         }
       }
-
+      async function fetchFullOrder(orderID) {
+    const response = await fetch(`http://localhost:3100/orders/fullorder/${orderID}`);
+    if (!response.ok) {
+        throw new Error(`Error fetching order: ${response.statusText}`);
+    }
+    return await response.json();
+}
       fetchTableData();
-    }, [table, tableData?.employeeName]);
+      fetchAllTables();
 
+    }, [table, tableData?.employeeName, tableData?.tableStatus]);
+
+    if(!allTables.length) {
+    return <div></div>
+  }
+  const tableInfo = allTables.filter(tbl => {
+    return tbl.tableID === table;
+  })[0];
+    const orderID = tableInfo.orderID;
 
     async function editOrderStatus(tableID, newStatus, newEmployee) {
       try {
@@ -609,6 +664,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
 
     };
 
+    console.log('fullOrder', fullOrder);
     return (
       <div style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
@@ -636,9 +692,9 @@ function Section3Table({ s3Table, idx, onTableClick }) {
                   </select>
 
                 </div>
-                <p><strong>Table ID:</strong> {tableData.tableID}</p>
+                <p><strong>Table ID:</strong> <span id="selectedTableID">{tableData.tableID}</span></p>
                 <p><strong>Status:</strong> {tableData.tableStatus}</p>
-                <p><strong>Order ID:</strong> {tableData.orderID}</p>
+                <p><strong>Order ID: {orderID}</strong> {tableData.orderID}</p>
                 {tableData.tableStatus == "available" &&<button
                   onClick={() => handleClick("Occupied", tableData.tableID)}
                   style={{
@@ -658,7 +714,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
                   Mark as Available
                 </button>}
                 <button id="modalPlaceOrderButton" type="button" data-bs-toggle="modal" data-bs-target="#placeOrderModal"
-                  //onClick={handleOrderUpdate}
+                  // onClick={() => window.placeOrder(tableData.tableID)}
                   style={{
                     backgroundColor: "orange", color: "white", padding: "10px 20px", border: "none", cursor: "pointer",
                     marginTop: "10px", borderRadius: "5px"

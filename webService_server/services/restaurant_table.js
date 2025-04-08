@@ -37,7 +37,8 @@ async function updateTable(tableID, tableStatus, orderID, employeeName) {
 
 async function getAllTables() {
   const data = await db.query(
-    `SELECT * FROM restaurant_table`
+    // `SELECT * FROM restaurant_table`
+    `SELECT * FROM restaurant_table LEFT JOIN orders on tableID = restaurantTable`
   );
 
   return data;

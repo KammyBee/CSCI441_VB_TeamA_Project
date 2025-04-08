@@ -235,13 +235,15 @@ async function orderItemCleanup(orderID, orderItems) {
 }
 
 async function placeOrder() {
-
+    const tableId = document.getElementById('selectedTableID').textContent;
+    console.log('tableid in placeorder: ', tableId.textContent);
     const data = {
         orderStatus: "preparing",
         menuItems: orderItems,
-        restaurantTable: 'T8'
+        restaurantTable: tableId
     }
     console.log('data:', data);
+    console.log('restaurant table: ', order.restaurantTable);
     try {
         const orderResponse = await controller.createNewOrder(data);
         const itemData = await orderItemCleanup(orderResponse.insertId, orderItems);
