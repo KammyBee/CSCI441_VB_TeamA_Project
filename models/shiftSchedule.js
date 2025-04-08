@@ -1,4 +1,4 @@
-class ShiftSchedule {
+export class ShiftSchedule {
     constructor(employeeID, shiftID, date, isDeleted, startTime, endTime) {
         this.shiftID = shiftID;
         this.employeeID = employeeID;
@@ -6,5 +6,13 @@ class ShiftSchedule {
         this.isDeleted = isDeleted;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    getEmployeeID() {
+        return `${this.employeeID}`;
+    }
+
+    getStartTime() {
+        return `${this.startTime}`;
     }
 }

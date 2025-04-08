@@ -1,6 +1,8 @@
 //Written by Avery Turnquest
 
-//import { Employee } from '../models/employee.js';
+import { Employee } from '../models/employee.js';
+import { ShiftSchedule } from '../models/shiftSchedule.js';
+import { ShiftScheduleController } from '../controllers/shiftScheduleController.js';
 
 
 
@@ -75,63 +77,96 @@ let currentDate = moment();
         updateWeekRangeDisplay();
     });
 
+    window.handleNextWeek = handleNextWeek;
+    window.handlePrevWeek = handlePrevWeek;
 
-/*
-    const updateEmployeeShift = () =>{
-        
-    }
 
-    const checkShift = (scheduleDay, employee) =>{
+
+    class View{
     
-        //if (startTime > 8am > 12pm)
-            //add to morning shift
-        
-        //if (startTime > 1pm > 5pm)
-            //add to 2nd shift
+        addShift(shiftSchedule) {
+            const ul = document.getElementById('test');
+            const li = document.createElement('li');
+            li.id = `shift-${shiftSchedule.employeeID}`;
+            li.dataset.shiftSchedule = JSON.stringify(shiftSchedule);
 
-        //if (startTime < 12pm && endTime > 1pm)
-            //add to lunch shift
-    }
+            const empText = document.createElement('span');
+            empText.textContent = `${shiftSchedule.employeeID}: ${shiftSchedule.getEmployeeID()}`;
+            empText.style.cursor = 'pointer';
 
-    const checkDay = (shift_schedule) =>{
-        //SELECT all employees in table
+            li.appendChild(empText);
+            ul.appendChild(li);
+        }
+    }    
+    
+    const view = new View();
+    const controller = new ShiftScheduleController(view, ShiftSchedule);
+        /*for all employees switch (shift){
 
-        /*for all employees switch (date){
             case monday:
-
-            break;
-
-            case monday:
-
+                if(shift.startTime < 12pm )
+                    add fShiftMon
+                if(shift.startTime => 12pm && shift.startTime < 1pm)
+                    add lunchMon
+                if(shift.startTime >= 1pm)
+                    add fShiftMon
             break;
 
             case tuesday:
-
+                if(shift.startTime < 12pm )
+                    add fShiftTue
+                if(shift.startTime => 12pm && shift.startTime < 1pm)
+                    add lunchTue
+                if(shift.startTime >= 1pm)
+                    add fShiftTue
             break;
 
             case wednesday:
-
+                if(shift.startTime < 12pm )
+                    add fShiftWed
+                if(shift.startTime => 12pm && shift.startTime < 1pm)
+                    add lunchWed
+                if(shift.startTime >= 1pm)
+                    add fShiftWed
             break;
 
             case thursday:
-
+                if(shift.startTime < 12pm )
+                    add fShiftThu
+                if(shift.startTime => 12pm && shift.startTime < 1pm)
+                    add lunchThu
+                if(shift.startTime >= 1pm)
+                    add fShiftThu
             break;
 
             case friday:
-
+                if(shift.startTime < 12pm )
+                    add fShiftFri
+                if(shift.startTime => 12pm && shift.startTime < 1pm)
+                    add lunchFri
+                if(shift.startTime >= 1pm)
+                    add fShiftFri
             break;
 
             case saturday:
-
+                if(shift.startTime < 12pm )
+                    add fShiftSat
+                if(shift.startTime => 12pm && shift.startTime < 1pm)
+                    add lunchSat
+                if(shift.startTime >= 1pm)
+                    add fShiftSat
             break;
 
             case sunday:
-
+                if(shift.startTime < 12pm )
+                    add fShiftSun
+                if(shift.startTime => 12pm && shift.startTime < 1pm)
+                    add lunchSun
+                if(shift.startTime >= 1pm)
+                    add fShiftSun
             break;
 
             default:
 
         }
-      
-    }
         */

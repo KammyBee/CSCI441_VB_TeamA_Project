@@ -570,3 +570,12 @@ export async function deleteRestaurantTable(id) {
     }
     return await response.json();
 }
+
+// Fetch shifts
+export async function fetchShift(id) {
+    const response = await fetch(`http://localhost:3100/shift/${id}`);
+    if (!response.ok) {
+        throw new Error(`Error fetching shift: ${response.statusText}`);
+    }
+    return await response.json();
+}
