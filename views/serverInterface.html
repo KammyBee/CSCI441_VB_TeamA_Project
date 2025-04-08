@@ -183,25 +183,104 @@
   <script type="text/babel">
     function MyReactSection() {
       const [selectedTable, setSelectedTable] = React.useState(null);
-     return (
-          <div>
-              <h1>Bar Section</h1>
-              <BarSection barTable={['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9']} onTableClick={setSelectedTable}/>
-              <br/><br/><br/><br/><br/><br/><br/><br/>
-              <div style={{ display: "flex", justifyContent: "center", gap: "100px", padding: "20px" }}>
-                <div style={{ textAlign: "center", flex: 1 }}>
-                  <Section1 section1Table={['T1', 'T2', 'T3']} onTableClick={setSelectedTable} />
-                </div>
-                <div style={{ textAlign: "center", flex: 1 }}>
-                  <Section2 section2Table={['T7', 'T8']} onTableClick={setSelectedTable} />
-                </div>
-                <div style={{ textAlign: "center", flex: 1 }}>
-                  <Section3 section3Table={['T6', 'T5', 'T4']} onTableClick={setSelectedTable} />
-                </div>
-              </div>
-              {selectedTable && <Modal table={selectedTable} onClose={() => setSelectedTable(null)} />}
-          </div>
-      );
+
+const sectionLabelStyle = (x) => ({
+  position: "absolute",
+  top: "20px",
+  left: `${x}px`,
+  fontSize: "16px",
+  fontWeight: "bold",
+  color: "white",
+  opacity: 0.7,
+  textTransform: "uppercase"
+});
+
+const layoutContainerStyle = {
+  position: "relative",
+  width: "100%",
+  height: "800px",
+  backgroundColor: "#247b7b"
+};
+
+return (
+  <div style={layoutContainerStyle}>
+    <h1 style={{ color: "white", textAlign: "center" }}>Bar Section</h1>
+
+    {/* Optional SVG Arc */}
+    <svg
+viewBox="0 0 1000 120"
+style={{
+  position: "absolute",
+  top: "0px",
+  left: "0",
+  width: "100%",
+  opacity: 0.2,
+  pointerEvents: "none"
+}}
+>
+<path
+  d="M 0 0 C 200 60, 800 60, 1000 0"
+  stroke="white"
+  strokeDasharray="6,6"
+  fill="transparent"
+/>
+</svg>
+
+    {/* Bar Section */}
+    <BarSection
+      barTable={['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10']}
+      onTableClick={setSelectedTable}
+    />
+    {/* Dashed Dividers */}
+    <div
+      style={{
+        position: "absolute",
+        left: "33.33%",
+        top: "120px",
+        height: "80%",
+        width: "1px",
+        backgroundImage:
+          "repeating-linear-gradient(to bottom, transparent, transparent 5px, white 5px, white 10px)",
+        opacity: 0.3
+      }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        left: "66.66%",
+        top: "120px",
+        height: "80%",
+        width: "1px",
+        backgroundImage:
+          "repeating-linear-gradient(to bottom, transparent, transparent 5px, white 5px, white 10px)",
+        opacity: 0.3
+      }}
+    />
+
+    {/* Table Sections */}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        gap: "100px",
+        paddingTop: "180px"
+      }}
+    >
+      <div style={{ textAlign: "center", flex: 1 }}>
+        <Section1 section1Table={['T1', 'T2', 'T3']} onTableClick={setSelectedTable} />
+      </div>
+      <div style={{ textAlign: "center", flex: 1 }}>
+        <Section2 section2Table={['T7', 'T8']} onTableClick={setSelectedTable} />
+      </div>
+      <div style={{ textAlign: "center", flex: 1 }}>
+        <Section3 section3Table={['T6', 'T5', 'T4']} onTableClick={setSelectedTable} />
+      </div>
+    </div>
+
+    {/* Modal for table info */}
+    {selectedTable && <Modal table={selectedTable} onClose={() => setSelectedTable(null)} />}
+  </div>
+);
   }
 
   function BarSection({ barTable, onTableClick }) {
@@ -264,17 +343,19 @@ function BarTable({ bTable, idx, onTableClick }) {
   return (
     <div
       style={{
-        height: "65px",
-        width: "65px",
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#333333",
-        color: "white",
-        border: "2px solid black",
-        cursor: "pointer",
-      }}
+      width: "60px",
+      height: "60px",
+      background: "#333333",
+      clipPath: "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
+      color: "white",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      fontWeight: "bold",
+      margin: "10px",
+      textAlign: "center",
+      cursor: "pointer",
+}}
       onClick={handleClickBarTable}
     >
       {bTable}
@@ -386,7 +467,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
   function Modal({ table, onClose }) {
     const [tableData, setTableData] = React.useState(null);
     const [selectedEmp, setSelectedEmp] = React.useState("");
-
+    const [doesOrderExist, setDoesOrderExist] =  React.useState(false);
     React.useEffect(() => {
       async function fetchTableData() {
         try {
@@ -397,6 +478,8 @@ function Section3Table({ s3Table, idx, onTableClick }) {
           const data = await response.json();
           console.log('fetched data', data)
           setSelectedEmp(data.employeeName);
+          setDoesOrderExist(data.orderID == null ? false : true);
+
           setTableData(data);
         } catch (error) {
           console.error(error);
@@ -405,7 +488,7 @@ function Section3Table({ s3Table, idx, onTableClick }) {
       }
 
       fetchTableData();
-    }, [table, tableData]);
+    }, [table, tableData?.employeeName]);
 
 
     async function editOrderStatus(tableID, newStatus, newEmployee) {
@@ -475,22 +558,22 @@ function Section3Table({ s3Table, idx, onTableClick }) {
       }
     }
 
-    function handleOrderUpdate() {
-      const updatedOrderData = {
-        orderStatus: "In Progress",
-        menuItems: [
-          { itemID: 1, itemQuantity: 2 },
-          { itemID: 2, itemQuantity: 1 },
-        ],
-        restaurantTable: tableData?.tableID,
-      };
+    // function handleOrderUpdate() {
+    //   const updatedOrderData = {
+    //     orderStatus: "In Progress",
+    //     menuItems: [
+    //       { itemID: 20, itemQuantity: 2 },
+    //       { itemID: 1, itemQuantity: 1 },
+    //     ],
+    //     restaurantTable: tableData?.tableID,
+    //   };
 
-      if (tableData?.orderID) {
-        updateOrder(tableData.orderID, updatedOrderData);
-      } else {
-        alert("No order associated with this table.");
-      }
-    }
+    //   if (tableData?.orderID) {
+    //     updateOrder(tableData.orderID, updatedOrderData);
+    //   } else {
+    //     alert("No order associated with this table.");
+    //   }
+    // }
 
     function handleClick(action, tableID, newEmployee) {
       setSelectedEmp("Meimei");
@@ -574,14 +657,14 @@ function Section3Table({ s3Table, idx, onTableClick }) {
                 >
                   Mark as Available
                 </button>}
-                <button
-                  onClick={handleOrderUpdate}
+                <button id="modalPlaceOrderButton" type="button" data-bs-toggle="modal" data-bs-target="#placeOrderModal"
+                  //onClick={handleOrderUpdate}
                   style={{
                     backgroundColor: "orange", color: "white", padding: "10px 20px", border: "none", cursor: "pointer",
                     marginTop: "10px", borderRadius: "5px"
                   }}
                 >
-                  Update Order
+                  {doesOrderExist == true ? "Update Order" : "Place Order"}
                 </button>
               </div>
             )
