@@ -1,6 +1,7 @@
 //Written by Avery Turnquest
 
-import { Employee } from '../models/employee.js';
+//import { Employee } from '../models/employee.js';
+
 
 
 let currentDate = moment();
@@ -74,6 +75,8 @@ let currentDate = moment();
         updateWeekRangeDisplay();
     });
 
+
+/*
     const updateEmployeeShift = () =>{
         
     }
@@ -129,6 +132,6 @@ let currentDate = moment();
             default:
 
         }
-       */
-
+      
     }
+        */
