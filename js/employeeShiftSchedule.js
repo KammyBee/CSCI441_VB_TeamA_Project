@@ -82,6 +82,9 @@ let currentDate = moment();
 
 
 
+    
+
+/*
     class View{
     
         addShift(shiftSchedule) {

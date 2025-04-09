@@ -15,4 +15,13 @@ export class ShiftSchedule {
     getStartTime() {
         return `${this.startTime}`;
     }
+
+    async fetchShift(shiftID) {
+        const response = await fetch(`http://localhost:3100/shift/${shiftID}`);
+        if (!response.ok) {
+            throw new Error(`Error fetching shift: ${response.statusText}`);
+        }
+        return await response.json();
+    }
 }
+export default ShiftSchedule;
