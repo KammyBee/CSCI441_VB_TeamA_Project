@@ -707,6 +707,7 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
                 </div>
                 <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                 <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", backgroundColor:"#333333", border:"2px solid white", padding:"5px"}}>
+                  <div style={{fontWeight:"bold"}}>Table Overview Details:</div>
                   <p><strong>Table ID:</strong> <span id="selectedTableID">{tableData.tableID}</span></p>
                   <p><strong>Status:</strong> {tableData.tableStatus}</p>
                   <p><strong>Order ID: {orderID}</strong> {tableData.orderID}</p>
@@ -731,7 +732,6 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
                   Mark as Available
                 </button>}
                 <button id="modalPlaceOrderButton" type="button" data-bs-toggle="modal" data-bs-target="#placeOrderModal"
-                  // onClick={() => window.placeOrder(tableData.tableID)}
                   style={{
                     backgroundColor: "#333333", color: "white", padding: "10px 20px", cursor: "pointer",
                     marginTop: "10px", borderRadius: "5px", border:"2px solid white"
@@ -739,9 +739,19 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
                 >
 
                   {fullOrder.length > 0 ? "Update Order" : "Place Order"}
-                </button>
-
+                </button> <br/>
+                <button style={{
+                    backgroundColor: "#333333", color: "white", padding: "10px 20px", cursor: "pointer",
+                    marginTop: "10px", borderRadius: "5px", border:"2px solid white"
+                  }}>Process Payment</button>
                 </div>
+                </div>
+                <br/>
+                <div style={{ width: "150px", height: "150px", backgroundColor:"#333333", justifySelf:"right", border:"2px solid white"}}>
+                  <div style={{fontWeight:"bold"}}>New Menu Items:</div>
+                  <div>
+                    Tuscan steak
+                  </div>
                 </div>
                 <div style={{
                   display:"flex", width: "100%", justifyContent:"center"
