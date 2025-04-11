@@ -147,6 +147,7 @@ function changetoServedMeal(order) {
 }
 
 function changetoPlaceOrder(order){
+  console.log('Place Order Button',order);
   selectedTable = order.restaurantTable;
   document.getElementById('modalPlaceOrderButton').click();
 }
@@ -234,11 +235,15 @@ async function orderItemCleanup(orderID, orderItems) {
 }
 
 async function placeOrder() {
+    const tableId = document.getElementById('selectedTableID').textContent;
+    console.log('tableid in placeorder: ', tableId.textContent);
     const data = {
         orderStatus: "preparing",
         menuItems: orderItems,
-        restaurantTable: selectedTable
+        restaurantTable: tableId
     }
+    console.log('data:', data);
+    console.log('restaurant table: ', order.restaurantTable);
     try {
         const orderResponse = await controller.createNewOrder(data);
         const itemData = await orderItemCleanup(orderResponse.insertId, orderItems);
@@ -248,7 +253,7 @@ async function placeOrder() {
 
             selectedItems = [];
             orderItems = [];
-            updateOrderView();
+            //updateOrderView();
             location.href = './orderChecks.html';
     } catch (error) {
         console.error('Error placing order:', error);

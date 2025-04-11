@@ -33,10 +33,10 @@ class View {
             // Create details div if it doesn't exist
             detailsDiv = document.createElement('div');
             detailsDiv.className = 'details';
-    
+
             // Create a table element
             const detailsTable = document.createElement('table');
-            
+
             // Helper function to insert rows in the table
             const insertDetailRow = (table, key, value) => {
                 let row = table.insertRow();
@@ -47,17 +47,17 @@ class View {
                 cellKey.className = 'list-detail-key';
                 cellValue.className = 'list-detail-value';
             };
-    
+
             // Insert rows into the table
             insertDetailRow(detailsTable, 'Description', menuItem.description);
             insertDetailRow(detailsTable, 'Category', menuItem.category);
             insertDetailRow(detailsTable, 'Price', menuItem.price);
-    
+
             detailsDiv.appendChild(detailsTable);
             detailsDiv.style.display = 'none';
             listItem.appendChild(detailsDiv);
         }
-        
+
         // Toggle the visibility of the details div
         detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
     }

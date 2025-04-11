@@ -39,8 +39,8 @@ router.get('/:tableID', async function(req, res, next) {
 router.put('/:tableID', async function(req, res, next) {
   try {
     const { tableID } = req.params;
-    const { tableStatus, orderID } = req.body;
-    res.json(await restaurantTable.updateTable(tableID, tableStatus, orderID));
+    const { tableStatus, orderID, employeeName } = req.body;
+    res.json(await restaurantTable.updateTable(tableID, tableStatus, orderID, employeeName));
   } catch (err) {
     res.status(500).json({ error: `Error while updating table: ${err.message}` });
     next(err);

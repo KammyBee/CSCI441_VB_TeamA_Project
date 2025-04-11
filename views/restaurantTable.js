@@ -3,19 +3,16 @@
 const BASE_URL = "https://csci441-teamb.onrender.com";
 
 class RestaurantTable {
-    constructor(tableID, tableStatus, orderID, employeeName) {
+    constructor(tableID, tableStatus, orderID) {
         this.tableID = tableID;
         this.tableStatus = tableStatus;
         this.orderID = orderID;
-        this.employeeName = employeeName;
-
     }
 
     update(data) {
         this.tableID = data.tableID || this.tableID;
         this.tableStatus = data.tableStatus || this.tableStatus;
         this.orderID = data.orderID || this.orderID;
-        this.employeeName = data.employeeName || this.employeeName;
     }
 
     getTableStatus() {
@@ -37,7 +34,7 @@ class RestaurantTable {
             throw new Error(`Error fetching table: ${response.statusText}`);
         }
         const data = await response.json();
-        return new RestaurantTable(data.tableID, data.tableStatus, data.orderID, data.employeeName);
+        return new RestaurantTable(data.tableID, data.tableStatus, data.orderID);
     }
 
     // Fetch all tables
@@ -70,21 +67,28 @@ class RestaurantTable {
 
     // Update an existing table by ID
     async updateInDatabase() {
+        const payload = {
+            tableID: this.tableID || null,
+            tableStatus: this.tableStatus || null,
+            orderID: this.orderID || null,
+        };
+
+        console.log("Updating table in database with payload:", payload); // Log the request payload
+
         const response = await fetch(`${BASE_URL}/restaurant_table/${this.tableID}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                tableID: this.tableID,
-                tableStatus: this.tableStatus,
-                orderID: this.orderID,
-                employeeName: this.employeeName
-            }),
+            body: JSON.stringify(payload),
         });
+
         if (!response.ok) {
+            const errorResponse = await response.text(); // Log the full error response
+            console.error("API Error Response:", errorResponse);
             throw new Error(`Error updating table: ${response.statusText}`);
         }
+
         const updatedData = await response.json();
         this.update(updatedData);
     }

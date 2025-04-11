@@ -59,10 +59,10 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-router.get('/fullorder/:orderID', async function(req, res, next) {
+router.get('/fullorder/:restaurantTable', async function(req, res, next) {
   try {
-    const { orderID } = req.params;
-    res.json(await orders.getFullOrder(orderID));
+    const { restaurantTable } = req.params;
+    res.json(await orders.getFullOrder(restaurantTable));
   } catch (err) {
     res.status(500).json({ error: `Error while getting full order: ${err.message}` });
     next(err);

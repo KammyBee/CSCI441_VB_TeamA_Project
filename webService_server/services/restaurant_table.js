@@ -27,18 +27,18 @@ async function getTable(tableID) {
   return data[0];
 }
 
-async function updateTable(tableID, tableStatus, orderID) {
+async function updateTable(tableID, tableStatus, orderID, employeeName) {
   const result = await db.query(
-    `UPDATE restaurant_table SET tableStatus = ?, orderID = ? WHERE tableID = ?`,
-    [tableStatus, orderID, tableID]
+    `UPDATE restaurant_table SET tableStatus = ?, orderID = ?, employeeName = ? WHERE tableID = ?`,
+    [tableStatus, orderID, employeeName, tableID]
   );
-
   return result;
 }
 
 async function getAllTables() {
   const data = await db.query(
-    `SELECT * FROM restaurant_table`
+    // `SELECT * FROM restaurant_table`
+    `SELECT * FROM restaurant_table LEFT JOIN orders on tableID = restaurantTable`
   );
 
   return data;
