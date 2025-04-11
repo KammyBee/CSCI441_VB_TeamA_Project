@@ -206,7 +206,7 @@ return (
                     monArr.push(element);
                     return;
                     break;
-                case "Tueday":
+                case "Tuesday":
                     tueArr.push(element);
                     return;
                     break;
@@ -231,51 +231,55 @@ return (
          }
 
     async function addEmployeetoTable(dayArr, listMorn, listLunch, listAft, fragMorn, fragLunch, fragAft){
-            dayArr.forEach(element => {
+        //let li = document.createElement('li');
+        dayArr.forEach(element => {
                 if (checkShift(element.startTime) == 'morning'){
                     let li = document.createElement('li');
-                    li.textContent = `${element.firstName} ${element.lastName}\n`;
+                    li.textContent = `${element.firstName} ${element.lastName}<br>`;
                     fragMorn.appendChild(li);
                     //listMorn.textContent = `${fragMorn.textContent}`;
-                    console.log(li);
+                    console.log('list Morn: ', listMorn);
                 }
                 if (checkShift(element.startTime) == 'lunch'){
                     let li = document.createElement('li');
-                    li.textContent = `${element.firstName} ${element.lastName}\n`;
+                    li.textContent = `${element.firstName} ${element.lastName}<br>`;
                     fragLunch.appendChild(li);
                     //listLunch.textContent = `${fragLunch.textContent}`;
-                    console.log(li);
+                    console.log('list Lunch: ', listLunch);
                 }
                 if (checkShift(element.startTime) == 'afternoon'){
                     let li = document.createElement('li');
-                    li.textContent = `${element.firstName} ${element.lastName}\n`;
+                    li.textContent = `${element.firstName} ${element.lastName}<br>`;
                     console.log('Afternoon shift added ', li);
                     fragAft.appendChild(li);
                     //listAft.textContent = `${fragAft.textContent}`;
                     console.log('list Aft: ', listAft);
                 }
             });
-            listMorn.textContent = `${fragMorn.textContent}`;
-            listLunch.textContent = `${fragLunch.textContent}`;
-            listAft.textContent = `${fragAft.textContent}`;
+            listMorn.innerHTML = `${fragMorn.textContent}`;
+            listLunch.innerHTML = `${fragLunch.textContent}`;
+            listAft.innerHTML = `${fragAft.textContent}`;
 
         }
-
+        
         function checkShift(startTime){
-            if(startTime < 12 ){
+            //intStartTime = moment(startTime, 'H:mm:ss').format('H');
+            if(startTime < "12:00:00" ){
                 return "morning";
             }
 
-            if(startTime >= 12 && startTime < 13){
+            if(startTime >= "12:00:00" && startTime < "13:00:00"){
                 return "lunch";
             }
             else{
                 return "afternoon";
             }
+            console.log("startTime Type:");
+            console.log(typeof startTime);
         }
 
         addEmployeetoArray(shiftData);
-        console.log('sunArr is :', sunArr);
+        console.log('tueArr is :', tueArr);
         const fShiftSun = document.getElementById('fShiftSun');
         const lunchSun = document.getElementById('lunchSun');
         const sShiftSun = document.getElementById('sShiftSun');
@@ -355,7 +359,7 @@ return (
             console.log("addEmployeeToTable active")}
         //if(sShiftSun){sShiftSun.textContent = `${fragment.textContent}`; console.log("sShift: ", sShiftSun);}
         
-    if(sunArr[0]) {console.log('shift is :', checkShift(sunArr[0].startTime));}
+    if(wedArr[0]) {console.log('wednesday shift is :', wedArr[0]);}
     console.log('shiftData is: ', shiftData);
     console.log(sShiftSun);
 
