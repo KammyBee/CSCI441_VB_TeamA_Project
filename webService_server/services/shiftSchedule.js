@@ -38,7 +38,9 @@ async function updateshiftSchedule(shiftID, shiftScheduleData) {
 
 async function getAllshiftSchedules() {
   const data = await db.query(
-    `SELECT shiftID, employeeID, startTime, endTime, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as date, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM shift_schedule`
+    `SELECT shiftID, shift_schedule.employeeID, employee.firstName, employee.lastName, startTime, endTime, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as date, DATE_FORMAT(shift_schedule.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at 
+    FROM shift_schedule
+    LEFT JOIN employee on employee.employeeID = shift_schedule.employeeID`
   );
 
   return data;

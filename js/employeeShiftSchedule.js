@@ -82,94 +82,209 @@ let currentDate = moment();
 
 
 
-    
 
+
+        function checkDay(date){
+            dayOfWeek = date.checkDay();
+            switch(dayOfWeek){
+                case 0:
+                    return "Sunday";
+                    break;
+                case 1:
+                    return "Monday";
+                    break;
+                case 2:
+                    return "Tuesday";
+                    break;
+                case 3:
+                    return "Wednesday";
+                    break;
+                case 4:
+                    return "Thursday";
+                    break;
+                case 5:
+                    return "Friday";
+                    break;
+                case 6:
+                    return "Saturday";
+                    break;
+                default:
+            }
+        }
+
+        function checkShift(startTime){
+            if(startTime < 12 ){
+                return "morning";
+            }
+
+            if(startTime >= 12 && startTime < 13){
+                return "lunch";
+            }
+            else{
+                return "afternoon";
+            }
+        }
 /*
-    class View{
-    
-        addShift(shiftSchedule) {
-            const ul = document.getElementById('test');
-            const li = document.createElement('li');
-            li.id = `shift-${shiftSchedule.employeeID}`;
-            li.dataset.shiftSchedule = JSON.stringify(shiftSchedule);
+        function addEmployee(shiftData){
+            if(checkDay(shiftData.date == "<Monday")){
+                if(checkShift(shiftData.startTime == "morning")){
+                    document.getElementById("fShiftMon").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "lunch")){
+                    document.getElementById("lunchMon").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "afternoon")){
+                    document.getElementById("sShiftMon").appendChild(shiftData.employeeID);                
+                }
 
-            const empText = document.createElement('span');
-            empText.textContent = `${shiftSchedule.employeeID}: ${shiftSchedule.getEmployeeID()}`;
-            empText.style.cursor = 'pointer';
+            }
 
-            li.appendChild(empText);
-            ul.appendChild(li);
+            if(checkDay(shiftData.date == "Tuesday")){
+                if(checkShift(shiftData.startTime == "morning")){
+                    document.getElementById("fShiftTue").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "lunch")){
+                    document.getElementById("lunchTue").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "afternoon")){
+                    document.getElementById("sShiftTue").appendChild(shiftData.employeeID);                
+                }
+
+            }
+
+            if(checkDay(shiftData.date == "wedneday")){
+                if(checkShift(shiftData.startTime == "morning")){
+                    document.getElementById("fShiftWed").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "lunch")){
+                    document.getElementById("lunchWed").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "afternoon")){
+                    document.getElementById("sShiftWed").appendChild(shiftData.employeeID);                
+                }
+
+            }
+
+            if(checkDay(shiftData.date == "thursday")){
+                if(checkShift(shiftData.startTime == "morning")){
+                    document.getElementById("fShiftThu").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "lunch")){
+                    document.getElementById("lunchThu").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "afternoon")){
+                    document.getElementById("sShiftThu").appendChild(shiftData.employeeID);                
+                }
+
+            }
+
+            if(checkDay(shiftData.date == "friday")){
+                if(checkShift(shiftData.startTime == "morning")){
+                    document.getElementById("fShiftFri").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "lunch")){
+                    document.getElementById("lunchFri").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "afternoon")){
+                    document.getElementById("sShiftFri").appendChild(shiftData.employeeID);                
+                }
+
+            }
+
+            if(checkDay(shiftData.date == "saturday")){
+                if(checkShift(shiftData.startTime == "morning")){
+                    document.getElementById("fShiftSat").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "lunch")){
+                    document.getElementById("lunchSat").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "afternoon")){
+                    document.getElementById("sShiftSat").appendChild(shiftData.employeeID);                
+                }
+
+            }
+
+            if(checkDay(shiftData.date == "sunday")){
+                if(checkShift(shiftData.startTime == "morning")){
+                    document.getElementById("fShiftSun").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "lunch")){
+                    document.getElementById("lunchSun").appendChild(shiftData.employeeID);                
+                }
+                if(checkShift(shiftData.startTime == "afternoon")){
+                    document.getElementById("sShiftSun").appendChild(shiftData.employeeID);                
+                }
+
+            }
+
+          
+        }*/
+
+        var s = '2025-05-04 00:00:00';
+        var m = moment(s, 'YYYY-MM-DD hh:mm:ss').format('dddd');
+
+
+        var monArr = [];
+        var tueArr = [];
+        var wedArr = [];
+        var thuArr = [];
+        var friArr = [];
+        var satArr = [];
+        var sunArr = [];
+
+        function addEmployeetoArray(shiftSchedule){
+
+            shiftSchedule.forEach((element) => {
+                switch(moment(element.date, 'YYYY-MM-DD hh:mm:ss').format('dddd')){
+                    case "Sunday":
+                        sunArr.push(element);
+                        return;
+                        break;
+                    case "Monday":
+                        monArr.push(element);
+                        return;
+                        break;
+                    case "Tueday":
+                        tueArr.push(element);
+                        return;
+                        break;
+                    case "Wednesday":
+                        wedArr.push(element);
+                        return;
+                        break;
+                    case "Thursday":
+                        thuArr.push(element);
+                        return;
+                        break;
+                    case "Friday":
+                        friArr.push(element);
+                        return;
+                        break;
+                    case "Saturday":
+                        satArr.push(element);
+                        return;
+                        break;
+                    default:
+            }});
         }
-    }    
-    
-    const view = new View();
-    const controller = new ShiftScheduleController(view, ShiftSchedule);
-        /*for all employees switch (shift){
 
-            case monday:
-                if(shift.startTime < 12pm )
-                    add fShiftMon
-                if(shift.startTime => 12pm && shift.startTime < 1pm)
-                    add lunchMon
-                if(shift.startTime >= 1pm)
-                    add fShiftMon
-            break;
-
-            case tuesday:
-                if(shift.startTime < 12pm )
-                    add fShiftTue
-                if(shift.startTime => 12pm && shift.startTime < 1pm)
-                    add lunchTue
-                if(shift.startTime >= 1pm)
-                    add fShiftTue
-            break;
-
-            case wednesday:
-                if(shift.startTime < 12pm )
-                    add fShiftWed
-                if(shift.startTime => 12pm && shift.startTime < 1pm)
-                    add lunchWed
-                if(shift.startTime >= 1pm)
-                    add fShiftWed
-            break;
-
-            case thursday:
-                if(shift.startTime < 12pm )
-                    add fShiftThu
-                if(shift.startTime => 12pm && shift.startTime < 1pm)
-                    add lunchThu
-                if(shift.startTime >= 1pm)
-                    add fShiftThu
-            break;
-
-            case friday:
-                if(shift.startTime < 12pm )
-                    add fShiftFri
-                if(shift.startTime => 12pm && shift.startTime < 1pm)
-                    add lunchFri
-                if(shift.startTime >= 1pm)
-                    add fShiftFri
-            break;
-
-            case saturday:
-                if(shift.startTime < 12pm )
-                    add fShiftSat
-                if(shift.startTime => 12pm && shift.startTime < 1pm)
-                    add lunchSat
-                if(shift.startTime >= 1pm)
-                    add fShiftSat
-            break;
-
-            case sunday:
-                if(shift.startTime < 12pm )
-                    add fShiftSun
-                if(shift.startTime => 12pm && shift.startTime < 1pm)
-                    add lunchSun
-                if(shift.startTime >= 1pm)
-                    add fShiftSun
-            break;
-
-            default:
-
+        let fShiftMon = document.getElementById('fShiftMon');
+        function addEmployeetoTable(dayArr, listMorn, listLunch, listAft){
+            dayArr.forEach(element => {
+                if (checkShift(element.startTime) == 'morning'){
+                    let li = document.createElement('li');
+                    li.textContent = `${element.firstName + ' ' + element.lastName}`;
+                    listMorn.appendChild(li);
+                }
+                if (checkShift(element.startTime) == 'lunch'){
+                    let li = document.createElement('li');
+                    li.textContent = `${element.firstName + ' ' + element.lastName}`;
+                    listLunch.appendChild(li);
+                }
+                if (checkShift(element.startTime) == 'afternoon'){
+                    let li = document.createElement('li');
+                    li.textContent = `${element.firstName + ' ' + element.lastName}`;
+                    listAft.appendChild(li);
+                }
+            });
         }
-        */
