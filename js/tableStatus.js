@@ -254,7 +254,8 @@ async function placeOrder() {
             selectedItems = [];
             orderItems = [];
             //updateOrderView();
-            location.href = './orderChecks.html';
+            //location.href = './orderChecks.html';
+            window.location.reload();
     } catch (error) {
         console.error('Error placing order:', error);
     }
