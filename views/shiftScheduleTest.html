@@ -121,50 +121,50 @@ return (
             console.error('Element with id "weekRangeDisplay" not found.');
         }
 
-    const sundayDisplay = document.getElementById('sundayDisplay');
-        if(sundayDisplay) {
-            const sunday = currentDate.clone().startOf('week').add(7, 'days').format('dddd MMM Do');
-            sundayDisplay.textContent = `${sunday}`;
-        }
-        console.log('sundayDisplay',sundayDisplay)
+        const sundayDisplay = document.getElementById('sundayDisplay');
+            if(sundayDisplay) {
+                const sunday = currentDate.clone().startOf('week').add(7, 'days').format('dddd MMM Do');
+                sundayDisplay.textContent = `${sunday}`;
+            }
+            console.log('sundayDisplay',sundayDisplay)
 
-            let mondayDisplay = currentDate.clone().startOf('week').add(1, 'days').format('dddd MMM Do');
-            // mondayDisplay.textContent = `${mondayDisplay}`;
-        
-        console.log('MondayDisplay', mondayDisplay);
+                let mondayDisplay = currentDate.clone().startOf('week').add(1, 'days').format('dddd MMM Do');
+                // mondayDisplay.textContent = `${mondayDisplay}`;
+            
+            console.log('MondayDisplay', mondayDisplay);
 
-    const tuesdayDisplay = document.getElementById('tuesdayDisplay');
-        if(tuesdayDisplay) {
-            const tuesday = currentDate.clone().startOf('week').add(2, 'days').format('dddd MMM Do');
-            tuesdayDisplay.textContent = `${tuesday}`;
-        }
+        const tuesdayDisplay = document.getElementById('tuesdayDisplay');
+            if(tuesdayDisplay) {
+                const tuesday = currentDate.clone().startOf('week').add(2, 'days').format('dddd MMM Do');
+                tuesdayDisplay.textContent = `${tuesday}`;
+            }
 
-    const wednesdayDisplay = document.getElementById('wednesdayDisplay');
-        if(wednesdayDisplay) {
-            const wednesday = currentDate.clone().startOf('week').add(3, 'days').format('dddd MMM Do');
-            wednesdayDisplay.textContent = `${wednesday}`;
-        }
+        const wednesdayDisplay = document.getElementById('wednesdayDisplay');
+            if(wednesdayDisplay) {
+                const wednesday = currentDate.clone().startOf('week').add(3, 'days').format('dddd MMM Do');
+                wednesdayDisplay.textContent = `${wednesday}`;
+            }
 
-    const thursdayDisplay = document.getElementById('thursdayDisplay');
-        if(thursdayDisplay) {
-            const thursday = currentDate.clone().startOf('week').add(4, 'days').format('dddd MMM Do');
-            thursdayDisplay.textContent = `${thursday}`;
-        }
+        const thursdayDisplay = document.getElementById('thursdayDisplay');
+            if(thursdayDisplay) {
+                const thursday = currentDate.clone().startOf('week').add(4, 'days').format('dddd MMM Do');
+                thursdayDisplay.textContent = `${thursday}`;
+            }
 
-    const fridayDisplay = document.getElementById('fridayDisplay');
-        if(fridayDisplay) {
-            const friday = currentDate.clone().startOf('week').add(5, 'days').format('dddd MMM Do');
-            fridayDisplay.textContent = `${friday}`;
-        }
+        const fridayDisplay = document.getElementById('fridayDisplay');
+            if(fridayDisplay) {
+                const friday = currentDate.clone().startOf('week').add(5, 'days').format('dddd MMM Do');
+                fridayDisplay.textContent = `${friday}`;
+            }
 
-    const saturdayDisplay = document.getElementById('saturdayDisplay');
-        if(saturdayDisplay) {
-            const saturday = currentDate.clone().startOf('week').add(6, 'days').format('dddd MMM Do');
-            saturdayDisplay.textContent = `${saturday}`;
-        }
+        const saturdayDisplay = document.getElementById('saturdayDisplay');
+            if(saturdayDisplay) {
+                const saturday = currentDate.clone().startOf('week').add(6, 'days').format('dddd MMM Do');
+                saturdayDisplay.textContent = `${saturday}`;
+            }
     };
     updateWeekRangeDisplay();
-    },[currentDate])
+    },[])
 
     const handlePrevWeekTest  = () =>{
       console.log('are we here',currentDate.clone().subtract(1, 'week'));
@@ -190,7 +190,16 @@ return (
     //     updateWeekRangeDisplay();
     // };
 
-    
+    // let obj = {
+    //      monArr: [],
+    //      tueArr: [],
+    //      wedArr: [],
+    //      thuArr:[],
+    //      friArr: [],
+    //      satArr: [],
+    //      sunArr: [],
+    // }
+    // const [weekArray, setWeekArray] = React.useState(obj);
     var monArr = [];
     var tueArr = [];
     var wedArr = [];
