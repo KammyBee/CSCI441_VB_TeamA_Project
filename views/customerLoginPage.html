@@ -1,0 +1,229 @@
+<!-- // written by: Jiejie & Meimei :) -->
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasty Bytes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/employee.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <style>
+    #categories button {
+        margin: 5px;
+        padding: 10px;
+    }
+
+    .page-title{
+      font-size:30px;
+    }
+    .nav-floor{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+      padding: 8px;
+
+    }
+
+    .grid-view {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 20px 0;
+        color: black;
+    }
+
+    .grid-view div {
+        padding: 10px;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+
+    #order {
+        background-color: white;
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 20%;
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    #order ul {
+        list-style: none;
+        padding: 0;
+        color: black;
+    }
+</style>
+
+</head>
+
+<body>
+
+<header class="nav-floor">
+
+        <a href="employeeHomePage.html"><img src="../assets/logo.png" alt="Tasty Bytes Logo"></a>
+        <div class="page-title">Floor Overview</div>
+        <ul class="nav-links">
+            <li><a href="employeeHomePage.html">Home</a></li>
+            <li><a href="managerHome.html">Functions</a></li>
+            <li><a href="orderChecks.html">Orders</a></li>
+            <li><a href="viewMenu2.html">Menu</a></li>
+            <li><a href="serverinterface.html">Tables</a></li>
+            <li><a href="customerLoginPage.html">Customer</a></li>
+        </ul>
+
+</header>
+
+  <main>
+    <div id="react-root"></div>
+    <script type="module" src="../js/restaurantTables.js"></script>
+    <script type="module" src="../js/tableStatus.js" ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+
+    function MyReactSection() {
+    const [landingPage, setLandingPage] = React.useState(true);
+    const [login, setLogin] = React.useState(false);
+    const [signUp, setSignUp] = React.useState(false);
+
+
+
+  return (
+    <div>
+        <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-start"}}><a href="./customerLoginPage.html"><img src="../assets/back-button.png"/></a></div>
+        {landingPage && <LandingPage setLogin={setLogin} setLandingPage={setLandingPage} setSignUp={setSignUp}/>}
+        {login && <Login/>}
+        {signUp && <SignUp/>}
+    </div>
+  )
+
+  }
+    function LandingPage({setLogin, setLandingPage, setSignUp}) {
+      const handleLogin = () => {
+        setLandingPage(false);
+        setLogin(true);
+      }
+      const handleSignUp = () => {
+        setLandingPage(false);
+        setSignUp(true);
+      }
+      return (
+        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", marginTop:"50px", width:"100%"}}>
+            <div style={{display:"flex", backgroundColor:"#333333", width:"30%", justifyContent:"center", height:"250px", border:"2px solid white", alignItems:"center"}}>
+                <div style={{display:"flex", flexDirection:"column"}}>
+                    <button style={{marginTop:"50px"}} onClick={handleLogin}>Login</button>
+                    <button style={{marginTop:"50px"}} onClick={handleSignUp}>Sign Up</button>
+                </div>
+            </div>
+        </div>
+      )
+    }
+    function Login() {
+      return (
+        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", marginTop:"50px", width:"100%"}}>
+            <div style={{display:"flex", backgroundColor:"#333333", width:"30%", justifyContent:"center", height:"250px", border:"2px solid white", alignItems:"center"}}>
+                <div style={{display:"flex", flexDirection:"column"}}>
+                    <div style={{fontSize:"20px", alignSelf:"flex-start"}}>Username:</div>
+                    <input type="text" />
+                    <div style={{fontSize:"20px", alignSelf:"flex-start"}} >Password:</div>
+                    <input type="text" />
+                    <button style={{marginTop:"50px"}}>Login</button>
+                </div>
+            </div>
+        </div>
+      )
+    }
+    function SignUp() {
+      const[firstName, setFirstName] = React.useState('');
+      const[lastName, setLastName] = React.useState('');
+      const[username, setUsername] = React.useState('');
+      const[password, setPassword] = React.useState('');
+      const[password2, setPassword2] = React.useState('');
+      const[email, setEmail] = React.useState('');
+      const[phone, setPhone] = React.useState('');
+      const[dob, setDob] = React.useState('');
+      const[gender, setGender] = React.useState('');
+
+
+      return (
+        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", marginTop:"50px", width:"100%"}}>
+            <div style={{display:"flex", backgroundColor:"#333333",justifyContent:"center", width:"80%", height:"500px", border:"2px solid white"}}>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"space-between", width:"50%", marginLeft:"150px"}}>
+                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
+                        <div style={{display:"flex", flexDirection:"column" }}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-start"}}>First Name:</div>
+                            <input type="text"/>
+                        </div>
+                        <div style={{display:"flex",  flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>Last Name:</div>
+                            <input type="text"/>
+                        </div>
+                    </div>
+                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
+                        <div style={{display:"flex", flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-start"}}>Username:</div>
+                            <input type="text"/>
+                        </div>
+                        <div style={{display:"flex", flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>placeholder:</div>
+                            <input type="text"/>
+                        </div>
+                    </div>
+                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
+                        <div style={{display:"flex", flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-start"}}>Email Address:</div>
+                            <input type="text"/>
+                        </div>
+                        <div style={{display:"flex", flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>Phone Number:</div>
+                            <input type="text"/>
+                        </div>
+                    </div>
+                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
+                        <div style={{display:"flex", flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-start"}}>Date Of Birth:</div>
+                            <input type="text"/>
+                        </div>
+                        <div style={{display:"flex", flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>Gender:</div>
+                            <input type="text"/>
+                        </div>
+                    </div>
+                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
+                        <div style={{display:"flex", flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start"}}>Password:</div>
+                            <input type="text"/>
+                        </div>
+                        <div style={{display:"flex", flexDirection:"column"}}>
+                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>Comfirm Password:</div>
+                            <input type="text"/>
+                        </div>
+                    </div>
+                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
+                        <button style={{width:"100%"}} >Sign Up</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+      )
+    }
+  const root = ReactDOM.createRoot(document.getElementById("react-root"));
+  root.render(<MyReactSection />);
+</script>
+
+</body>
+
+</html>
+
+
+

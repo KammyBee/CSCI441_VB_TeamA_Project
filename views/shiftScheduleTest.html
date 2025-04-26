@@ -1,4 +1,4 @@
-<!-- // written by: Cheikh Faye -->
+s<!-- // written by: Cheikh Faye -->
 <!-- // updated by: Bjarni Jonsson -->
 <!-- // tested by: Cheikh Faye, Bjarni Jonsson -->
 <!-- // debugged by: Bjarni Jonsson -->
@@ -29,6 +29,7 @@
             <li><a href="orderChecks.html">Orders</a></li>
             <li><a href="viewMenu2.html">Menu</a></li>
             <li><a href="serverinterface.html">Tables</a></li>
+            <li><a href="customerLoginPage.html">Customer</a></li>
         </ul>
 
 </header>
@@ -44,7 +45,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-  
+
   <script type="text/babel">
 
 
@@ -72,7 +73,7 @@
           setShiftData({ error: "Unable to fetch shift data." });
         }
       }
-     
+
 fetchShiftData();
 
     }, []);
@@ -96,17 +97,17 @@ fetchShiftData();
 
 
 return (
-    
+
 <div >
     <ShiftSchedule shiftData={shiftData} currentDate={currentDate} startOfWeek={startOfWeek} endOfWeek={endOfWeek} setDate={setDate}/>
 </div>
 );
   }
 
-  
+
 
   function ShiftSchedule({shiftData, currentDate, startOfWeek, endOfWeek, setDate}) {
-    
+
 
     React.useEffect(()=>{
 
@@ -130,7 +131,7 @@ return (
 
             let mondayDisplay = currentDate.clone().startOf('week').add(1, 'days').format('dddd MMM Do');
             // mondayDisplay.textContent = `${mondayDisplay}`;
-        
+
         console.log('MondayDisplay', mondayDisplay);
 
     const tuesdayDisplay = document.getElementById('tuesdayDisplay');
@@ -190,7 +191,7 @@ return (
     //     updateWeekRangeDisplay();
     // };
 
-    
+
     var monArr = [];
     var tueArr = [];
     var wedArr = [];
@@ -271,7 +272,7 @@ return (
             dayArr.forEach(element =>{dayArr.pop;})
 
         }
-        
+
         function checkShift(startTime){
             //intStartTime = moment(startTime, 'H:mm:ss').format('H');
             if(startTime < "12:00:00" ){
@@ -341,52 +342,52 @@ return (
 
         const fragment = document.createDocumentFragment();
         if(sunArr){
-            addEmployeetoTable(sunArr, fShiftSun, lunchSun, sShiftSun, fShiftSunFragment, lunchSunFragment, sShiftSunFragment); 
+            addEmployeetoTable(sunArr, fShiftSun, lunchSun, sShiftSun, fShiftSunFragment, lunchSunFragment, sShiftSunFragment);
         //    console.log("addEmployeeToTable active")
         }
 
             if(monArr){
-            addEmployeetoTable(monArr, fShiftMon, lunchMon, sShiftMon, fShiftMonFragment, lunchMonFragment, sShiftMonFragment); 
+            addEmployeetoTable(monArr, fShiftMon, lunchMon, sShiftMon, fShiftMonFragment, lunchMonFragment, sShiftMonFragment);
             //console.log("addEmployeeToTable active")
         }
 
             if(tueArr){
-            addEmployeetoTable(tueArr, fShiftTue, lunchTue, sShiftTue, fShiftTueFragment, lunchTueFragment, sShiftTueFragment); 
+            addEmployeetoTable(tueArr, fShiftTue, lunchTue, sShiftTue, fShiftTueFragment, lunchTueFragment, sShiftTueFragment);
             //console.log("addEmployeeToTable active")
         }
 
             if(wedArr){
-            addEmployeetoTable(wedArr, fShiftWed, lunchWed, sShiftWed, fShiftWedFragment, lunchWedFragment, sShiftWedFragment); 
+            addEmployeetoTable(wedArr, fShiftWed, lunchWed, sShiftWed, fShiftWedFragment, lunchWedFragment, sShiftWedFragment);
             //console.log("addEmployeeToTable active")
         }
 
             if(thuArr){
-            addEmployeetoTable(thuArr, fShiftThu, lunchThu, sShiftThu, fShiftThuFragment, lunchThuFragment, sShiftThuFragment); 
+            addEmployeetoTable(thuArr, fShiftThu, lunchThu, sShiftThu, fShiftThuFragment, lunchThuFragment, sShiftThuFragment);
             //console.log("addEmployeeToTable active")
         }
 
             if(friArr){
-            addEmployeetoTable(friArr, fShiftFri, lunchFri, sShiftFri, fShiftFriFragment, lunchFriFragment, sShiftFriFragment); 
+            addEmployeetoTable(friArr, fShiftFri, lunchFri, sShiftFri, fShiftFriFragment, lunchFriFragment, sShiftFriFragment);
             //console.log("addEmployeeToTable active")
         }
 
             if(satArr){
-            addEmployeetoTable(satArr, fShiftSat, lunchSat, sShiftSat, fShiftSatFragment, lunchSatFragment, sShiftSatFragment); 
+            addEmployeetoTable(satArr, fShiftSat, lunchSat, sShiftSat, fShiftSatFragment, lunchSatFragment, sShiftSatFragment);
             //console.log("addEmployeeToTable active")
         }
         //if(sShiftSun){sShiftSun.textContent = `${fragment.textContent}`; console.log("sShift: ", sShiftSun);}
-        
+
     if(wedArr[0]) {console.log('wednesday shift is :', wedArr[0]);}
     //console.log('shiftData is: ', shiftData);
     //console.log(sShiftSun);
     //console.log(moment(startOfWeek);
     //console.log(startOfWeek.isAfter(endOfWeek));
     console.log(moment(startOfWeek, 'll').format('YYYY-MM-DD HH:mm:ss'));
-    
+
 
   return (
     <div >
-      
+
     <div class="date-selector">
         <button onClick={() => handlePrevWeekTest()}>Prev</button>
         <span id="weekRangeDisplay"></span>
@@ -395,7 +396,7 @@ return (
 
     { shiftData && shiftData[0] &&<table class="schedule-body">
         <tr>
-        
+
             <th></th>
             <th><h1>M</h1>
                 <li class="schedule-date" id="mondayDisplay">{currentDate.clone().startOf('week').add(1, 'days').format('dddd MMM Do')}</li></th>
@@ -422,7 +423,7 @@ return (
             <th id="fShiftThu">GetEmployees</th>
             <th id="fShiftFri">Get Employees</th>
             <th id="fShiftSat">Get Employees</th>
-            <th id="fShiftSun">Get Employees</th>   
+            <th id="fShiftSun">Get Employees</th>
         </tr>
         <tr>
             <th><h1>Lunch</h1>
@@ -434,7 +435,7 @@ return (
             <th id="lunchThu">Get Employees</th>
             <th id="lunchFri">Get Employees</th>
             <th id="lunchSat">Get Employees</th>
-            <th id="lunchSun">Get Employees</th>   
+            <th id="lunchSun">Get Employees</th>
         </tr>
         <tr>
             <th><h1>Second Shift</h1>
@@ -446,21 +447,21 @@ return (
             <th id="sShiftThu">Get Employees</th>
             <th id="sShiftFri">Get Employees</th>
             <th id="sShiftSat">Get Employees</th>
-            <th id="sShiftSun">Get Employees</th>   
-        </tr>       
+            <th id="sShiftSun">Get Employees</th>
+        </tr>
     </table>}
-    
+
     </div>
   );
-  
+
 }
- 
+
 
   const root = ReactDOM.createRoot(document.getElementById("shift-schedule"));
   root.render(<MyReactSection />);
 
-  
-  
+
+
 </script>
 
 </body>

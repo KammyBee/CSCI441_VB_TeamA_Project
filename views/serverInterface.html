@@ -77,6 +77,7 @@
             <li><a href="orderChecks.html">Orders</a></li>
             <li><a href="viewMenu2.html">Menu</a></li>
             <li><a href="serverinterface.html">Tables</a></li>
+            <li><a href="customerLoginPage.html">Customer</a></li>
         </ul>
 
 </header>
@@ -721,9 +722,9 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
                     <p><strong>Order ID: {orderID}</strong> {tableData.orderID}</p>
                   </div>
 
-                  
+
                 </div>
-                
+
                 <div style={{display:"flex", height:"60px"}}>
                 {tableData.tableStatus == "available" &&<button
                   onClick={() => handleClick("Occupied", tableData.tableID)}
@@ -759,7 +760,7 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
                 </div>
                 </div>
                 <br/>
-                
+
                 <div style={{
                   display:"flex", width: "100%", justifyContent:"center"
                 }}>
