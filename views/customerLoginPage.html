@@ -5,339 +5,394 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tasty Bytes - Customer Portal</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../css/employee.css" />
 </head>
 <body class="bg-light text-white">
-  <main>
-    <div id="react-root"></div>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <div id="react-root"></div>
 
-    <script type="text/babel">
-      const { useState } = React;
-      function Header({ user, onLogout }) {
-        return (
-          <header className="nav-floor bg-dark text-white d-flex align-items-center justify-content-between px-3">
-            <a href="employeeHomePage.html">
-              <img
-                src="../assets/logo.png"
-                alt="Tasty Bytes Logo"
-                style={{ height: '40px' }}
-              />
-            </a>
-            <div className="page-title">Customer Portal</div>
-            {user ? (
-              <button className="btn btn-outline-light" onClick={onLogout}>
-                Logout
-              </button>
-            ) : (
-              <a href="employeeHomePage.html" className="btn btn-outline-light">
-                Home
-              </a>
-            )}
-          </header>
-        );
-      }
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-      function SignUpForm({ onSuccess, onSwitch }) {
-        const [form, setForm] = useState({
-          firstName: '',
-          lastName: '',
-          username: '',
-          email: '',
-          phone: '',
-          dob: '',
-          gender: '',
-          password: '',
-          password2: ''
-        });
-        const [errors, setErrors] = useState({ username: '', email: '', phone: '' });
+  <script type="text/babel">
+    const { useState } = React;
 
-        const handleChange = e => {
-          const { name, value } = e.target;
-          setForm(f => ({ ...f, [name]: value }));
-          setErrors(err => ({ ...err, [name]: '' }));
-        };
-
-        const validateField = async field => {
-          const value = form[field]?.trim();
-          if (!value) return;
-          try {
-            const res = await fetch('http://localhost:3100/customer/validate', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ [field]: value })
-            });
-            if (!res.ok) {
-              const err = await res.json();
-              throw new Error(err.error || err.message || 'In use');
-            }
-            setErrors(err => ({ ...err, [field]: '' }));
-          } catch (err) {
-            // only show "already in use" errors, ignore others
-            if (err.message.includes('already in use')) {
-              setErrors(errs => ({ ...errs, [field]: err.message }));
-            } else {
-              console.error('Validation error (ignored):', err.message);
-            }
-          }
-        };
-
-        const handleSubmit = async e => {
-          e.preventDefault();
-          if (Object.values(errors).some(msg => msg)) {
-            return alert('Please fix validation errors before submitting');
-          }
-          if (form.password !== form.password2) {
-            return alert('Passwords must match');
-          }
-          try {
-            const payload = { ...form, points: 77 };
-            const res = await fetch('http://localhost:3100/customer/', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            if (!res.ok) {
-              const err = await res.json();
-              throw new Error(err.error || err.message || res.statusText);
-            }
-            alert('Account created! Please log in.');
-            onSuccess();
-          } catch (err) {
-            alert('Sign-up failed: ' + err.message);
-          }
-        };
-
-        return (
-          <form
-            onSubmit={handleSubmit}
-            className="mx-auto mt-5 p-4 bg-dark text-white rounded"
-            style={{ maxWidth: 600 }}
+    function Header({ user, onLogout }) {
+      return (
+        <header className="nav-floor bg-dark text-white d-flex align-items-center justify-content-between px-3">
+          <button
+            className="btn btn-outline-light me-2"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasMenu"
+            aria-controls="offcanvasMenu"
           >
-            <h2 className="mb-3">Sign Up</h2>
-            <div className="row mb-2">
-              <div className="col">
-                <input
-                  name="firstName"
-                  className="form-control bg-secondary text-white"
-                  placeholder="First Name"
-                  value={form.firstName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="col">
-                <input
-                  name="lastName"
-                  className="form-control bg-secondary text-white"
-                  placeholder="Last Name"
-                  value={form.lastName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="mb-2">
-              <input
-                name="username"
-                className="form-control bg-secondary text-white"
-                placeholder="Username"
-                value={form.username}
-                onChange={handleChange}
-                onBlur={() => validateField('username')}
-                required
-              />
-              {errors.username && <div className="text-danger mt-1">{errors.username}</div>}
-            </div>
-            <div className="mb-2">
-              <input
-                type="email"
-                name="email"
-                className="form-control bg-secondary text-white"
-                placeholder="Email"
-                value={form.email}
-                onChange={handleChange}
-                onBlur={() => validateField('email')}
-                required
-              />
-              {errors.email && <div className="text-danger mt-1">{errors.email}</div>}
-            </div>
-            <div className="row mb-2">
-              <div className="col">
-                <input
-                  name="phone"
-                  className="form-control bg-secondary text-white"
-                  placeholder="Phone Number"
-                  value={form.phone}
-                  onChange={handleChange}
-                  onBlur={() => validateField('phone')}
-                />
-                {errors.phone && <div className="text-danger mt-1">{errors.phone}</div>}
-              </div>
-              <div className="col">
-                <input
-                  type="date"
-                  name="dob"
-                  className="form-control bg-secondary text-white"
-                  value={form.dob}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="row mb-3">
-              <div className="col">
-                <select
-                  name="gender"
-                  className="form-select bg-secondary text-white"
-                  value={form.gender}
-                  onChange={handleChange}
-                  required
+            &#9776;
+          </button>
+          <a href="../index.html">
+            <img src="../assets/logo.png" alt="Tasty Bytes Logo" style={{ height: '40px' }} />
+          </a>
+          <div className="page-title">Customer Portal</div>
+          {user ? (
+            <button className="btn btn-outline-light" onClick={onLogout}>Logout</button>
+          ) : (
+            <a href="../index.html" className="btn btn-outline-light">Home</a>
+          )}
+        </header>
+      );
+    }
+
+    function OffcanvasMenu({ onNavigate, onLogout, user }) {
+      return (
+        <div
+          className="offcanvas offcanvas-start text-bg-dark"
+          tabIndex="-1"
+          id="offcanvasMenu"
+          aria-labelledby="offcanvasMenuLabel"
+        >
+          <div className="offcanvas-header">
+            <h5 className="offcanvas-title" id="offcanvasMenuLabel">{user.firstName} {user.lastName}</h5>
+            <button
+              type="button"
+              className="btn-close btn-close-white"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="offcanvas-body">
+            <ul className="list-unstyled">
+              <li>
+                <button
+                  className="btn btn-link text-white"
+                  onClick={() => onNavigate('rewards')}
+                  data-bs-dismiss="offcanvas"
                 >
-                  <option value="" disabled>
-                    Select Gender
-                  </option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
-                </select>
-              </div>
-            </div>
-            <div className="row mb-3">
-              <div className="col">
-                <input
-                  type="password"
-                  name="password"
-                  className="form-control bg-secondary text-white"
-                  placeholder="Password"
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="col">
-                <input
-                  type="password"
-                  name="password2"
-                  className="form-control bg-secondary text-white"
-                  placeholder="Confirm Password"
-                  value={form.password2}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            <button type="submit" className="btn btn-primary w-100">
-              Sign Up
-            </button>
-            <p className="mt-3 text-center">
-              <a href="#" className="text-info" onClick={onSwitch}>
-                Already have an account? Log In
-              </a>
-            </p>
-          </form>
-        );
-      }
+                  Rewards
+                </button>
+              </li>
+              <li>
+                <button
+                  className="btn btn-link text-white"
+                  onClick={() => onNavigate('info')}
+                  data-bs-dismiss="offcanvas"
+                >
+                  Personal Info
+                </button>
+              </li>
+              <li>
+                <button
+                  className="btn btn-link text-white"
+                  onClick={() => onNavigate('reservation')}
+                  data-bs-dismiss="offcanvas"
+                >
+                  Reservation
+                </button>
+              </li>
+              <li>
+                <button
+                  className="btn btn-link text-white"
+                  onClick={() => onNavigate('menu')}
+                  data-bs-dismiss="offcanvas"
+                >
+                  Menu
+                </button>
+              </li>
+              <li>
+                <button
+                  className="btn btn-link text-white"
+                  onClick={onLogout}
+                  data-bs-dismiss="offcanvas"
+                >
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      );
+    }
 
-      function LoginForm({ onSuccess, onSwitch }) {
-        const [creds, setCreds] = useState({ username: '', password: '' });
-        const handleChange = e => setCreds(c => ({ ...c, [e.target.name]: e.target.value }));
-        const handleSubmit = async e => {
-          e.preventDefault();
-          try {
-            const res = await fetch('http://localhost:3100/customer/login', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(creds)
-            });
-            if (!res.ok) {
-              const err = await res.json();
-              throw new Error(err.error || err.message || res.statusText);
-            }
-            const user = await res.json();
-            onSuccess(user);
-          } catch (err) {
-            alert('Login failed: ' + err.message);
+    function LoginForm({ onSuccess, onSwitch }) {
+      const [creds, setCreds] = useState({ username: '', password: '' });
+      const handleChange = e => setCreds(c => ({ ...c, [e.target.name]: e.target.value }));
+      const handleSubmit = async e => {
+        e.preventDefault();
+        try {
+          const res = await fetch('http://localhost:3100/customer/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(creds)
+          });
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || err.message || res.statusText);
           }
-        };
-        return (
-          <form
-            onSubmit={handleSubmit}
-            className="mx-auto mt-5 p-4 bg-dark text-white rounded"
-            style={{ maxWidth: 400 }}
-          >
-            <h2 className="mb-3">Log In</h2>
-            <div className="mb-2">
+          const user = await res.json();
+          onSuccess(user);
+        } catch (err) {
+          alert('Login failed: ' + err.message);
+        }
+      };
+      return (
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto mt-5 p-4 bg-dark text-white rounded"
+          style={{ maxWidth: 400 }}
+        >
+          <h2 className="mb-3">Log In</h2>
+          <div className="mb-2">
+            <input
+              name="username"
+              className="form-control bg-secondary text-white"
+              placeholder="Username"
+              value={creds.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              name="password"
+              className="form-control bg-secondary text-white"
+              placeholder="Password"
+              value={creds.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-success w-100">Log In</button>
+          <p className="mt-3 text-center">
+            <a href="#" className="text-info" onClick={onSwitch}>
+              Don't have an account? Sign Up
+            </a>
+          </p>
+        </form>
+      );
+    }
+
+    function SignUpForm({ onSuccess, onSwitch }) {
+      const [form, setForm] = useState({
+        firstName: '',
+        lastName: '',
+        username: '',
+        email: '',
+        phone: '',
+        dob: '',
+        gender: '',
+        password: '',
+        password2: ''
+      });
+      const [errors, setErrors] = useState({ username: '', email: '', phone: '' });
+      const handleChange = e => {
+        const { name, value } = e.target;
+        setForm(f => ({ ...f, [name]: value }));
+        setErrors(err => ({ ...err, [name]: '' }));
+      };
+
+      const validateField = async field => {
+        const value = form[field]?.trim();
+        if (!value) return;
+        try {
+          const res = await fetch('http://localhost:3100/customer/validate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ [field]: value })
+          });
+          const data = await res.json();
+          if (res.status === 200) {
+            setErrors(err => ({ ...err, [field]: '' }));
+          } else if (res.status === 409) {
+            setErrors(err => ({ ...err, [field]: data.error || data.message }));
+          }
+        } catch (err) {
+          console.error('validateField error:', err);
+        }
+      };
+
+      const handleSubmit = async e => {
+        e.preventDefault();
+        if (Object.values(errors).some(msg => msg)) {
+          return alert('Fix validation errors first');
+        }
+        if (form.password !== form.password2) {
+          return alert('Passwords must match');
+        }
+        try {
+          const payload = { ...form, points: 77 };
+          const res = await fetch('http://localhost:3100/customer/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || err.message || res.statusText);
+          }
+          alert('Account created! Please log in.');
+          onSuccess();
+        } catch (err) {
+          alert('Sign-up failed: ' + err.message);
+        }
+      };
+
+      return (
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto mt-5 p-4 bg-dark text-white rounded"
+          style={{ maxWidth: 600 }}
+        >
+          <h2 className="mb-3">Sign Up</h2>
+          <div className="row mb-2">
+            <div className="col">
               <input
-                name="username"
+                name="firstName"
                 className="form-control bg-secondary text-white"
-                placeholder="Username"
-                value={creds.username}
+                placeholder="First Name"
+                value={form.firstName}
                 onChange={handleChange}
                 required
               />
             </div>
-            <div className="mb-3">
+            <div className="col">
+              <input
+                name="lastName"
+                className="form-control bg-secondary text-white"
+                placeholder="Last Name"
+                value={form.lastName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="mb-2">
+            <input
+              name="username"
+              className="form-control bg-secondary text-white"
+              placeholder="Username"
+              value={form.username}
+              onChange={handleChange}
+              onBlur={() => validateField('username')}
+              required
+            />
+            {errors.username && <div className="text-danger mt-1">{errors.username}</div>}
+          </div>
+          <div className="mb-2">
+            <input
+              type="email"
+              name="email"
+              className="form-control bg-secondary text-white"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+              onBlur={() => validateField('email')}
+              required
+            />
+            {errors.email && <div className="text-danger mt-1">{errors.email}</div>}
+          </div>
+          <div className="row mb-2">
+            <div className="col">
+              <input
+                name="phone"
+                className="form-control bg-secondary text-white"
+                placeholder="Phone Number"
+                value={form.phone}
+                onChange={handleChange}
+                onBlur={() => validateField('phone')}
+              />
+              {errors.phone && <div className="text-danger mt-1">{errors.phone}</div>}
+            </div>
+            <div className="col">
+              <input
+                type="date"
+                name="dob"
+                className="form-control bg-secondary text-white"
+                value={form.dob}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="col">
+              <select
+                name="gender"
+                className="form-select bg-secondary text-white"
+                value={form.gender}
+                onChange={handleChange}
+                required
+              >
+                <option value="" disabled>Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="col">
               <input
                 type="password"
                 name="password"
                 className="form-control bg-secondary text-white"
                 placeholder="Password"
-                value={creds.password}
+                value={form.password}
                 onChange={handleChange}
                 required
               />
             </div>
-            <button type="submit" className="btn btn-success w-100">
-              Log In
-            </button>
-            <p className="mt-3 text-center">
-              <a href="#" className="text-info" onClick={onSwitch}>
-                Don't have an account? Sign Up
-              </a>
-            </p>
-          </form>
-        );
-      }
-
-      function Dashboard({ user }) {
-        return (
-          <div className="container mt-5">
-            <h2 className="text-dark">Welcome, {user.firstName}!</h2>
-            <p className="text-dark">Your current points: {user.points}</p>
+            <div className="col">
+              <input
+                type="password"
+                name="password2"
+                className="form-control bg-secondary text-white"
+                placeholder="Confirm Password"
+                value={form.password2}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
-        );
-      }
+          <button type="submit" className="btn btn-primary w-100">Sign Up</button>
+          <p className="mt-3 text-center">
+            <a href="#" className="text-info" onClick={onSwitch}>Already have an account? Log In</a>
+          </p>
+        </form>
+      );
+    }
 
-      function App() {
-        const [mode, setMode] = useState('login');
-        const [user, setUser] = useState(null);
-        const handleLogout = () => {
-          setUser(null);
-          setMode('login');
-        };
+    function Dashboard({ user }) {
+      return (
+        <div className="container mt-5">
+          <h2 className="text-dark">Welcome, {user.firstName}!</h2>
+          <p className="text-dark">Your current points: {user.points}</p>
+        </div>
+      );
+    }
 
-        return (
-          <>
-            <Header user={user} onLogout={handleLogout} />
-            {user ? (
-              <Dashboard user={user} />
-            ) : mode === 'login' ? (
-              <LoginForm onSuccess={setUser} onSwitch={() => setMode('signup')} />
-            ) : (
-              <SignUpForm onSuccess={() => setMode('login')} onSwitch={() => setMode('login')} />
-            )}
-          </>
-        );
-      }
+    function App() {
+      const [mode, setMode] = useState('login');
+      const [user, setUser] = useState(null);
+      const handleLogout = () => { setUser(null); setMode('login'); };
+      const handleNavigate = target => setMode(target);
 
-      ReactDOM.createRoot(document.getElementById('react-root')).render(<App />);
-    </script>
-  </main>
+      return (
+        <>
+          <Header user={user} onLogout={handleLogout} />
+          {user && <OffcanvasMenu onNavigate={handleNavigate} onLogout={handleLogout}  user={user}/>}
+          {user ? (
+            <Dashboard user={user} />
+          ) : mode === 'login' ? (
+            <LoginForm onSuccess={setUser} onSwitch={() => setMode('signup')} />
+          ) : (
+            <SignUpForm onSuccess={() => setMode('login')} onSwitch={() => setMode('login')} />
+          )}
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('react-root')).render(<App />);
+  </script>
 </body>
 </html>

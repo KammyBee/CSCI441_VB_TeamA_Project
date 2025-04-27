@@ -104,12 +104,10 @@ async function authenticateCustomer({ username, password }) {
     throw new Error('Invalid username or password');
   }
 
-  // For now, plain-text comparison; replace with bcrypt if passwords are hashed
   if (user.password !== password) {
     throw new Error('Invalid username or password');
   }
 
-  // Strip password before returning
   delete user.password;
   return user;
 }
@@ -135,9 +133,8 @@ async function validateCustomer(input) {
   }
 
   console.log(`validateCustomer SQL: ${sql}`, params);
-  // execute query
   const result = await db.query(sql, params);
-  // mysql2/promise returns [rows, fields]
+
   const rows = Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
   if (rows.length > 0) {
     throw new Error(`${fieldName} already in use`);
