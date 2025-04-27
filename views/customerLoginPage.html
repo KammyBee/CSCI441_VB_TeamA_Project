@@ -1,229 +1,343 @@
-<!-- // written by: Jiejie & Meimei :) -->
+<!-- written by: Jiejie & Meimei :) -->
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tasty Bytes</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <link rel="stylesheet" href="../css/employee.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  <style>
-    #categories button {
-        margin: 5px;
-        padding: 10px;
-    }
-
-    .page-title{
-      font-size:30px;
-    }
-    .nav-floor{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      width: 100%;
-      align-items: center;
-      padding: 8px;
-
-    }
-
-    .grid-view {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin: 20px 0;
-        color: black;
-    }
-
-    .grid-view div {
-        padding: 10px;
-        border: 1px solid black;
-        cursor: pointer;
-    }
-
-    #order {
-        background-color: white;
-        position: fixed;
-        right: 0;
-        top: 0;
-        width: 20%;
-        border: 1px solid black;
-        padding: 10px;
-    }
-
-    #order ul {
-        list-style: none;
-        padding: 0;
-        color: black;
-    }
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasty Bytes - Customer Portal</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../css/employee.css" />
 </head>
-
-<body>
-
-<header class="nav-floor">
-
-        <a href="employeeHomePage.html"><img src="../assets/logo.png" alt="Tasty Bytes Logo"></a>
-        <div class="page-title">Floor Overview</div>
-        <ul class="nav-links">
-            <li><a href="employeeHomePage.html">Home</a></li>
-            <li><a href="managerHome.html">Functions</a></li>
-            <li><a href="orderChecks.html">Orders</a></li>
-            <li><a href="viewMenu2.html">Menu</a></li>
-            <li><a href="serverinterface.html">Tables</a></li>
-            <li><a href="customerLoginPage.html">Customer</a></li>
-        </ul>
-
-</header>
-
+<body class="bg-light text-white">
   <main>
     <div id="react-root"></div>
-    <script type="module" src="../js/restaurantTables.js"></script>
-    <script type="module" src="../js/tableStatus.js" ></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <script type="text/babel">
-
-    function MyReactSection() {
-    const [landingPage, setLandingPage] = React.useState(true);
-    const [login, setLogin] = React.useState(false);
-    const [signUp, setSignUp] = React.useState(false);
-
-
-
-  return (
-    <div>
-        <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-start"}}><a href="./customerLoginPage.html"><img src="../assets/back-button.png"/></a></div>
-        {landingPage && <LandingPage setLogin={setLogin} setLandingPage={setLandingPage} setSignUp={setSignUp}/>}
-        {login && <Login/>}
-        {signUp && <SignUp/>}
-    </div>
-  )
-
-  }
-    function LandingPage({setLogin, setLandingPage, setSignUp}) {
-      const handleLogin = () => {
-        setLandingPage(false);
-        setLogin(true);
+      const { useState } = React;
+      function Header({ user, onLogout }) {
+        return (
+          <header className="nav-floor bg-dark text-white d-flex align-items-center justify-content-between px-3">
+            <a href="employeeHomePage.html">
+              <img
+                src="../assets/logo.png"
+                alt="Tasty Bytes Logo"
+                style={{ height: '40px' }}
+              />
+            </a>
+            <div className="page-title">Customer Portal</div>
+            {user ? (
+              <button className="btn btn-outline-light" onClick={onLogout}>
+                Logout
+              </button>
+            ) : (
+              <a href="employeeHomePage.html" className="btn btn-outline-light">
+                Home
+              </a>
+            )}
+          </header>
+        );
       }
-      const handleSignUp = () => {
-        setLandingPage(false);
-        setSignUp(true);
+
+      function SignUpForm({ onSuccess, onSwitch }) {
+        const [form, setForm] = useState({
+          firstName: '',
+          lastName: '',
+          username: '',
+          email: '',
+          phone: '',
+          dob: '',
+          gender: '',
+          password: '',
+          password2: ''
+        });
+        const [errors, setErrors] = useState({ username: '', email: '', phone: '' });
+
+        const handleChange = e => {
+          const { name, value } = e.target;
+          setForm(f => ({ ...f, [name]: value }));
+          setErrors(err => ({ ...err, [name]: '' }));
+        };
+
+        const validateField = async field => {
+          const value = form[field]?.trim();
+          if (!value) return;
+          try {
+            const res = await fetch('http://localhost:3100/customer/validate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ [field]: value })
+            });
+            if (!res.ok) {
+              const err = await res.json();
+              throw new Error(err.error || err.message || 'In use');
+            }
+            setErrors(err => ({ ...err, [field]: '' }));
+          } catch (err) {
+            // only show "already in use" errors, ignore others
+            if (err.message.includes('already in use')) {
+              setErrors(errs => ({ ...errs, [field]: err.message }));
+            } else {
+              console.error('Validation error (ignored):', err.message);
+            }
+          }
+        };
+
+        const handleSubmit = async e => {
+          e.preventDefault();
+          if (Object.values(errors).some(msg => msg)) {
+            return alert('Please fix validation errors before submitting');
+          }
+          if (form.password !== form.password2) {
+            return alert('Passwords must match');
+          }
+          try {
+            const payload = { ...form, points: 77 };
+            const res = await fetch('http://localhost:3100/customer/', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (!res.ok) {
+              const err = await res.json();
+              throw new Error(err.error || err.message || res.statusText);
+            }
+            alert('Account created! Please log in.');
+            onSuccess();
+          } catch (err) {
+            alert('Sign-up failed: ' + err.message);
+          }
+        };
+
+        return (
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto mt-5 p-4 bg-dark text-white rounded"
+            style={{ maxWidth: 600 }}
+          >
+            <h2 className="mb-3">Sign Up</h2>
+            <div className="row mb-2">
+              <div className="col">
+                <input
+                  name="firstName"
+                  className="form-control bg-secondary text-white"
+                  placeholder="First Name"
+                  value={form.firstName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="col">
+                <input
+                  name="lastName"
+                  className="form-control bg-secondary text-white"
+                  placeholder="Last Name"
+                  value={form.lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="mb-2">
+              <input
+                name="username"
+                className="form-control bg-secondary text-white"
+                placeholder="Username"
+                value={form.username}
+                onChange={handleChange}
+                onBlur={() => validateField('username')}
+                required
+              />
+              {errors.username && <div className="text-danger mt-1">{errors.username}</div>}
+            </div>
+            <div className="mb-2">
+              <input
+                type="email"
+                name="email"
+                className="form-control bg-secondary text-white"
+                placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
+                onBlur={() => validateField('email')}
+                required
+              />
+              {errors.email && <div className="text-danger mt-1">{errors.email}</div>}
+            </div>
+            <div className="row mb-2">
+              <div className="col">
+                <input
+                  name="phone"
+                  className="form-control bg-secondary text-white"
+                  placeholder="Phone Number"
+                  value={form.phone}
+                  onChange={handleChange}
+                  onBlur={() => validateField('phone')}
+                />
+                {errors.phone && <div className="text-danger mt-1">{errors.phone}</div>}
+              </div>
+              <div className="col">
+                <input
+                  type="date"
+                  name="dob"
+                  className="form-control bg-secondary text-white"
+                  value={form.dob}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col">
+                <select
+                  name="gender"
+                  className="form-select bg-secondary text-white"
+                  value={form.gender}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col">
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control bg-secondary text-white"
+                  placeholder="Password"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="col">
+                <input
+                  type="password"
+                  name="password2"
+                  className="form-control bg-secondary text-white"
+                  placeholder="Confirm Password"
+                  value={form.password2}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit" className="btn btn-primary w-100">
+              Sign Up
+            </button>
+            <p className="mt-3 text-center">
+              <a href="#" className="text-info" onClick={onSwitch}>
+                Already have an account? Log In
+              </a>
+            </p>
+          </form>
+        );
       }
-      return (
-        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", marginTop:"50px", width:"100%"}}>
-            <div style={{display:"flex", backgroundColor:"#333333", width:"30%", justifyContent:"center", height:"250px", border:"2px solid white", alignItems:"center"}}>
-                <div style={{display:"flex", flexDirection:"column"}}>
-                    <button style={{marginTop:"50px"}} onClick={handleLogin}>Login</button>
-                    <button style={{marginTop:"50px"}} onClick={handleSignUp}>Sign Up</button>
-                </div>
+
+      function LoginForm({ onSuccess, onSwitch }) {
+        const [creds, setCreds] = useState({ username: '', password: '' });
+        const handleChange = e => setCreds(c => ({ ...c, [e.target.name]: e.target.value }));
+        const handleSubmit = async e => {
+          e.preventDefault();
+          try {
+            const res = await fetch('http://localhost:3100/customer/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(creds)
+            });
+            if (!res.ok) {
+              const err = await res.json();
+              throw new Error(err.error || err.message || res.statusText);
+            }
+            const user = await res.json();
+            onSuccess(user);
+          } catch (err) {
+            alert('Login failed: ' + err.message);
+          }
+        };
+        return (
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto mt-5 p-4 bg-dark text-white rounded"
+            style={{ maxWidth: 400 }}
+          >
+            <h2 className="mb-3">Log In</h2>
+            <div className="mb-2">
+              <input
+                name="username"
+                className="form-control bg-secondary text-white"
+                placeholder="Username"
+                value={creds.username}
+                onChange={handleChange}
+                required
+              />
             </div>
-        </div>
-      )
-    }
-    function Login() {
-      return (
-        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", marginTop:"50px", width:"100%"}}>
-            <div style={{display:"flex", backgroundColor:"#333333", width:"30%", justifyContent:"center", height:"250px", border:"2px solid white", alignItems:"center"}}>
-                <div style={{display:"flex", flexDirection:"column"}}>
-                    <div style={{fontSize:"20px", alignSelf:"flex-start"}}>Username:</div>
-                    <input type="text" />
-                    <div style={{fontSize:"20px", alignSelf:"flex-start"}} >Password:</div>
-                    <input type="text" />
-                    <button style={{marginTop:"50px"}}>Login</button>
-                </div>
+            <div className="mb-3">
+              <input
+                type="password"
+                name="password"
+                className="form-control bg-secondary text-white"
+                placeholder="Password"
+                value={creds.password}
+                onChange={handleChange}
+                required
+              />
             </div>
-        </div>
-      )
-    }
-    function SignUp() {
-      const[firstName, setFirstName] = React.useState('');
-      const[lastName, setLastName] = React.useState('');
-      const[username, setUsername] = React.useState('');
-      const[password, setPassword] = React.useState('');
-      const[password2, setPassword2] = React.useState('');
-      const[email, setEmail] = React.useState('');
-      const[phone, setPhone] = React.useState('');
-      const[dob, setDob] = React.useState('');
-      const[gender, setGender] = React.useState('');
+            <button type="submit" className="btn btn-success w-100">
+              Log In
+            </button>
+            <p className="mt-3 text-center">
+              <a href="#" className="text-info" onClick={onSwitch}>
+                Don't have an account? Sign Up
+              </a>
+            </p>
+          </form>
+        );
+      }
 
+      function Dashboard({ user }) {
+        return (
+          <div className="container mt-5">
+            <h2 className="text-dark">Welcome, {user.firstName}!</h2>
+            <p className="text-dark">Your current points: {user.points}</p>
+          </div>
+        );
+      }
 
-      return (
-        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", marginTop:"50px", width:"100%"}}>
-            <div style={{display:"flex", backgroundColor:"#333333",justifyContent:"center", width:"80%", height:"500px", border:"2px solid white"}}>
-                <div style={{display:"flex", flexDirection:"column", justifyContent:"space-between", width:"50%", marginLeft:"150px"}}>
-                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
-                        <div style={{display:"flex", flexDirection:"column" }}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-start"}}>First Name:</div>
-                            <input type="text"/>
-                        </div>
-                        <div style={{display:"flex",  flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>Last Name:</div>
-                            <input type="text"/>
-                        </div>
-                    </div>
-                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
-                        <div style={{display:"flex", flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-start"}}>Username:</div>
-                            <input type="text"/>
-                        </div>
-                        <div style={{display:"flex", flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>placeholder:</div>
-                            <input type="text"/>
-                        </div>
-                    </div>
-                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
-                        <div style={{display:"flex", flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-start"}}>Email Address:</div>
-                            <input type="text"/>
-                        </div>
-                        <div style={{display:"flex", flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>Phone Number:</div>
-                            <input type="text"/>
-                        </div>
-                    </div>
-                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
-                        <div style={{display:"flex", flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-start"}}>Date Of Birth:</div>
-                            <input type="text"/>
-                        </div>
-                        <div style={{display:"flex", flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>Gender:</div>
-                            <input type="text"/>
-                        </div>
-                    </div>
-                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
-                        <div style={{display:"flex", flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start"}}>Password:</div>
-                            <input type="text"/>
-                        </div>
-                        <div style={{display:"flex", flexDirection:"column"}}>
-                            <div style={{fontSize:"20px", alignSelf:"flex-start", justifySelf:"flex-end"}}>Comfirm Password:</div>
-                            <input type="text"/>
-                        </div>
-                    </div>
-                    <div style={{display:"flex", width:"80%", justifyContent:"space-between"}}>
-                        <button style={{width:"100%"}} >Sign Up</button>
-                    </div>
+      function App() {
+        const [mode, setMode] = useState('login');
+        const [user, setUser] = useState(null);
+        const handleLogout = () => {
+          setUser(null);
+          setMode('login');
+        };
 
-                </div>
+        return (
+          <>
+            <Header user={user} onLogout={handleLogout} />
+            {user ? (
+              <Dashboard user={user} />
+            ) : mode === 'login' ? (
+              <LoginForm onSuccess={setUser} onSwitch={() => setMode('signup')} />
+            ) : (
+              <SignUpForm onSuccess={() => setMode('login')} onSwitch={() => setMode('login')} />
+            )}
+          </>
+        );
+      }
 
-            </div>
-        </div>
-      )
-    }
-  const root = ReactDOM.createRoot(document.getElementById("react-root"));
-  root.render(<MyReactSection />);
-</script>
-
+      ReactDOM.createRoot(document.getElementById('react-root')).render(<App />);
+    </script>
+  </main>
 </body>
-
 </html>
-
-
-

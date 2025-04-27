@@ -1,60 +1,104 @@
 const express = require('express');
 const router = express.Router();
-const customer = require('../services/customer');
+const {
+  addCustomer,
+  authenticateCustomer,
+  deleteCustomer,
+  getCustomer,
+  updateCustomer,
+  getAllCustomers,
+  validateCustomer,
+} = require('../services/customer');
 
-/* POST new customer. */
-router.post('/', async function(req, res, next) {
+// POST new customer (signup)
+router.post('/', async (req, res, next) => {
   try {
-    const customerData = req.body;
-    res.json(await customer.addCustomer(customerData));
+    console.log('POST /customer payload:', req.body);
+    const created = await addCustomer(req.body);
+    res.json(created);
   } catch (err) {
-    res.status(500).json({ error: `Error while adding customer: ${err.message}` });
+    err.statusCode = 400;
+    err.message = `Error while adding customer: ${err.message}`;
     next(err);
   }
 });
 
-/* DELETE customer by customerID. */
-router.delete('/:customerID', async function(req, res, next) {
+// POST login
+router.post('/login', async (req, res, next) => {
+  try {
+    console.log('POST /customer/login payload:', req.body);
+    const user = await authenticateCustomer(req.body);
+    res.json(user);
+  } catch (err) {
+    err.statusCode = 401;
+    err.message = `Login failed: ${err.message}`;
+    next(err);
+  }
+});
+
+// GET all customers
+router.get('/', async (req, res, next) => {
+  try {
+    const all = await getAllCustomers();
+    res.json(all);
+  } catch (err) {
+    err.statusCode = 500;
+    err.message = `Error while fetching customers: ${err.message}`;
+    next(err);
+  }
+});
+
+// GET customer by ID
+router.get('/:customerID', async (req, res, next) => {
   try {
     const { customerID } = req.params;
-    res.json(await customer.deleteCustomer(customerID));
+    const cust = await getCustomer(customerID);
+    res.json(cust);
   } catch (err) {
-    res.status(500).json({ error: `Error while deleting customer: ${err.message}` });
+    err.statusCode = 500;
+    err.message = `Error while fetching customer: ${err.message}`;
     next(err);
   }
 });
 
-/* GET customer by customerID. */
-router.get('/:customerID', async function(req, res, next) {
+// PUT update customer by ID
+router.put('/:customerID', async (req, res, next) => {
   try {
     const { customerID } = req.params;
-    res.json(await customer.getCustomer(customerID));
+    console.log(`PUT /customer/${customerID} payload:`, req.body);
+    const updated = await updateCustomer(customerID, req.body);
+    res.json(updated);
   } catch (err) {
-    res.status(500).json({ error: `Error while getting customer: ${err.message}` });
+    err.statusCode = 500;
+    err.message = `Error while updating customer: ${err.message}`;
     next(err);
   }
 });
 
-/* PUT update customer by customerID. */
-router.put('/:customerID', async function(req, res, next) {
+// DELETE customer by ID
+router.delete('/:customerID', async (req, res, next) => {
   try {
     const { customerID } = req.params;
-    const customerData = req.body;
-    res.json(await customer.updateCustomer(customerID, customerData));
+    const deleted = await deleteCustomer(customerID);
+    res.json(deleted);
   } catch (err) {
-    res.status(500).json({ error: `Error while updating customer: ${err.message}` });
+    err.statusCode = 500;
+    err.message = `Error while deleting customer: ${err.message}`;
     next(err);
   }
 });
 
-/* GET all customers. */
-router.get('/', async function(req, res, next) {
+// In routes/customer.js
+router.post('/validate', async (req, res, next) => {
   try {
-    res.json(await customer.getAllCustomers());
+    await validateCustomer(req.body);
+    res.status(200).json({ valid: true });
   } catch (err) {
-    res.status(500).json({ error: `Error while getting all customers: ${err.message}` });
+    err.statusCode = 409; // Conflict
+    err.message = err.message;
     next(err);
   }
 });
+
 
 module.exports = router;
