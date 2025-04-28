@@ -112,7 +112,7 @@ async function authenticateCustomer({ username, password }) {
   return user;
 }
 
-async function validateCustomer(input) {
+async function validateCustomer(input, excludeID = null) {
   const { username, email, phone } = input;
   let sql, params, fieldName;
   if (username) {
@@ -128,9 +128,13 @@ async function validateCustomer(input) {
     sql = 'SELECT 1 FROM customer WHERE phone_number = ?';
     params = [phone.trim()];
   } else {
-    // nothing to validate
     return { valid: true };
   }
+  // If  editing an existing user, ignore their record
+    if (excludeID) {
+      sql += ' AND customer_id <> ?';
+      params.push(excludeID);
+    }
 
   console.log(`validateCustomer SQL: ${sql}`, params);
   const result = await db.query(sql, params);
@@ -153,9 +157,7 @@ async function getCustomer(customerID) {
       dob,
       gender,
       phone_number AS phone,
-      points,
-      created_at AS createdAt,
-      updated_at AS updatedAt
+      points
     FROM customer
     WHERE customer_id = ?
   `;
@@ -190,9 +192,13 @@ async function updateCustomer(customerID, customerData) {
       let val = customerData[key];
       if (key === 'dob' && typeof val === 'string') {
         const mdyMatch = val.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-        if (mdyMatch) {
-          const [, m, d, y] = mdyMatch;
+          const mdy = val.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        if (mdy) {
+          const [, m, d, y] = mdy;
           val = `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+        } else if (val.includes('T')) {
+          // ISO  → take only the date part
+          val = val.split('T')[0];          // '2025-04-15'
         }
       }
       fields.push(`${mapping[key]} = ?`);
@@ -209,10 +215,20 @@ async function updateCustomer(customerID, customerData) {
   values.push(customerID);
   console.log('Executing SQL:', sql.trim(), values);
 
-  try {
-    const result = await db.query(sql, values);
-    const affectedRows = result.affectedRows !== undefined ? result.affectedRows : (Array.isArray(result) && result[0]?.affectedRows) || 0;
-    return { affectedRows };
+ try { 
+const result = await db.query(sql, values);
+const affectedRows =
+result.affectedRows !== undefined 
+? result.affectedRows
+        : (Array.isArray(result) && result[0]?.affectedRows) || 0; 
+ 
+   if (affectedRows === 0) { 
+      throw new Error('No rows updated'); 
+    } 
+ 
+    /* --- fetch the fresh row so the client stays in sync --- */ 
+    const updated = await getCustomer(customerID); 
+    return updated;   
   } catch (err) {
     console.error('updateCustomer failed:', err.message);
     throw new Error(`updateCustomer error: ${err.sqlMessage || err.message}`);
@@ -230,9 +246,7 @@ async function getAllCustomers() {
       dob,
       gender,
       phone_number AS phone,
-      points,
-      created_at AS createdAt,
-      updated_at AS updatedAt
+      points
     FROM customer
   `;
   console.log('Executing SQL:', sql.trim());

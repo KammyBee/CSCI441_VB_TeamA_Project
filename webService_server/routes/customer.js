@@ -66,9 +66,11 @@ router.put('/:customerID', async (req, res, next) => {
   try {
     const { customerID } = req.params;
     console.log(`PUT /customer/${customerID} payload:`, req.body);
+
     const updated = await updateCustomer(customerID, req.body);
-    res.json(updated);
+    res.json(updated); 
   } catch (err) {
+    if (err.code === 'ER_DUP_ENTRY') err.statusCode = 409;
     err.statusCode = 500;
     err.message = `Error while updating customer: ${err.message}`;
     next(err);
@@ -91,11 +93,11 @@ router.delete('/:customerID', async (req, res, next) => {
 // In routes/customer.js
 router.post('/validate', async (req, res, next) => {
   try {
-    await validateCustomer(req.body);
+    const { customerID, ...field } = req.body;
+    await validateCustomer(field, customerID);
     res.status(200).json({ valid: true });
   } catch (err) {
-    err.statusCode = 409; // Conflict
-    err.message = err.message;
+    err.statusCode = 409; 
     next(err);
   }
 });

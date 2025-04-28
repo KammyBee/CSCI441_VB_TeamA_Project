@@ -13,6 +13,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 3100;
+const path = require('path'); 
 
 const customerRouter = require("./routes/customer");
 const employeeRouter = require("./routes/employee");
@@ -69,7 +70,24 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json({ message: err.message });
   return;
 });
-app.listen(port, () => {
+app.use('/dist', express.static(path.join(__dirname, '../dist')));
+// If you have images/css under `views/customerComponents` or `/assets`, serve them too:
+app.use('/assets', express.static(path.join(__dirname, './assets/logo.png')));
+app.use('/css',    express.static(path.join(__dirname, './css')));
+// 2. Serve your customer portal views
+app.get('/customer/:page?', (req, res) => {
+  // default to login page
+  const page = req.params.page || 'customerLoginPage';
+  res.sendFile(path.join(__dirname, '../views/customerComponents', `${page}.html`));
+});
+
+// 3. Fallback—redirect everything else to the customer portal
+app.get('*', (req, res) => res.redirect('/customer'));
+
+// 4. Start the server
+return app.listen(port, () => {
   console.log(`Server listening at port: ${port}`);
 });
+
+
 
