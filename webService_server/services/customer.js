@@ -259,29 +259,58 @@ async function getAllCustomers() {
   }
 }
 
+async function deleteReservation(reservationID) {
+  const sql = 'DELETE FROM reservation WHERE reservation_id = ?';
+  await db.query(sql, [reservationID]);
+  return { reservationID };
+}
+
 async function addReservation(data) {
   const { customer_id, reserved_for, group_size, special_event } = data;
-  const sql = `
-    INSERT INTO reservation (
-      customer_id as customerID,
-      reserved_for,
-      group_size,
-      special_event
-    ) VALUES (?, ?, ?, ?)
-  `;
-  const params = [customer_id, reserved_for, group_size, special_event];
-  console.log('addReservation SQL:', sql.trim(), params);
+  // Insert—let MySQL fill status (default 'Active') and created_at (DEFAULT CURRENT_TIMESTAMP)
+  const insertSql = `
+  INSERT INTO reservation (
+    customer_id,
+    reserved_for,
+    group_size,
+    special_event,
+    status
+  ) VALUES (?, ?, ?, ?, ?)
+`;
+const params = [
+  customer_id,
+  reserved_for,
+  group_size,
+  special_event,
+  'Active'
+];
+await db.query(insertSql, params);
+  console.log('addReservation SQL:', insertSql.trim(), params);
   try {
-    const result = await db.query(sql, params);
-    const insertId = result.insertId !== undefined
-      ? result.insertId
-      : (Array.isArray(result) && result[0]?.insertId) || null;
-    // Fetch the inserted row for response
-    const [row] = await db.query(
-      `SELECT * FROM reservation WHERE reservation_id = ?`,
-      [insertId]
-    );
-    return Array.isArray(row) ? row[0] : row;
+    // run the insert
+    const result = await db.query(insertSql, params);
+    // grab the new ID
+    const insertId =
+      result.insertId ??
+      (Array.isArray(result) && result[0]?.insertId) ??
+      null;
+
+    // now fetch it back including status & timestamp
+    const selectSql = `
+      SELECT
+        reservation_id   AS reservationID,
+        customer_id      AS customerID,
+        reserved_for     AS reservedFor,
+        group_size       AS groupSize,
+        special_event    AS specialEvent,
+        status,
+        createdAt
+      FROM reservation
+      WHERE reservation_id = ?
+    `;
+    const rows = await db.query(selectSql, [insertId]);
+    const row = Array.isArray(rows[0]) ? rows[0][0] : rows[0];
+    return row;
   } catch (err) {
     console.error('addReservation failed:', err.message || err.sqlMessage);
     throw new Error(`addReservation error: ${err.message || err.sqlMessage}`);
@@ -300,7 +329,9 @@ async function getReservationsByCustomer(customerID) {
     customer_id       AS customerID,
     reserved_for      AS reservedFor,
     group_size        AS groupSize,
-    special_event     AS specialEvent
+    special_event     AS specialEvent,
+    createdAt,
+    status
   FROM reservation
   WHERE customer_id = ?
   ORDER BY reserved_for DESC
@@ -325,4 +356,5 @@ module.exports = {
   validateCustomer,
   addReservation,
   getReservationsByCustomer,
+  deleteReservation
 };

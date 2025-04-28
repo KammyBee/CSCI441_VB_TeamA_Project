@@ -10,18 +10,39 @@ const {
   validateCustomer,
   addReservation,
   getReservationsByCustomer,
+  deleteReservation
+
 } = require('../services/customer');
 
 // 1) Reservation endpoints first
 // POST new reservation
 router.post('/reservation', async (req, res, next) => {
   try {
-    console.log('POST /customer/reservation payload:', req.body);
-    const created = await addReservation(req.body);
+    // Accept either key name:
+    const cid = req.body.customer_id ?? req.body.customerID;
+    const { reserved_for, group_size, special_event } = req.body;
+    const created = await addReservation({
+      customer_id: cid,
+      reserved_for, 
+      group_size,
+      special_event
+    });
     res.json(created);
+  } catch (err) { /* … */ }
+});
+router.delete('/reservation/:reservationID', async (req, res, next) => {
+  try {
+    const { reservationID } = req.params;
+    console.log('DELETE /customer/reservation/', reservationID);
+    // Soft-delete: mark status=Closed
+    const sql = `
+      UPDATE reservation
+      SET status = 'Closed'
+      WHERE reservation_id = ?
+    `;
+    await db.query(sql, [reservationID]);
+    res.json({ success: true });
   } catch (err) {
-    err.statusCode = 400;
-    err.message = `Error while creating reservation: ${err.message}`;
     next(err);
   }
 });

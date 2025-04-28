@@ -42,7 +42,7 @@ export default function ReservationView({ user }) {
       const sqlDateTime = form.reserved_for.replace('T', ' ') + ':00';
       const payload = {
         customer_id: user.customerID,
-        reserved_for: sqlDateTime || null,
+        reserved_for: sqlDateTime,
         group_size: form.group_size,
         special_event: form.special_event || null
       };
@@ -53,9 +53,20 @@ export default function ReservationView({ user }) {
         body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error(res.statusText || 'Create failed');
-      const newRes = await res.json();
+      const raw = await res.json();
+        // normalize the field names:
+        const newRes = {
+          reservationID: raw.reservationID ?? raw.reservation_id,
+          customerID:   raw.customerID   ?? raw.customer_id,
+          reservedFor:  raw.reservedFor  ?? raw.reserved_for,
+          groupSize:    raw.groupSize    ?? raw.group_size,
+          specialEvent: raw.specialEvent ?? raw.special_event,
+          status:       raw.status       ?? 'Active',
+          createdAt:    raw.createdAt    ?? raw.created_at
+        };
+
       setReservations(r => [newRes, ...r]);
-      setForm({ reserved_for: '', group_size: 1, special_event: ''});
+      setForm({ reserved_for: '', group_size: 1, special_event: '' });
       setError(null);
     } catch (err) {
       alert(`Error while creating reservation: ${err.message}`);
@@ -121,16 +132,18 @@ export default function ReservationView({ user }) {
               <th>Group Size</th>
               <th>Special Event</th>
               <th>Status</th>
+              <th>Created At</th>
             </tr>
           </thead>
           <tbody>
-            {reservations.map((r, i) => (
-              <tr key={r.reservationID || i}>
-                <td>{i + 1}</td>
+            {reservations.map((r) => (
+              <tr key={r.reservationID}>
+                <td>{reservations.indexOf(r) + 1}</td>
                 <td>{new Date(r.reservedFor).toLocaleString()}</td>
                 <td>{r.groupSize}</td>
                 <td>{r.specialEvent || 'None'}</td>
                 <td>{r.status || 'Active'}</td>
+                <td>{new Date(r.createdAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
