@@ -61,7 +61,7 @@ export default function ReservationView({ user }) {
           reservedFor:  raw.reservedFor  ?? raw.reserved_for,
           groupSize:    raw.groupSize    ?? raw.group_size,
           specialEvent: raw.specialEvent ?? raw.special_event,
-          status:       raw.status       ?? 'Active',
+          status:       raw.status       ?? 'Closed',
           createdAt:    raw.createdAt    ?? raw.created_at
         };
 

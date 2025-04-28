@@ -10,10 +10,21 @@ const {
   validateCustomer,
   addReservation,
   getReservationsByCustomer,
-  deleteReservation
 
 } = require('../services/customer');
 
+// POST /customer/validate
+router.post('/validate', async (req, res) => {
+  const { customerID, ...field } = req.body;
+  try {
+    await validateCustomer(field, customerID);
+    // success → return valid: true
+    res.status(200).json({ valid: true });
+  } catch (err) {
+    // conflict → return JSON error message
+    res.status(409).json({ error: err.message });
+  }
+});
 // 1) Reservation endpoints first
 // POST new reservation
 router.post('/reservation', async (req, res, next) => {
@@ -144,16 +155,6 @@ router.delete('/:customerID', async (req, res, next) => {
   }
 });
 
-// POST validate (username/email/phone)
-router.post('/validate', async (req, res, next) => {
-  try {
-    const { customerID, ...field } = req.body;
-    await validateCustomer(field, customerID);
-    res.status(200).json({ valid: true });
-  } catch (err) {
-    err.statusCode = 409;
-    next(err);
-  }
-});
+
 
 module.exports = router;

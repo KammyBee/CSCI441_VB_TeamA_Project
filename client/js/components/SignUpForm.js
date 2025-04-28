@@ -18,17 +18,18 @@ export default function SignUpForm({ onSuccess, onSwitch }) {
     setForm(f => ({ ...f, [name]: value }));
     setErrors(err => ({ ...err, [name]: '' }));
   };  
-  const validateField = async field => {
+  const validateField = async (field) => {
     const value = form[field]?.trim();
     if (!value) return;
+  
     try {
       const res = await fetch('http://localhost:3100/customer/validate', {
-        method: 'POST',
+        method: 'POST',                   // <--- Must be POST
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ [field]: value })
       });
       const data = await res.json();
-      if (res.status === 200) {
+      if (res.ok) {
         setErrors(err => ({ ...err, [field]: '' }));
       } else if (res.status === 409) {
         setErrors(err => ({ ...err, [field]: data.error || data.message }));

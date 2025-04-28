@@ -39,6 +39,7 @@ export default function SignUpForm({
     try {
       const res = await fetch('http://localhost:3100/customer/validate', {
         method: 'POST',
+        // <--- Must be POST
         headers: {
           'Content-Type': 'application/json'
         },
@@ -47,7 +48,7 @@ export default function SignUpForm({
         })
       });
       const data = await res.json();
-      if (res.status === 200) {
+      if (res.ok) {
         setErrors(err => ({
           ...err,
           [field]: ''
