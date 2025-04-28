@@ -5,7 +5,7 @@ import OffcanvasMenu from './components/OffcanvasMenu.js';
 import LoginForm from './components/LoginForm.js';
 import SignUpForm from './components/SignUpForm.js';
 import PersonalInfoView from './components/PersonalInfoView.js';
-//import ReservationView from './components/ReservationView.js';
+import ReservationView from './components/ReservationView.js';
 //import MenuView from './components/MenuView.js';
 //import RewardsView from './components/RewardsView.js';
 import Dashboard from './components/Dashboard.js';
@@ -40,7 +40,7 @@ function App() {
       : {
           dashboard: React.createElement(Dashboard, { user: user }),
           personalInfo: React.createElement(PersonalInfoView, { user: user, onUpdate: setUser }),
-          //reservation: React.createElement(ReservationView),
+          reservation: React.createElement(ReservationView, {user: user}),
           //menu: React.createElement(MenuView),
           //rewards: React.createElement(RewardsView)
         }[mode]

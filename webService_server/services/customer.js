@@ -259,6 +259,62 @@ async function getAllCustomers() {
   }
 }
 
+async function addReservation(data) {
+  const { customer_id, reserved_for, group_size, special_event } = data;
+  const sql = `
+    INSERT INTO reservation (
+      customer_id as customerID,
+      reserved_for,
+      group_size,
+      special_event
+    ) VALUES (?, ?, ?, ?)
+  `;
+  const params = [customer_id, reserved_for, group_size, special_event];
+  console.log('addReservation SQL:', sql.trim(), params);
+  try {
+    const result = await db.query(sql, params);
+    const insertId = result.insertId !== undefined
+      ? result.insertId
+      : (Array.isArray(result) && result[0]?.insertId) || null;
+    // Fetch the inserted row for response
+    const [row] = await db.query(
+      `SELECT * FROM reservation WHERE reservation_id = ?`,
+      [insertId]
+    );
+    return Array.isArray(row) ? row[0] : row;
+  } catch (err) {
+    console.error('addReservation failed:', err.message || err.sqlMessage);
+    throw new Error(`addReservation error: ${err.message || err.sqlMessage}`);
+  }
+}
+
+/**
+ * Get all reservations for a given customer.
+ * @param {number} customerID
+ * @returns {Promise<Array>} list of reservation rows
+ */
+async function getReservationsByCustomer(customerID) {
+  const sql = `
+  SELECT
+    reservation_id    AS reservationID,
+    customer_id       AS customerID,
+    reserved_for      AS reservedFor,
+    group_size        AS groupSize,
+    special_event     AS specialEvent
+  FROM reservation
+  WHERE customer_id = ?
+  ORDER BY reserved_for DESC
+`;
+  //console.log('getReservationsByCustomer SQL:', sql.trim(), [customerID]);
+  try {
+    const rows = await db.query(sql, [customerID]);
+    return Array.isArray(rows[0]) ? rows[0] : rows;
+  } catch (err) {
+    console.error('getReservationsByCustomer failed:', err.message || err.sqlMessage);
+    throw new Error(`getReservationsByCustomer error: ${err.message || err.sqlMessage}`);
+  }
+}
+
 module.exports = {
   addCustomer,
   deleteCustomer,
@@ -266,5 +322,7 @@ module.exports = {
   updateCustomer,
   getAllCustomers,
   authenticateCustomer,
-  validateCustomer
+  validateCustomer,
+  addReservation,
+  getReservationsByCustomer,
 };

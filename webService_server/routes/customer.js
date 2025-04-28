@@ -8,8 +8,42 @@ const {
   updateCustomer,
   getAllCustomers,
   validateCustomer,
+  addReservation,
+  getReservationsByCustomer,
 } = require('../services/customer');
 
+// 1) Reservation endpoints first
+// POST new reservation
+router.post('/reservation', async (req, res, next) => {
+  try {
+    console.log('POST /customer/reservation payload:', req.body);
+    const created = await addReservation(req.body);
+    res.json(created);
+  } catch (err) {
+    err.statusCode = 400;
+    err.message = `Error while creating reservation: ${err.message}`;
+    next(err);
+  }
+});
+
+// GET all reservations for a customer
+router.get('/reservations', async (req, res, next) => {
+  try {
+    console.log('🔍 GET /customer/reservations called with:', req.query);
+    const customerID = req.query.customerID ?? req.query.customer_id;
+    if (!customerID) {
+      return res.status(400).json({ message: 'customerID query parameter is required' });
+    }
+    const list = await getReservationsByCustomer(customerID);
+    console.log(`Found ${list.length} reservation(s)`);
+    res.json(list);
+  } catch (err) {
+    console.error('Error in GET /customer/reservations:', err.message);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// 2) Other customer routes
 // POST new customer (signup)
 router.post('/', async (req, res, next) => {
   try {
@@ -66,9 +100,8 @@ router.put('/:customerID', async (req, res, next) => {
   try {
     const { customerID } = req.params;
     console.log(`PUT /customer/${customerID} payload:`, req.body);
-
     const updated = await updateCustomer(customerID, req.body);
-    res.json(updated); 
+    res.json(updated);
   } catch (err) {
     if (err.code === 'ER_DUP_ENTRY') err.statusCode = 409;
     err.statusCode = 500;
@@ -90,17 +123,16 @@ router.delete('/:customerID', async (req, res, next) => {
   }
 });
 
-// In routes/customer.js
+// POST validate (username/email/phone)
 router.post('/validate', async (req, res, next) => {
   try {
     const { customerID, ...field } = req.body;
     await validateCustomer(field, customerID);
     res.status(200).json({ valid: true });
   } catch (err) {
-    err.statusCode = 409; 
+    err.statusCode = 409;
     next(err);
   }
 });
-
 
 module.exports = router;

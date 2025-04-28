@@ -24,7 +24,7 @@ const menu_itemRouter = require("./routes/menu_item");
 const order_itemRouter = require("./routes/order_item");
 const ordersRouter = require("./routes/orders");
 const payment_methodsRouter = require("./routes/payment_methods");
-const reservationRouter = require("./routes/reservation");
+//const reservationRouter = require("./routes/reservation");
 const restaurant_tableRouter = require("./routes/restaurant_table");
 const time_logRouter = require("./routes/time_log");
 const transaction_itemRouter = require("./routes/transaction_item");
@@ -53,7 +53,7 @@ app.use("/menu_item", menu_itemRouter);
 app.use("/order_item", order_itemRouter);
 app.use("/orders", ordersRouter);
 app.use("/payment_methods", payment_methodsRouter);
-app.use("/reservation", reservationRouter);
+//app.use("/reservation", reservationRouter);
 app.use("/restaurant_table", restaurant_tableRouter);
 app.use("/time_log", time_logRouter);
 app.use("/transaction_item", transaction_itemRouter);
@@ -63,26 +63,7 @@ app.use("/shiftSchedule", shiftScheduleRouter);
 
 
 
-/* Error handler middleware */
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  console.error(err.message, err.stack);
-  res.status(statusCode).json({ message: err.message });
-  return;
-});
-app.use('/dist', express.static(path.join(__dirname, '../dist')));
-// If you have images/css under `views/customerComponents` or `/assets`, serve them too:
-app.use('/assets', express.static(path.join(__dirname, './assets/logo.png')));
-app.use('/css',    express.static(path.join(__dirname, './css')));
-// 2. Serve your customer portal views
-app.get('/customer/:page?', (req, res) => {
-  // default to login page
-  const page = req.params.page || 'customerLoginPage';
-  res.sendFile(path.join(__dirname, '../views/customerComponents', `${page}.html`));
-});
 
-// 3. Fallback—redirect everything else to the customer portal
-app.get('*', (req, res) => res.redirect('/customer'));
 
 // 4. Start the server
 return app.listen(port, () => {
