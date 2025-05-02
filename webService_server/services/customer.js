@@ -346,6 +346,86 @@ async function getReservationsByCustomer(customerID) {
   }
 }
 
+async function createSurvey(surveyData) {
+  const {
+    customerID,
+    food_score = 0,
+    service_score = 0,
+    atmosphere_score = 0,
+    value_score = 0,
+    cleanliness_score = 0,
+    efficiency_score = 0,
+    overall_score,
+    feedback = null
+  } = surveyData;
+
+  const sql = `
+    INSERT INTO survey (
+      customer_id, food_score, service_score, atmosphere_score,
+      value_score, cleanliness_score, efficiency_score,
+      overall_score, feedback
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+  const params = [
+    customerID,
+    food_score,
+    service_score,
+    atmosphere_score,
+    value_score,
+    cleanliness_score,
+    efficiency_score,
+    overall_score,
+    feedback
+  ];
+
+  // Use db.query instead of db.execute
+  const [result] = await db.query(sql, params);
+  return {
+    surveyID: result.insertId,
+    customerID,
+    food_score,
+    service_score,
+    atmosphere_score,
+    value_score,
+    cleanliness_score,
+    efficiency_score,
+    overall_score,
+    feedback
+  };
+}
+
+/**
+ * Fetches the most recent survey for a given customer.
+ * @param {number|string} customerID
+ * @returns {Promise<Object|null>} The latest survey record or null
+ */
+async function getSurveyByCustomer(customerID) {
+  const sql = `
+    SELECT
+      survey_id    AS surveyID,
+      customer_id  AS customerID,
+      food_score,
+      service_score,
+      atmosphere_score,
+      value_score,
+      cleanliness_score,
+      efficiency_score,
+      overall_score,
+      feedback
+    FROM survey
+    WHERE customer_id = ?
+    ORDER BY survey_id DESC
+    LIMIT 1
+  `;
+
+  // Use db.query instead of db.execute
+  const [rows] = await db.query(sql, [customerID]);
+  // rows may be nested array depending on driver; normalize
+  const list = Array.isArray(rows[0]) ? rows[0] : rows;
+  return list[0] || null;
+}
+
+
 module.exports = {
   addCustomer,
   deleteCustomer,
@@ -356,5 +436,7 @@ module.exports = {
   validateCustomer,
   addReservation,
   getReservationsByCustomer,
-  deleteReservation
+  deleteReservation,
+  createSurvey,
+  getSurveyByCustomer
 };

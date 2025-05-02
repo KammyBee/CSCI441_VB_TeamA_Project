@@ -6,9 +6,8 @@ import LoginForm from './components/LoginForm.js';
 import SignUpForm from './components/SignUpForm.js';
 import PersonalInfoView from './components/PersonalInfoView.js';
 import ReservationView from './components/ReservationView.js';
-//import MenuView from './components/MenuView.js';
-//import RewardsView from './components/RewardsView.js';
 import Dashboard from './components/Dashboard.js';
+import SurveyView from './components/SurveyView.js';
 
 function App() {
   const [mode, setMode] = useState('login');
@@ -38,13 +37,14 @@ function App() {
         ? React.createElement(LoginForm, { onSuccess: (u) => { setUser(u); setMode('dashboard'); }, onSwitch: () => setMode('signup') })
         : React.createElement(SignUpForm, { onSuccess: () => setMode('login'), onSwitch: () => setMode('login') })
       : {
-          dashboard: React.createElement(Dashboard, { user: user }),
+          dashboard: React.createElement(Dashboard, { user: user, onNavigate: handleNavigate}),
           personalInfo: React.createElement(PersonalInfoView, { user: user, onUpdate: setUser }),
-          reservation: React.createElement(ReservationView, {user: user}),
-          //menu: React.createElement(MenuView),
-          //rewards: React.createElement(RewardsView)
+          reservation: React.createElement(ReservationView, { user: user }),
+          survey: React.createElement(SurveyView, { user: user }),
         }[mode]
   );
 }
 
-ReactDOM.createRoot(document.getElementById('react-root')).render(React.createElement(App));
+ReactDOM.createRoot(document.getElementById('react-root')).render(
+  React.createElement(App)
+);

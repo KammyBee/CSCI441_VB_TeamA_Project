@@ -39,6 +39,10 @@ export default function OffcanvasMenu({
     "data-bs-dismiss": "offcanvas"
   }, "Rewards")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-link text-white",
+    onClick: () => onNavigate('survey'),
+    "data-bs-dismiss": "offcanvas"
+  }, "Survey")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-link text-white",
     onClick: onLogout,
     "data-bs-dismiss": "offcanvas"
   }, "Logout")))));

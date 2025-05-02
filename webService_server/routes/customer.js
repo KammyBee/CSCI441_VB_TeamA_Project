@@ -10,8 +10,52 @@ const {
   validateCustomer,
   addReservation,
   getReservationsByCustomer,
+  createSurvey,
+  getSurveyByCustomer
 
 } = require('../services/customer');
+
+router.post('/survey', async (req, res) => {
+  const payload = {
+    customerID:       req.body.customerID,
+    food_score:       req.body.food_score,
+    service_score:    req.body.service_score,
+    atmosphere_score: req.body.atmosphere_score,
+    value_score:      req.body.value_score,
+    cleanliness_score:req.body.cleanliness_score,
+    efficiency_score: req.body.efficiency_score,
+    overall_score:    req.body.overall_score,
+    feedback:         req.body.feedback
+  };
+
+  if (payload.customerID == null || payload.overall_score == null) {
+    return res.status(400).json({ error: 'customerID & overall_score required' });
+  }
+
+  try {
+    const survey = await createSurvey(payload);
+    res.status(201).json(survey);
+  } catch (err) {
+    console.error('Error inserting survey:', err);
+    res.status(500).json({ error: 'Could not save survey' });
+  }
+});
+
+// GET the latest survey for a given customer
+router.get('/survey', async (req, res) => {
+  const customerID = req.query.customerID;
+  if (!customerID) {
+    return res.status(400).json({ error: 'customerID query param required' });
+  }
+
+  try {
+    const survey = await getSurveyByCustomer(customerID);
+    res.json(survey);
+  } catch (err) {
+    console.error('Error fetching survey:', err);
+    res.status(500).json({ error: 'Could not load survey' });
+  }
+});
 
 // POST /customer/validate
 router.post('/validate', async (req, res) => {
