@@ -8,6 +8,7 @@ import PersonalInfoView from './components/PersonalInfoView.js';
 import ReservationView from './components/ReservationView.js';
 import Dashboard from './components/Dashboard.js';
 import SurveyView from './components/SurveyView.js';
+import RewardView from './components/RewardView.js';
 
 function App() {
   const [mode, setMode] = useState('login');
@@ -41,6 +42,7 @@ function App() {
           personalInfo: React.createElement(PersonalInfoView, { user: user, onUpdate: setUser }),
           reservation: React.createElement(ReservationView, { user: user }),
           survey: React.createElement(SurveyView, { user: user }),
+          rewards: React.createElement(RewardView, { user: user, onUpdate: setUser }),
         }[mode]
   );
 }
