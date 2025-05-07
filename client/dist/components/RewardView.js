@@ -2,87 +2,108 @@ import React, { useState } from 'react';
 const rewards = [{
   id: 1,
   name: "Coca-Cola",
-  cost: 30
+  cost: 30,
+  description: "Coke"
 }, {
   id: 2,
   name: "Sprite",
-  cost: 30
+  cost: 30,
+  description: "Sprite"
 }, {
   id: 3,
   name: "Juice",
-  cost: 30
+  cost: 30,
+  description: "Experience the vibrant zest of sunshine in a glass with orange juice or apple juice, a pure burst of citrus joy that refreshes with every sip."
 }, {
   id: 4,
   name: "Lemonade",
-  cost: 30
+  cost: 30,
+  description: "Sip on classic lemonade or strawberry lemonade, a timeless refreshment blending freshly squeezed lemons and pure sweetness in every gulp."
 }, {
   id: 5,
   name: "Cheesy Galaxy Rockets",
-  cost: 40
+  cost: 40,
+  description: "Crispy mozzarella sticks served with a side of \"cosmic\" marinara dipping sauce. These cheesy delights are perfect for little ones with big imaginations."
 }, {
   id: 6,
   name: "Dino-nugget Delight",
-  cost: 40
+  cost: 40,
+  description: "Crunchy dinosaur-shaped chicken nuggets accompanied by \"prehistoric\" sweet potato fries and a side of veggie sticks. A playful and tasty trip back in time."
 }, {
   id: 7,
   name: "Rainbow Unicorn Pasta",
-  cost: 40
+  cost: 40,
+  description: "Colorful pasta twists, adorned with star-shaped mini meatballs and a sprinkle of edible glitter. A magical and delightful dish for the young ones."
 }, {
   id: 8,
   name: "Fries",
-  cost: 50
+  cost: 50,
+  description: "French Fries"
 }, {
   id: 9,
   name: "Vegetable Soup",
-  cost: 80
+  cost: 80,
+  description: "A hearty blend of seasonal vegetables, simmered in a rich vegetable broth, served with a side of artisan bread."
 }, {
   id: 9,
   name: "Pasta",
-  cost: 90
+  cost: 90,
+  description: "Spaghetti with marinara sauce"
 }, {
   id: 10,
   name: "Burger",
-  cost: 100
+  cost: 100,
+  description: "Delicious beef burger with lettuce and tomato"
 }, {
   id: 11,
   name: "Seasonal Salad",
-  cost: 130
+  cost: 130,
+  description: "Fresh greens, heirloom tomatoes, and house-made vinaigrette."
 }, {
   id: 12,
   name: "Artisan Cheese Board",
-  cost: 130
+  cost: 130,
+  description: "A selection of local cheeses, served with fresh fruit, nuts, and honeycomb."
 }, {
   id: 13,
   name: "Pizza",
-  cost: 140
+  cost: 140,
+  description: "Cheese and tomato pizza"
 }, {
   id: 14,
   name: "Rustic Beet Salad",
-  cost: 140
+  cost: 140,
+  description: "Roasted beets, goat cheese, walnuts, and arugula, drizzled with a balsamic reduction."
 }, {
   id: 15,
   name: "Roasted Vegetable Bowl",
-  cost: 150
+  cost: 150,
+  description: "A nutritious blend of quinoa, roasted seasonal vegetables, and a light lemon dressing."
 }, {
   id: 16,
   name: "Farmhouse Burger",
-  cost: 160
+  cost: 160,
+  description: "Grass-fed beef patty, local cheddar, lettuce, tomato, and house sauce, served with hand-cut fries."
 }, {
   id: 17,
   name: "Herb-Crusted Chicken",
-  cost: 170
+  cost: 170,
+  description: "Tender chicken breast with a savory herb crust, served with mashed potatoes."
 }, {
   id: 18,
   name: "Wild Mushroom Risotto",
-  cost: 200
+  cost: 200,
+  description: "Creamy Arborio rice cooked with wild mushrooms, finished with Parmesan cheese and truffle oil."
 }, {
   id: 19,
   name: "Braised Short Ribs",
-  cost: 240
+  cost: 240,
+  description: "Tender short ribs, braised in a red wine reduction, served with garlic mashed potatoes."
 }, {
   id: 20,
   name: "Grilled Salmon",
-  cost: 250
+  cost: 250,
+  description: "Wild-caught salmon served with roasted vegetables and lemon butter sauce."
 }];
 export default function RewardView({
   user,
@@ -90,6 +111,7 @@ export default function RewardView({
 }) {
   const [popupMessage, setPopupMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [expanded, setExpanded] = useState({});
   const handleRedeem = async reward => {
     if (user.points >= reward.cost) {
       const newPoints = user.points - reward.cost;
@@ -103,11 +125,9 @@ export default function RewardView({
             points: newPoints
           })
         });
-        if (!response.ok) {
-          throw new Error('Failed to update points');
-        }
+        if (!response.ok) throw new Error('Failed to update points');
         const updatedUser = await response.json();
-        onUpdate(updatedUser); // update parent with new user data
+        onUpdate(updatedUser);
         setPopupMessage(`You redeemed: ${reward.name}`);
         setShowModal(true);
       } catch (error) {
@@ -116,6 +136,12 @@ export default function RewardView({
     }
   };
   const closeModal = () => setShowModal(false);
+  const toggleExpand = id => {
+    setExpanded(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
   return /*#__PURE__*/React.createElement("div", {
     style: {
       color: 'black',
@@ -156,32 +182,60 @@ export default function RewardView({
       gap: '20px',
       flexWrap: 'wrap'
     }
-  }, rewards.map(reward => /*#__PURE__*/React.createElement("div", {
-    key: reward.id,
-    style: {
-      border: '1px solid #ccc',
-      borderRadius: '8px',
-      padding: '15px',
-      width: '200px',
-      textAlign: 'center',
-      color: 'black',
-      background: '#f9f9f9'
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '0 0 10px',
-      color: 'black',
-      fontWeight: 'bold'
-    }
-  }, reward.name), /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: 'black'
-    }
-  }, reward.cost, " points"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-success w-100",
-    onClick: () => handleRedeem(reward),
-    disabled: user.points < reward.cost
-  }, user.points >= reward.cost ? "Redeem" : "Not enough points")))), showModal && /*#__PURE__*/React.createElement("div", {
+  }, rewards.map(reward => {
+    const isExpanded = expanded[reward.id];
+    const needsTruncation = reward.description.length > 60;
+    const displayDesc = needsTruncation && !isExpanded ? reward.description.slice(0, 60) + '...' : reward.description;
+    return /*#__PURE__*/React.createElement("div", {
+      key: reward.id,
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        padding: '15px',
+        width: '220px',
+        textAlign: 'center',
+        color: 'black',
+        background: '#f9f9f9'
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontWeight: 'bold',
+        color: 'black'
+      }
+    }, reward.name), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontStyle: 'italic',
+        fontSize: '0.9em',
+        color: 'black'
+      }
+    }, displayDesc, needsTruncation && /*#__PURE__*/React.createElement("button", {
+      onClick: () => toggleExpand(reward.id),
+      style: {
+        fontSize: '0.8em',
+        color: '#007bff',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        paddingLeft: '4px'
+      }
+    }, isExpanded ? "Less" : "More")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: '0.9em',
+        fontWeight: 'bold',
+        color: 'black'
+      }
+    }, "(", reward.cost, " points)"), /*#__PURE__*/React.createElement("button", {
+      className: "btn btn-success w-100",
+      onClick: () => handleRedeem(reward),
+      disabled: user.points < reward.cost,
+      style: {
+        marginTop: 'auto'
+      }
+    }, user.points >= reward.cost ? "Redeem" : "Not enough points"));
+  })), showModal && /*#__PURE__*/React.createElement("div", {
     style: {
       position: 'fixed',
       top: 0,
