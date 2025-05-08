@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasty Bytes - Customer Portal Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/employee.css" />
+</head>
+<body class="bg-light text-white">
+  <div id="react-root"></div>
+
+  <!-- Load React and ReactDOM UMD builds -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Enable bare import specifiers via import map -->
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://jspm.dev/react",
+    "react-dom/client": "https://jspm.dev/react-dom/client"
+  }
+}
+</script>
+ <!-- Load Bootstrap JS bundle for Offcanvas -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+  <!-- Entry point as ES module (compiled output) -->
+  <script type="module" src="../../client/dist/App.js"></script>
+</body>
+</html>

@@ -77,6 +77,7 @@
             <li><a href="orderChecks.html">Orders</a></li>
             <li><a href="viewMenu2.html">Menu</a></li>
             <li><a href="serverinterface.html">Tables</a></li>
+            <li><a href="./customerComponents/customerLoginPage.html">Customer</a></li>
         </ul>
 
 </header>
@@ -183,6 +184,12 @@
   <script type="text/babel">
 
     function MyReactSection() {
+      // <div style={{ width: "150px", height: "150px", backgroundColor:"#333333", justifySelf:"center", border:"2px solid white", padding:"8px", marginTop:"10px"}}>
+      //             <div style={{fontWeight:"bold"}}>New Menu Items:</div>
+      //             <div>
+      //               Tuscan steak
+      //             </div>
+      //           </div>
       const [selectedTable, setSelectedTable] = React.useState(null);
       const [allTables, setAllTables] = React.useState([]);
 
@@ -410,8 +417,8 @@ function Section1Table({ s1Table, idx, onTableClick, allTables }) {
   return (
     <div
       style={{
-        height: "70px",
-        width: "100px",
+        height: "80px",
+        width: "120px",
         backgroundColor: "#333333",
         color: "white",
         // display: "flex",
@@ -497,8 +504,8 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
   return (
     <div
       style={{
-        height: "70px",
-        width: "100px",
+        height: "80px",
+        width: "120px",
         backgroundColor: "#333333",
         color: "white",
         // display: "flex",
@@ -700,19 +707,25 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
                 </div>
                 <div>
                   <select onChange={handleSelect} value={selectedEmp}>
+                      <option value="" >Select Employee</option>
                       {empArray.map((emp, index) => (
                         <option key={index}>{emp}</option>
                       ))}
                     </select>
                 </div>
                 <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-                <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", backgroundColor:"#333333", border:"2px solid white", padding:"5px"}}>
-                  <div style={{fontWeight:"bold"}}>Table Overview Details:</div>
-                  <p><strong>Table ID:</strong> <span id="selectedTableID">{tableData.tableID}</span></p>
-                  <p><strong>Status:</strong> {tableData.tableStatus}</p>
-                  <p><strong>Order ID: {orderID}</strong> {tableData.orderID}</p>
+                <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                  <div style={{backgroundColor:"#333333", border:"2px solid white",padding:"5px" }}>
+                    <div style={{fontWeight:"bold"}}>Table Overview Details:</div>
+                    <p><strong>Table ID:</strong> <span id="selectedTableID">{tableData.tableID}</span></p>
+                    <p><strong>Status:</strong> {tableData.tableStatus}</p>
+                    <p><strong>Order ID: {orderID}</strong> {tableData.orderID}</p>
+                  </div>
+
+
                 </div>
-                <div>
+
+                <div style={{display:"flex", height:"60px"}}>
                 {tableData.tableStatus == "available" &&<button
                   onClick={() => handleClick("Occupied", tableData.tableID)}
                   style={{
@@ -747,12 +760,7 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
                 </div>
                 </div>
                 <br/>
-                <div style={{ width: "150px", height: "150px", backgroundColor:"#333333", justifySelf:"right", border:"2px solid white"}}>
-                  <div style={{fontWeight:"bold"}}>New Menu Items:</div>
-                  <div>
-                    Tuscan steak
-                  </div>
-                </div>
+
                 <div style={{
                   display:"flex", width: "100%", justifyContent:"center"
                 }}>
@@ -761,12 +769,12 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
                 </div>
                 </div>
                 <br/>
-               { fullOrder[0]  &&<div style={{display:"flex", flexDirection:"column", width: "420px", height: "350px", backgroundColor:"#333333", justifySelf:"center", border:"2px solid white"}}>
+               { fullOrder[0]  &&<div style={{display:"flex", width: "420px", height: "100%", backgroundColor:"#333333", justifySelf:"center", border:"2px solid white"}}>
                   <div style={{display:"flex", justifySelf:"flex-start", fontWeight:"bold"}}>Items Ordered:</div>
                   <div style={{display:"flex", flexDirection:"column" }}>
                     {fullOrder.map((item, index) => (
                         <div style={{display:"flex", flexDirection:"row", width:"100%", justifyContent:"center", fontWeight:"bold"}} key={index}>
-                          <div style={{display:"flex", width:"50%", flexDirection:"row", justifyContent:"space-between", fontWeight:"bold"}}>
+                          <div style={{display:"flex", width:"100%", flexDirection:"row", justifyContent:"space-between", fontWeight:"bold"}}>
                             <div>{item.MenuItem}</div>
                             <div>Qty:{item.ItemQuantity}</div>
                           </div>
@@ -802,3 +810,6 @@ function Section3Table({ s3Table, idx, onTableClick, allTables }) {
 </body>
 
 </html>
+
+
+

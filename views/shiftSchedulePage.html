@@ -1,0 +1,39 @@
+<!-- // written by: Sokhna Khady -->
+<!-- // updated by: Bjarni Jonsson -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Checks</title>
+    <link rel="stylesheet" href="../css/employee.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="employeeHomePage.html"><img src="../assets/logo.png" alt="Tasty Bytes Logo"></a>
+            <ul class="nav-links">
+                <li><a href="employeeHomePage.html">Home</a></li>
+                <li><a href="managerHome.html">Functions</a></li>
+                <li><a href="orderChecks.html">Orders</a></li>
+                <li><a href="viewMenu2.html">Menu</a></li>
+                <li><a href="serverinterface.html">Tables</a></li>
+                <li><a href="shiftSchedulePage.html">Tables</a></li>
+                <li><a href="./customerComponents/customerLoginPage.html">Customer</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1 class="order-title">Schedule Shift</h1>
+    <div class="orders" id="orders">
+        <!-- Orders will be dynamically generated here -->
+
+        <!-- Loading spinner -->
+        <div id="loading" class="loading">
+            <img id="loading-image" class="loading-image" src="../assets/loading.gif" alt="Loading..." />
+        </div>
+    </div>
+
+    <script type="module" src="../js/orderCh.js"></script>
+</body>
+</html>
