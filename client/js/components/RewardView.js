@@ -28,10 +28,27 @@ export default function RewardView({ user, onUpdate }) {
   const [popupMessage, setPopupMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [expanded, setExpanded] = useState({});
+  const [redeemHistory, setRedeemHistory] = useState([]);
+
+  const generateOrderCode = () => {
+    const timestamp = Date.now().toString(36);
+    const randomPart = Math.random().toString(36).substring(2, 7);
+    return `ORD-${timestamp}-${randomPart}`.toUpperCase();
+  };
 
   const handleRedeem = async (reward) => {
     if (user.points >= reward.cost) {
       const newPoints = user.points - reward.cost;
+      const orderCode = generateOrderCode();
+      const redemptionRecord = {
+        customerID: user.customerID,
+        name: reward.name,
+        date: new Date().toLocaleString(),
+        cost: reward.cost,
+        code: orderCode
+      };
+      setRedeemHistory(prev => [...prev, redemptionRecord]);
+
 
       try {
         const response = await fetch(`http://localhost:3100/customer/${user.customerID}`, {
@@ -44,7 +61,10 @@ export default function RewardView({ user, onUpdate }) {
 
         const updatedUser = await response.json();
         onUpdate(updatedUser);
-        setPopupMessage(`You redeemed: ${reward.name}`);
+        setPopupMessage([
+          `You redeemed: ${reward.name}`,
+          `Order Code: ${orderCode}`
+        ]);
         setShowModal(true);
       } catch (error) {
         console.error('Redeem failed:', error.message);
@@ -68,7 +88,7 @@ export default function RewardView({ user, onUpdate }) {
         </div>
       </div>
       <br /><br />
-      <h3 style={{ color: 'black' }}>Redeemable Rewards:</h3>
+      <h3 style={{ color: 'black' }}>Redeemable Rewards</h3>
       <br />
       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
         {rewards.map((reward) => {
@@ -154,13 +174,46 @@ export default function RewardView({ user, onUpdate }) {
             color: 'black',
             boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
           }}>
-            <p style={{ color: 'black', fontWeight: 'bold'}}>{popupMessage}</p>
+            {Array.isArray(popupMessage) && (
+              popupMessage.map((line, index) => (
+                <p key={index} style={{ color: 'black', fontWeight: 'bold' }}>
+                  {line}
+                </p>
+              ))
+            ) }
             <button className="btn btn-success w-100" onClick={closeModal} style={{ marginTop: '15px' }}>
               Close
             </button>
           </div>
         </div>
       )}
+      {redeemHistory.length > 0 && (
+  <>
+    <br /><br />
+    <h3 style={{ color: 'black' }}>Redeem History</h3>
+    <br></br>
+    <table style={{ width: '100%', color: 'black', borderCollapse: 'collapse' }}>
+      <thead>
+        <tr style={{ backgroundColor: '#f9f9f9' }}>
+          <th style={{ textAlign: 'center', border: '1px solid #ccc', padding: '10px' }}>Reward</th>
+          <th style={{ textAlign: 'center', border: '1px solid #ccc', padding: '10px' }}>Points</th>
+          <th style={{ textAlign: 'center', border: '1px solid #ccc', padding: '10px' }}>Code</th>
+          <th style={{ textAlign: 'center', border: '1px solid #ccc', padding: '10px' }}>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {redeemHistory.map((item, index) => (
+          <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#fff' : '#f1f1f1' }}>
+            <td style={{ textAlign: 'center', border: '1px solid #ccc', padding: '10px' }}>{item.name}</td>
+            <td style={{ textAlign: 'center', border: '1px solid #ccc', padding: '10px' }}>{item.cost}</td>
+            <td style={{ textAlign: 'center', border: '1px solid #ccc', padding: '10px' }}>{item.code}</td>
+            <td style={{ textAlign: 'center', border: '1px solid #ccc', padding: '10px' }}>{item.date}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </>
+)}
     </div>
   );
 }

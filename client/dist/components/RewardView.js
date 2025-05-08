@@ -112,9 +112,24 @@ export default function RewardView({
   const [popupMessage, setPopupMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [expanded, setExpanded] = useState({});
+  const [redeemHistory, setRedeemHistory] = useState([]);
+  const generateOrderCode = () => {
+    const timestamp = Date.now().toString(36);
+    const randomPart = Math.random().toString(36).substring(2, 7);
+    return `ORD-${timestamp}-${randomPart}`.toUpperCase();
+  };
   const handleRedeem = async reward => {
     if (user.points >= reward.cost) {
       const newPoints = user.points - reward.cost;
+      const orderCode = generateOrderCode();
+      const redemptionRecord = {
+        customerID: user.customerID,
+        name: reward.name,
+        date: new Date().toLocaleString(),
+        cost: reward.cost,
+        code: orderCode
+      };
+      setRedeemHistory(prev => [...prev, redemptionRecord]);
       try {
         const response = await fetch(`http://localhost:3100/customer/${user.customerID}`, {
           method: 'PUT',
@@ -128,7 +143,7 @@ export default function RewardView({
         if (!response.ok) throw new Error('Failed to update points');
         const updatedUser = await response.json();
         onUpdate(updatedUser);
-        setPopupMessage(`You redeemed: ${reward.name}`);
+        setPopupMessage([`You redeemed: ${reward.name}`, `Order Code: ${orderCode}`]);
         setShowModal(true);
       } catch (error) {
         console.error('Redeem failed:', error.message);
@@ -176,7 +191,7 @@ export default function RewardView({
     style: {
       color: 'black'
     }
-  }, "Redeemable Rewards:"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("div", {
+  }, "Redeemable Rewards"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '20px',
@@ -258,16 +273,84 @@ export default function RewardView({
       color: 'black',
       boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
     }
-  }, /*#__PURE__*/React.createElement("p", {
+  }, Array.isArray(popupMessage) && popupMessage.map((line, index) => /*#__PURE__*/React.createElement("p", {
+    key: index,
     style: {
       color: 'black',
       fontWeight: 'bold'
     }
-  }, popupMessage), /*#__PURE__*/React.createElement("button", {
+  }, line)), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-success w-100",
     onClick: closeModal,
     style: {
       marginTop: '15px'
     }
-  }, "Close"))));
+  }, "Close"))), redeemHistory.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("h3", {
+    style: {
+      color: 'black'
+    }
+  }, "Redeem History"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("table", {
+    style: {
+      width: '100%',
+      color: 'black',
+      borderCollapse: 'collapse'
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
+    style: {
+      backgroundColor: '#f9f9f9'
+    }
+  }, /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: 'center',
+      border: '1px solid #ccc',
+      padding: '10px'
+    }
+  }, "Reward"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: 'center',
+      border: '1px solid #ccc',
+      padding: '10px'
+    }
+  }, "Points"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: 'center',
+      border: '1px solid #ccc',
+      padding: '10px'
+    }
+  }, "Code"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: 'center',
+      border: '1px solid #ccc',
+      padding: '10px'
+    }
+  }, "Date"))), /*#__PURE__*/React.createElement("tbody", null, redeemHistory.map((item, index) => /*#__PURE__*/React.createElement("tr", {
+    key: index,
+    style: {
+      backgroundColor: index % 2 === 0 ? '#fff' : '#f1f1f1'
+    }
+  }, /*#__PURE__*/React.createElement("td", {
+    style: {
+      textAlign: 'center',
+      border: '1px solid #ccc',
+      padding: '10px'
+    }
+  }, item.name), /*#__PURE__*/React.createElement("td", {
+    style: {
+      textAlign: 'center',
+      border: '1px solid #ccc',
+      padding: '10px'
+    }
+  }, item.cost), /*#__PURE__*/React.createElement("td", {
+    style: {
+      textAlign: 'center',
+      border: '1px solid #ccc',
+      padding: '10px'
+    }
+  }, item.code), /*#__PURE__*/React.createElement("td", {
+    style: {
+      textAlign: 'center',
+      border: '1px solid #ccc',
+      padding: '10px'
+    }
+  }, item.date)))))));
 }
