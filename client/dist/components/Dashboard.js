@@ -107,8 +107,8 @@ export default function Dashboard({
     title: 'Reservations',
     key: 'reservation'
   }, {
-    title: 'Menu',
-    key: 'menu'
+    title: 'Survey',
+    key: 'survey'
   }, {
     title: 'Rewards',
     key: 'rewards'

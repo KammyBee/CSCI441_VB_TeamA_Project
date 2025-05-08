@@ -110,7 +110,7 @@ export default function Dashboard({ user, onNavigate }) {
         {[
           { title: 'Personal Info', key: 'personalInfo' },
           { title: 'Reservations', key: 'reservation' },
-          { title: 'Menu', key: 'menu' },
+          { title: 'Survey', key: 'survey' },
           { title: 'Rewards', key: 'rewards' },
         ].map(({ title, key }) => (
           <div className="col-md-3 mb-4" key={key}>

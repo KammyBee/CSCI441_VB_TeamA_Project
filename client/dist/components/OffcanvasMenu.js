@@ -31,10 +31,6 @@ export default function OffcanvasMenu({
     "data-bs-dismiss": "offcanvas"
   }, "Reservation")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-link text-white",
-    onClick: () => onNavigate('menu'),
-    "data-bs-dismiss": "offcanvas"
-  }, "Menu")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-link text-white",
     onClick: () => onNavigate('rewards'),
     "data-bs-dismiss": "offcanvas"
   }, "Rewards")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("button", {

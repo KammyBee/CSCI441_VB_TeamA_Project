@@ -53,19 +53,6 @@ export default function OffcanvasMenu({ user, onNavigate, onLogout }) {
             "button",
             {
               className: "btn btn-link text-white",
-              onClick: () => onNavigate('menu'),
-              "data-bs-dismiss": "offcanvas"
-            },
-            "Menu"
-          )
-        ),
-        React.createElement(
-          "li",
-          null,
-          React.createElement(
-            "button",
-            {
-              className: "btn btn-link text-white",
               onClick: () => onNavigate('rewards'),
               "data-bs-dismiss": "offcanvas"
             },
