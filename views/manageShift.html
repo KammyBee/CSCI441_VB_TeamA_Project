@@ -1,0 +1,82 @@
+<!-- // written by: Avery Turnquest -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/employee.css">
+    <title>Employee Interface</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="../assets/logo.png" alt="Tasty Bytes Logo" onclick="window.location.href='employeeHomePage.html';">
+            <ul class="nav-links">
+                <li><a href="employeeHomePage.html">Home</a></li>
+                <li><a href="managerHome.html">Functions</a></li>
+                <li><a href="orderChecks.html">Orders</a></li>
+                <li><a href="viewMenu2.html">Menu</a></li>
+                <li><a href="serverinterface.html">Tables</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="all-employees-list" class="all-items-list">
+        <h2>Employees</h2>
+        <ul id="menu-employees-list"></ul>
+        <!-- Employees will be added to list here -->
+        <!-- Loading spinner -->
+        <div id="loading" class="loading">
+            <img id="loading-image" class="loading-image" src="../assets/loading.gif" alt="Loading..." />
+        </div>
+    </div>
+    <br>
+    <div id="manage-employees" class="manage-items">
+        <h3>Manage Shifts</h3>
+        <label for="employee-dropdown">Select Employee:</label>
+        <select id="employee-dropdown">
+            <option value="">New Employee</option>
+            <!-- Employees will be dynamically added here -->
+        </select>
+    </div>
+
+    <div>
+        <label for="employee-first-name-input">First Name:</label>
+        <input type="text" id="employee-first-name-input" placeholder="Enter first name">
+    </div>
+
+    <div>
+        <label for="employee-last-name-input">Last Name:</label>
+        <input type="text" id="employee-last-name-input" placeholder="Enter last name">
+    </div>
+
+
+   
+    
+
+    <div>
+        <label for="employee-shift-date">Shift Start:</label>
+        <input type="date" id="employee-shift-start" placeholder="Enter date">
+    </div>
+
+    <div>
+        <label for="employee-shift-start">Shift Start:</label>
+        <input type="time" id="employee-shift-start" placeholder="Enter start time">
+    </div>
+
+    <div>
+        <label for="employee-shift-end">Shift End:</label>
+        <input type="time" id="employee-shift-end" placeholder="Enter end time">
+    </div>
+
+    <!-- Buttons for creating or updating an employee -->
+    <button id="create-button">Create</button>
+    <button id="update-button">Update</button>
+    <button id="delete-button">Delete</button>
+
+    <script type="module" src="../js/manageShift.js" defer></script>
+</body>
+
+</html>

@@ -232,7 +232,7 @@ let currentDate = moment();
         var satArr = [];
         var sunArr = [];
 
-        function addEmployeetoArray(shiftSchedule){
+        const addEmployeetoArray = (shiftSchedule)=>{
 
             shiftSchedule.forEach((element) => {
                 switch(moment(element.date, 'YYYY-MM-DD hh:mm:ss').format('dddd')){
@@ -269,7 +269,7 @@ let currentDate = moment();
         }
 
         let fShiftMon = document.getElementById('fShiftMon');
-        function addEmployeetoTable(dayArr, listMorn, listLunch, listAft){
+        const addEmployeetoTable=(dayArr, listMorn, listLunch, listAft)=>{
             dayArr.forEach(element => {
                 if (checkShift(element.startTime) == 'morning'){
                     let li = document.createElement('li');

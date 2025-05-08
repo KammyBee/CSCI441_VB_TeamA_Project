@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const shiftSchedule = require('../services/shiftSchedule');
+const {
+  addshiftSchedule,
+  deleteshiftSchedule,
+  getshiftSchedule,
+  updateshiftSchedule,
+  getAllshiftSchedules
+} = require('../services/shiftSchedule');
 
 /* POST new shiftSchedule. */
 
@@ -15,7 +21,7 @@ router.post('/', async function(req, res, next) {
 });
 
 /* DELETE shiftSchedule by shiftID. */
-router.delete('/:shiftID', async function(req, res, next) {
+router.delete('/:shiftID', async (req, res, next)=> {
   try {
     const { shiftID } = req.params;
     res.json(await shiftSchedule.deleteshiftSchedule(shiftID));
@@ -27,7 +33,7 @@ router.delete('/:shiftID', async function(req, res, next) {
 
 /* GET shiftSchedule by shiftID. */
 
-router.get('/:shiftID', async function(req, res, next) {
+router.get('/:shiftID', async (req, res, next) =>{
   try {
     const { shiftID } = req.params;
     const schedule = await shiftSchedule.getshiftSchedule(shiftID);
@@ -42,7 +48,8 @@ router.get('/:shiftID', async function(req, res, next) {
 });
 
 /* PUT update shiftSchedule by shiftID. */
-router.put('/:shiftID', async function(req, res, next) {
+router.put('/:shiftID', async (req, res, next) =>{
+ 
   try {
     const { shiftID } = req.params;
     const shiftScheduleData = req.body;
@@ -56,12 +63,18 @@ router.put('/:shiftID', async function(req, res, next) {
 
 /* GET all shiftSchedules. */
 
-router.get('/', async function(req, res, next) {
+router.get('/', async (req, res) => {
+  console.log('req.query →', req.query);
+  const { startOfWeek, endOfWeek } = req.query;
+  if (!startOfWeek || !endOfWeek) {
+    return res.status(400).json({ error: 'Missing dates' });
+  }
   try {
-    res.json(await shiftSchedule.getAllshiftSchedules());
+    const rows = await getAllshiftSchedules({ startOfWeek, endOfWeek });
+    res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: `Error while getting all shiftSchedules: ${err.message}` });
-    next(err);
+    console.error('🛑 handler error:', err.stack);
+    res.status(500).json({ error: err.message });
   }
 });
 

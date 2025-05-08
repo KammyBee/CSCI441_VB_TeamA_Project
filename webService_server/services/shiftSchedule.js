@@ -36,14 +36,34 @@ async function updateshiftSchedule(shiftID, shiftScheduleData) {
   return result;
 }
 
-async function getAllshiftSchedules() {
-  const data = await db.query(
-    `SELECT shiftID, shift_schedule.employeeID, employee.firstName, employee.lastName, startTime, endTime, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as date, DATE_FORMAT(shift_schedule.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at 
-    FROM shift_schedule
-    LEFT JOIN employee on employee.employeeID = shift_schedule.employeeID`
-  );
+async function getAllshiftSchedules({ startOfWeek, endOfWeek }) {
+  if (!startOfWeek || !endOfWeek) {
+    throw new Error('No startOfWeek or endOfWeek provided');
+  }
 
-  return data;
+  const sql = `
+    SELECT
+      shiftID,
+      shift_schedule.employeeID,
+      employee.firstName,
+      employee.lastName,
+      startTime,
+      endTime,
+      DATE_FORMAT(shift_schedule.date, '%Y-%m-%d %H:%i:%s') AS date,
+      DATE_FORMAT(shift_schedule.updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at
+    FROM shift_schedule
+    LEFT JOIN employee
+      ON employee.employeeID = shift_schedule.employeeID
+    WHERE shift_schedule.date BETWEEN ? AND ?
+  `;
+
+  try {
+    const rows =  db.query(sql, [startOfWeek, endOfWeek]);
+    return rows;
+  } catch (dbErr) {
+    console.error('🛑  Database error in getAllShiftSchedules:\n', dbErr.stack);
+    throw dbErr;
+  }
 }
 
 module.exports = {

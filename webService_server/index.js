@@ -1,18 +1,16 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import Table from '../views/tableComponents/Table.jsx';
-
-// const reactRoot = document.getElementById("react-root");
-
-// if (reactRoot) {
-//     const root = ReactDOM.createRoot(reactRoot);
-//     root.render(<MyReactSection />);
-// }
-
 const express = require("express");
 const cors = require("cors");
+const path = require('path');
+
 const app = express();
 const port = 3100;
+
+// enable CORS
+app.use(cors());
+
+// parse JSON and urlencoded bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const customerRouter = require("./routes/customer");
 const employeeRouter = require("./routes/employee");
@@ -31,7 +29,6 @@ const transactionRouter = require("./routes/transaction");
 const customRouter = require("./routes/custom");
 const shiftScheduleRouter = require("./routes/shiftSchedule");
 
-app.use(cors());
 
 app.use(express.json());
 app.use(
@@ -39,9 +36,9 @@ app.use(
     extended: true,
   })
 );
-app.get("/", (req, res) => {
-  res.json({ message: "ok" });
-});
+app.use('/dist', express.static(path.join(__dirname, '../dist')));
+app.use('/assets', express.static(path.join(__dirname, './assets')));
+app.use('/css', express.static(path.join(__dirname, './css')));
 
 app.use("/customer", customerRouter);
 app.use("/employee", employeeRouter);
