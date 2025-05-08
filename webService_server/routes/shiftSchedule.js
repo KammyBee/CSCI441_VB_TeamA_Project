@@ -10,12 +10,15 @@ const {
 
 /* POST new shiftSchedule. */
 
-router.post('/', async function(req, res, next) {
+router.post('/', async (req, res, next) => {
   try {
     const shiftScheduleData = req.body;
-    res.json(await shiftSchedule.addshiftSchedule(shiftScheduleData));
+    console.log('Received shiftScheduleData:', shiftScheduleData);
+    const result = await addshiftSchedule(shiftScheduleData);
+    res.json(result);
   } catch (err) {
-    res.status(500).json({ error: `Error while adding shiftSchedule: ${err.message}` });
+    console.error('Error while adding shift schedule:', err);
+    res.status(500).json({ error: err.message });
     next(err);
   }
 });

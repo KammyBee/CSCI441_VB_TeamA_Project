@@ -208,3 +208,36 @@ document.getElementById('delete-button').addEventListener('click', async () => {
     window.location.reload();
 });
 
+async function postShiftSchedule(data) {
+    const res = await fetch('http://localhost:3100/shiftSchedule/', {           // adjust path if you mounted router differently
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+    return res.json();
+  }
+  
+  document.getElementById('create-button').addEventListener('click', async (e) => {
+    e.preventDefault();
+  
+    // gather values from the form
+    const shiftScheduleData = {
+      employeeID: document.getElementById('employee-id-input').value,
+      date:       document.getElementById('employee-date').value,
+      startTime:  document.getElementById('employee-shift-start-time').value,
+      endTime:    document.getElementById('employee-shift-end-time').value,
+    };
+    
+  
+    try {
+      const result = await postShiftSchedule(shiftScheduleData);
+      console.log('Shift created:', result);
+      // TODO: refresh your shifts list or give the user a success message
+      alert('Shift scheduled successfully!');
+    } catch (err) {
+      console.error('Failed to create shift:', err);
+      alert('Error creating shift: ' + err.message);
+    }
+  });
+
