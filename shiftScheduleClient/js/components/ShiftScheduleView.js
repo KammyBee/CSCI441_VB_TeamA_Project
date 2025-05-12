@@ -1,3 +1,4 @@
+//written by: Avery Turnquest & Godbless Amankwah
 import React, { useState } from 'react';
 
 export default function ShiftSchedule() {
