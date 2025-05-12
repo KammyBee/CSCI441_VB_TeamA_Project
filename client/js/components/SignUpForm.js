@@ -1,3 +1,4 @@
+//written by: Kamdon Basinger & Simin Krug
 import React, { useState } from 'react';
 
 export default function SignUpForm({ onSuccess, onSwitch }) {
@@ -17,11 +18,11 @@ export default function SignUpForm({ onSuccess, onSwitch }) {
     const { name, value } = e.target;
     setForm(f => ({ ...f, [name]: value }));
     setErrors(err => ({ ...err, [name]: '' }));
-  };  
+  };
   const validateField = async (field) => {
     const value = form[field]?.trim();
     if (!value) return;
-  
+
     try {
       const res = await fetch('http://localhost:3100/customer/validate', {
         method: 'POST',                   // <--- Must be POST

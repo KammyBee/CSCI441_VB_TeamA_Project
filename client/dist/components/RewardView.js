@@ -1,3 +1,4 @@
+//written by: Kamdon Basinger & Simin Krug
 import React, { useState } from 'react';
 const rewards = [{
   id: 1,

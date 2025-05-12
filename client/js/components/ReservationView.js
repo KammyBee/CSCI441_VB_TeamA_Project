@@ -1,3 +1,4 @@
+//written by: Kamdon Basinger & Simin Krug
 import React, { useState, useEffect } from 'react';
 
 export default function ReservationView({ user }) {

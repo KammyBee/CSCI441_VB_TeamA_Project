@@ -1,3 +1,4 @@
+//written by: Kamdon Basinger & Simin Krug
 import React from 'react';
 export default function OffcanvasMenu({
   user,

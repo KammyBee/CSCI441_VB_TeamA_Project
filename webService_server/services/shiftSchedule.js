@@ -1,3 +1,4 @@
+//written by: Avery Turnquest & Godbless Amankwah
 const db = require('./db');
 
 async function addshiftSchedule(shiftScheduleData) {

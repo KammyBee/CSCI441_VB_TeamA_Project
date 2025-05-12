@@ -1,3 +1,4 @@
+//modified by: Kamdon Basinger & Simin Krug
 const db = require('./db');
 
 
@@ -215,20 +216,20 @@ async function updateCustomer(customerID, customerData) {
   values.push(customerID);
   console.log('Executing SQL:', sql.trim(), values);
 
- try { 
+ try {
 const result = await db.query(sql, values);
 const affectedRows =
-result.affectedRows !== undefined 
+result.affectedRows !== undefined
 ? result.affectedRows
-        : (Array.isArray(result) && result[0]?.affectedRows) || 0; 
- 
-   if (affectedRows === 0) { 
-      throw new Error('No rows updated'); 
-    } 
- 
-    /* --- fetch the fresh row so the client stays in sync --- */ 
-    const updated = await getCustomer(customerID); 
-    return updated;   
+        : (Array.isArray(result) && result[0]?.affectedRows) || 0;
+
+   if (affectedRows === 0) {
+      throw new Error('No rows updated');
+    }
+
+    /* --- fetch the fresh row so the client stays in sync --- */
+    const updated = await getCustomer(customerID);
+    return updated;
   } catch (err) {
     console.error('updateCustomer failed:', err.message);
     throw new Error(`updateCustomer error: ${err.sqlMessage || err.message}`);

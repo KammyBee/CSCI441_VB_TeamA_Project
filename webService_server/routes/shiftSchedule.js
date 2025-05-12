@@ -1,3 +1,4 @@
+//written by: Avery Turnquest & Godbless Amankwah
 const express = require('express');
 const router = express.Router();
 const {
@@ -52,7 +53,7 @@ router.get('/:shiftID', async (req, res, next) =>{
 
 /* PUT update shiftSchedule by shiftID. */
 router.put('/:shiftID', async (req, res, next) =>{
- 
+
   try {
     const { shiftID } = req.params;
     const shiftScheduleData = req.body;

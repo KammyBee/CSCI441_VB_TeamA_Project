@@ -1,3 +1,4 @@
+//written by: Kamdon Basinger & Simin Krug
 import React, { useState } from 'react';
 
 export default function PersonalInfoView({ user, onUpdate }) {
@@ -128,7 +129,7 @@ const res = await fetch('http://localhost:3100/customer/validate', {
           <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
         </form>
       ) : (
-        <>  
+        <>
           {/* read-only view */}
 <div className="card shadow-sm">
 <div className="card-header d-flex justify-content-between align-items-center">

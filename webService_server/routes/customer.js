@@ -1,3 +1,4 @@
+//modified by: Kamdon Basinger & Simin Krug
 const express = require('express');
 const router = express.Router();
 const {
@@ -78,7 +79,7 @@ router.post('/reservation', async (req, res, next) => {
     const { reserved_for, group_size, special_event } = req.body;
     const created = await addReservation({
       customer_id: cid,
-      reserved_for, 
+      reserved_for,
       group_size,
       special_event
     });

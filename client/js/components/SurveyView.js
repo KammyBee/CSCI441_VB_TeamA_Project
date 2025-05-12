@@ -1,3 +1,4 @@
+//written by: Kamdon Basinger & Simin Krug
 import React, { useState, useEffect } from 'react';
 
 // Animated star overlay for different feedback types
